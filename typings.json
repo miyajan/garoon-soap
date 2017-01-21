@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "node-fetch": "registry:dt/node-fetch#1.6.0+20161224095027",
+    "xml": "registry:dt/xml#1.0.0+20161208161635",
+    "xml2js": "registry:dt/xml2js#0.0.0+20161130184909"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "garoon-soap",
+  "version": "0.1.0",
+  "description": "Garoon soap api client for Node and Browser",
+  "main": "index.js",
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miyajan/garoon-soap.git"
+  },
+  "keywords": [
+    "garoon",
+    "soap",
+    "api",
+    "client"
+  ],
+  "author": "miyajan <miyajan777@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miyajan/garoon-soap/issues"
+  },
+  "homepage": "https://github.com/miyajan/garoon-soap",
+  "devDependencies": {
+    "mocha": "^3.2.0",
+    "power-assert": "^1.4.2",
+    "typescript": "^2.1.5"
+  },
+  "dependencies": {
+    "es6-promise": "^4.0.5",
+    "node-fetch": "^1.6.3",
+    "xml": "^1.0.1",
+    "xml2js": "^0.4.17"
+  }
+}
