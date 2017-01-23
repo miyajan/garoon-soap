@@ -52,7 +52,10 @@ export default class Client {
             body: xmlString,
             headers: {
                 'Content-Type': 'text/xml; charset=UTF-8'
-            }
+            },
+            // compress: true causes "incorrect header check" error on cybozu.com
+            // https://github.com/bitinn/node-fetch/issues/45
+            compress: false
         }).then(res => {
             if (res.ok) {
                 return res.text();
