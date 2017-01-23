@@ -1,7 +1,7 @@
 import Setting from "./client/setting";
 import Base from "./client/base";
 
-export default class GaroonSoap {
+export = class GaroonSoap {
     private baseUri: string;
     public readonly base: Base;
 

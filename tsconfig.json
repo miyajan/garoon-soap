@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "module": "commonjs"
   }
 }

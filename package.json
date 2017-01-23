@@ -7,6 +7,7 @@
     "node": ">=4"
   },
   "scripts": {
+    "build": "browserify src/garoon-soap.ts -p [ tsify ] -s GaroonSoap > build/garoon-soap.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,8 +27,10 @@
   },
   "homepage": "https://github.com/miyajan/garoon-soap",
   "devDependencies": {
+    "browserify": "^13.3.0",
     "mocha": "^3.2.0",
     "power-assert": "^1.4.2",
+    "tsify": "^3.0.0",
     "typescript": "^2.1.5"
   },
   "dependencies": {
