@@ -1,6 +1,7 @@
 import Client from "./client";
 import Setting from "./setting";
-import * as BaseType from "../type/base";
+import User from "../converter/base";
+import * as base from "../type/base";
 
 export default class Base {
     private client: Client;
@@ -11,15 +12,15 @@ export default class Base {
         this.path = setting.needCsp ? '/cbpapi/base/api.csp' : '/cbpapi/base/api';
     }
 
-    public getUsersById(userIds: number[]): Promise<Object> {
+    public getUsersById(userIds: number[]): Promise<Array<base.UserType>> {
         const parameters: Array<Object> = [];
         userIds.forEach(userId => {
             parameters.push({'user_id': userId});
         });
         return this.client.post(this.path, 'BaseGetUsersById', parameters).then(res => {
-            const users: Array<Object> = [];
-            res[0]['base:BaseGetUsersByIdResponse'][0]['returns'][0]['user'].forEach(obj => {
-                users.push(BaseType.User.toObject(obj));
+            const users: Array<base.UserType> = [];
+            res[0]['base:BaseGetUsersByIdResponse'][0]['returns'][0]['user'].forEach((obj: base.UserXMLObject) => {
+                users.push(User.toObject(obj));
             });
             return users;
         });

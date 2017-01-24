@@ -3,6 +3,23 @@ import * as xml from "xml";
 import * as xml2js from "xml2js";
 import fetch from "node-fetch";
 
+interface Action {
+    [key: string]: any
+}
+
+interface Body {
+    [index: number]: any
+}
+
+interface Envelope {
+    'soap:Header': any
+    'soap:Body': Body
+}
+
+interface SoapResponse {
+    'soap:Envelope': Envelope
+}
+
 export default class Client {
     private setting: Setting;
     private readonly expires = new Date(Date.UTC(2037, 7, 12, 14, 45, 0));
@@ -11,9 +28,9 @@ export default class Client {
         this.setting = setting;
     }
 
-    public post(path: string, action: string, parameters: Array<any>): Promise<Object> {
-        const bodyObject = {};
-        bodyObject[action] = [{'parameters': parameters}];
+    public post(path: string, action: string, parameters: Array<any>): Promise<Body> {
+        const actionObject: Action = {};
+        actionObject[action] = [{'parameters': parameters}];
         const xmlObject = {
             'soap:Envelope': [
                 {
@@ -42,7 +59,7 @@ export default class Client {
                     ]
                 },
                 {
-                    'soap:Body': [bodyObject]
+                    'soap:Body': [actionObject]
                 }
             ]
         };
@@ -74,7 +91,7 @@ export default class Client {
                 });
             });
         }).then(data => {
-            return data['soap:Envelope']['soap:Body'];
+            return (<SoapResponse>data)['soap:Envelope']['soap:Body'];
         });
     }
 
