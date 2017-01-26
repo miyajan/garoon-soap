@@ -25,4 +25,18 @@ export default class Base {
             return users;
         });
     }
+
+    public getUsersByLoginName(loginNames: string[]): Promise<Array<base.UserType>> {
+        const parameters: Array<Object> = [];
+        loginNames.forEach(loginName => {
+            parameters.push({'login_name': loginName});
+        });
+        return this.client.post(this.path, 'BaseGetUsersByLoginName', parameters).then(res => {
+            const users: Array<base.UserType> = [];
+            res[0]['base:BaseGetUsersByLoginNameResponse'][0]['returns'][0]['user'].forEach((obj: base.UserXMLObject) => {
+                users.push(User.toObject(obj));
+            });
+            return users;
+        });
+    }
 }
