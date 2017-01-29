@@ -27946,7 +27946,7 @@ module.exports = toString;
 },{"./_baseToString":160}],253:[function(require,module,exports){
 "use strict";
 var client_1 = require("./client");
-var BaseType = require("../type/base");
+var BaseConverter = require("../converter/base");
 var Base = (function () {
     function Base(setting) {
         this.client = new client_1.default(setting);
@@ -27960,9 +27960,31 @@ var Base = (function () {
         return this.client.post(this.path, 'BaseGetUsersById', parameters).then(function (res) {
             var users = [];
             res[0]['base:BaseGetUsersByIdResponse'][0]['returns'][0]['user'].forEach(function (obj) {
-                users.push(BaseType.User.toObject(obj));
+                users.push(BaseConverter.User.toObject(obj));
             });
             return users;
+        });
+    };
+    Base.prototype.getUsersByLoginName = function (loginNames) {
+        var parameters = [];
+        loginNames.forEach(function (loginName) {
+            parameters.push({ 'login_name': loginName });
+        });
+        return this.client.post(this.path, 'BaseGetUsersByLoginName', parameters).then(function (res) {
+            var users = [];
+            res[0]['base:BaseGetUsersByLoginNameResponse'][0]['returns'][0]['user'].forEach(function (obj) {
+                users.push(BaseConverter.User.toObject(obj));
+            });
+            return users;
+        });
+    };
+    Base.prototype.getUsersVersions = function (userItems) {
+        return this.client.post(this.path, 'BaseGetUsersVersions', userItems).then(function (res) {
+            var userVersions = [];
+            res[0]['base:BaseGetUsersVersions'][0]['returns'][0]['user_item'].forEach(function (obj) {
+                userVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+            });
+            return userVersions;
         });
     };
     return Base;
@@ -27970,7 +27992,7 @@ var Base = (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Base;
 
-},{"../type/base":257,"./client":254}],254:[function(require,module,exports){
+},{"../converter/base":256,"./client":254}],254:[function(require,module,exports){
 "use strict";
 var xml = require("xml");
 var xml2js = require("xml2js");
@@ -27981,8 +28003,8 @@ var Client = (function () {
         this.setting = setting;
     }
     Client.prototype.post = function (path, action, parameters) {
-        var bodyObject = {};
-        bodyObject[action] = [{ 'parameters': parameters }];
+        var actionObject = {};
+        actionObject[action] = [{ 'parameters': parameters }];
         var xmlObject = {
             'soap:Envelope': [
                 {
@@ -28011,7 +28033,7 @@ var Client = (function () {
                     ]
                 },
                 {
-                    'soap:Body': [bodyObject]
+                    'soap:Body': [actionObject]
                 }
             ]
         };
@@ -28085,19 +28107,19 @@ exports.default = Setting;
 
 },{}],256:[function(require,module,exports){
 "use strict";
-var setting_1 = require("./client/setting");
-var base_1 = require("./client/base");
-module.exports = (function () {
-    function GaroonSoap(baseUri, username, password, locale, needCsp) {
-        var setting = new setting_1.default(baseUri, username, password, locale, needCsp);
-        this.base = new base_1.default(setting);
-    }
-    return GaroonSoap;
-}());
-
-},{"./client/base":253,"./client/setting":255}],257:[function(require,module,exports){
-"use strict";
 var Util = require("../util");
+var ItemVersionResult = (function () {
+    function ItemVersionResult() {
+    }
+    ItemVersionResult.toObject = function (xmlObj) {
+        var itemVersionResult = {};
+        var attrs = xmlObj['$'];
+        Util.copyProps(attrs, itemVersionResult);
+        return itemVersionResult;
+    };
+    return ItemVersionResult;
+}());
+exports.ItemVersionResult = ItemVersionResult;
 var User = (function () {
     function User() {
     }
@@ -28129,7 +28151,26 @@ var User = (function () {
 }());
 exports.User = User;
 
-},{"../util":258}],258:[function(require,module,exports){
+},{"../util":259}],257:[function(require,module,exports){
+"use strict";
+var setting_1 = require("./client/setting");
+var base_1 = require("./client/base");
+var GaroonSoap = (function () {
+    function GaroonSoap(baseUri, username, password, locale, needCsp) {
+        var setting = new setting_1.default(baseUri, username, password, locale, needCsp);
+        this.base = new base_1.default(setting);
+    }
+    return GaroonSoap;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = GaroonSoap;
+
+},{"./client/base":253,"./client/setting":255}],258:[function(require,module,exports){
+"use strict";
+var garoon_soap_1 = require("./garoon-soap");
+module.exports = garoon_soap_1.default;
+
+},{"./garoon-soap":257}],259:[function(require,module,exports){
 "use strict";
 var excludes = ['xmlns'];
 function copyProps(src, dst) {
@@ -28141,5 +28182,5 @@ function copyProps(src, dst) {
 }
 exports.copyProps = copyProps;
 
-},{}]},{},[256])(256)
+},{}]},{},[258])(258)
 });

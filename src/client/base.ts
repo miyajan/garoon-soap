@@ -1,6 +1,6 @@
 import Client from "./client";
 import Setting from "./setting";
-import User from "../converter/base";
+import * as BaseConverter from "../converter/base";
 import * as base from "../type/base";
 
 export default class Base {
@@ -20,7 +20,7 @@ export default class Base {
         return this.client.post(this.path, 'BaseGetUsersById', parameters).then(res => {
             const users: Array<base.UserType> = [];
             res[0]['base:BaseGetUsersByIdResponse'][0]['returns'][0]['user'].forEach((obj: base.UserXMLObject) => {
-                users.push(User.toObject(obj));
+                users.push(BaseConverter.User.toObject(obj));
             });
             return users;
         });
@@ -34,9 +34,19 @@ export default class Base {
         return this.client.post(this.path, 'BaseGetUsersByLoginName', parameters).then(res => {
             const users: Array<base.UserType> = [];
             res[0]['base:BaseGetUsersByLoginNameResponse'][0]['returns'][0]['user'].forEach((obj: base.UserXMLObject) => {
-                users.push(User.toObject(obj));
+                users.push(BaseConverter.User.toObject(obj));
             });
             return users;
+        });
+    }
+
+    public getUserVersions(userItems: base.ItemVersionType[]) {
+        return this.client.post(this.path, 'BaseGetUserVersions', userItems).then(res => {
+            const userVersions: Array<base.ItemVersionResultType> = [];
+            res[0]['base:BaseGetUserVersionsResponse'][0]['returns'][0]['user_item'].forEach((obj: base.ItemVersionResultXMLObject) => {
+                userVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+            });
+            return userVersions;
         });
     }
 }

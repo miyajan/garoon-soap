@@ -1,7 +1,7 @@
 import Setting from "./client/setting";
 import Base from "./client/base";
 
-export = class GaroonSoap {
+export default class GaroonSoap {
     public readonly base: Base;
 
     public constructor(baseUri: string, username: string, password: string, locale: string, needCsp: boolean) {

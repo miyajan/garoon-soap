@@ -1,7 +1,18 @@
 import * as base from "../type/base";
 import * as Util from "../util";
 
-export default class User {
+export class ItemVersionResult {
+    static toObject(xmlObj: base.ItemVersionResultXMLObject): base.ItemVersionResultType {
+        const itemVersionResult: any = {};
+
+        const attrs: Object = xmlObj['$'];
+        Util.copyProps(attrs, itemVersionResult);
+
+        return itemVersionResult;
+    }
+}
+
+export class User {
     static toObject(xmlObj: base.UserXMLObject): base.UserType {
         const user: any = {};
 

@@ -1,3 +1,18 @@
+export interface ItemVersionType {
+    id: string,
+    version: string
+}
+
+export interface ItemVersionResultXMLObject {
+    $: Object
+}
+
+export interface ItemVersionResultType {
+    id: string,
+    version: string,
+    operation: string
+}
+
 export interface UserOrganizationXMLObject {
     $: Object
 }
