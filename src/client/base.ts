@@ -41,7 +41,18 @@ export default class Base {
     }
 
     public getUserVersions(userItems: base.ItemVersionType[]) {
-        return this.client.post(this.path, 'BaseGetUserVersions', userItems).then(res => {
+        const parameters: Array<Object> = [];
+        userItems.forEach(userItem => {
+            parameters.push({
+                'user_item': {
+                    '_attr': {
+                        id: userItem.id,
+                        version: userItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'BaseGetUserVersions', parameters).then(res => {
             const userVersions: Array<base.ItemVersionResultType> = [];
             res[0]['base:BaseGetUserVersionsResponse'][0]['returns'][0]['user_item'].forEach((obj: base.ItemVersionResultXMLObject) => {
                 userVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
