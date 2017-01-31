@@ -40,3 +40,14 @@ export class User {
         return user;
     }
 }
+
+export class BaseGetCalendarEvent {
+    static toObject(xmlObj: base.BaseGetCalendarEventXMLObject): base.BaseGetCalendarEventType {
+        const calendarEvent: any = {};
+
+        const attrs: Object = xmlObj['$'];
+        Util.copyProps(attrs, calendarEvent);
+
+        return calendarEvent;
+    }
+}

@@ -44,3 +44,13 @@ export interface UserType {
     description?: string
     primary_organization?: string
 }
+
+export interface BaseGetCalendarEventXMLObject {
+    $: Object
+}
+
+export interface BaseGetCalendarEventType {
+    date: Date,
+    content: string,
+    type: string
+}

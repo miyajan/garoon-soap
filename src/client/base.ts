@@ -40,7 +40,7 @@ export default class Base {
         });
     }
 
-    public getUserVersions(userItems: base.ItemVersionType[]) {
+    public getUserVersions(userItems: base.ItemVersionType[]): Promise<Array<base.ItemVersionResultType>> {
         const parameters: Array<Object> = [];
         userItems.forEach(userItem => {
             parameters.push({
@@ -58,6 +58,16 @@ export default class Base {
                 userVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
             });
             return userVersions;
+        });
+    }
+
+    public getCalendarEvents(): Promise<Array<base.BaseGetCalendarEventType>> {
+        return this.client.post(this.path, 'BaseGetCalendarEvents', []).then(res => {
+            const calendarEvents: Array<base.BaseGetCalendarEventType> = [];
+            res[0]['base:BaseGetCalendarEventsResponse'][0]['returns'][0]['calendar_event'].forEach((obj: base.BaseGetCalendarEventXMLObject) => {
+                calendarEvents.push(BaseConverter.BaseGetCalendarEvent.toObject(obj));
+            });
+            return calendarEvents;
         });
     }
 }
