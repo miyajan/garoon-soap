@@ -27978,10 +27978,21 @@ var Base = (function () {
             return users;
         });
     };
-    Base.prototype.getUsersVersions = function (userItems) {
-        return this.client.post(this.path, 'BaseGetUsersVersions', userItems).then(function (res) {
+    Base.prototype.getUserVersions = function (userItems) {
+        var parameters = [];
+        userItems.forEach(function (userItem) {
+            parameters.push({
+                'user_item': {
+                    '_attr': {
+                        id: userItem.id,
+                        version: userItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'BaseGetUserVersions', parameters).then(function (res) {
             var userVersions = [];
-            res[0]['base:BaseGetUsersVersions'][0]['returns'][0]['user_item'].forEach(function (obj) {
+            res[0]['base:BaseGetUserVersionsResponse'][0]['returns'][0]['user_item'].forEach(function (obj) {
                 userVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
             });
             return userVersions;
@@ -27992,8 +28003,9 @@ var Base = (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Base;
 
-},{"../converter/base":256,"./client":254}],254:[function(require,module,exports){
+},{"../converter/base":257,"./client":254}],254:[function(require,module,exports){
 "use strict";
+var error_1 = require("./error");
 var xml = require("xml");
 var xml2js = require("xml2js");
 var node_fetch_1 = require("node-fetch");
@@ -28066,6 +28078,20 @@ var Client = (function () {
                 });
             });
         }).then(function (data) {
+            if (data['soap:Envelope']['soap:Body'][0]['soap:Fault']) {
+                var detail = data['soap:Envelope']['soap:Body'][0]['soap:Fault'][0]['soap:Detail'][0];
+                var code = detail['code'][0];
+                var diagnosis = detail['diagnosis'][0];
+                var cause = detail['cause'][0];
+                var counterMeasure = detail['counter_measure'][0];
+                var message = "SOAP Request Error! (code: " + code + ", diagnosis: " + diagnosis + ", cause: " + cause + ", counter_measure: " + counterMeasure + ")";
+                return Promise.reject(new error_1.GaroonError({
+                    code: code,
+                    diagnosis: diagnosis,
+                    cause: cause,
+                    counterMeasure: counterMeasure
+                }, message));
+            }
             return data['soap:Envelope']['soap:Body'];
         });
     };
@@ -28090,7 +28116,25 @@ var Client = (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Client;
 
-},{"node-fetch":60,"xml":91,"xml2js":94}],255:[function(require,module,exports){
+},{"./error":255,"node-fetch":60,"xml":91,"xml2js":94}],255:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var GaroonError = (function (_super) {
+    __extends(GaroonError, _super);
+    function GaroonError(detail, message) {
+        var _this = _super.call(this, message) || this;
+        _this.detail = detail;
+        return _this;
+    }
+    return GaroonError;
+}(Error));
+exports.GaroonError = GaroonError;
+
+},{}],256:[function(require,module,exports){
 "use strict";
 var Setting = (function () {
     function Setting(baseUrl, username, password, locale, needCsp) {
@@ -28105,7 +28149,7 @@ var Setting = (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Setting;
 
-},{}],256:[function(require,module,exports){
+},{}],257:[function(require,module,exports){
 "use strict";
 var Util = require("../util");
 var ItemVersionResult = (function () {
@@ -28151,7 +28195,7 @@ var User = (function () {
 }());
 exports.User = User;
 
-},{"../util":259}],257:[function(require,module,exports){
+},{"../util":260}],258:[function(require,module,exports){
 "use strict";
 var setting_1 = require("./client/setting");
 var base_1 = require("./client/base");
@@ -28165,12 +28209,12 @@ var GaroonSoap = (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = GaroonSoap;
 
-},{"./client/base":253,"./client/setting":255}],258:[function(require,module,exports){
+},{"./client/base":253,"./client/setting":256}],259:[function(require,module,exports){
 "use strict";
 var garoon_soap_1 = require("./garoon-soap");
 module.exports = garoon_soap_1.default;
 
-},{"./garoon-soap":257}],259:[function(require,module,exports){
+},{"./garoon-soap":258}],260:[function(require,module,exports){
 "use strict";
 var excludes = ['xmlns'];
 function copyProps(src, dst) {
@@ -28182,5 +28226,5 @@ function copyProps(src, dst) {
 }
 exports.copyProps = copyProps;
 
-},{}]},{},[258])(258)
+},{}]},{},[259])(259)
 });

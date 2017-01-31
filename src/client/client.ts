@@ -1,3 +1,4 @@
+import {GaroonError} from "./error";
 import Setting from "./setting";
 import * as xml from "xml";
 import * as xml2js from "xml2js";
@@ -90,8 +91,22 @@ export default class Client {
                     resolve(data);
                 });
             });
-        }).then(data => {
-            return (<SoapResponse>data)['soap:Envelope']['soap:Body'];
+        }).then((data: SoapResponse) => {
+            if (data['soap:Envelope']['soap:Body'][0]['soap:Fault']) {
+                const detail = data['soap:Envelope']['soap:Body'][0]['soap:Fault'][0]['soap:Detail'][0];
+                const code = detail['code'][0];
+                const diagnosis = detail['diagnosis'][0];
+                const cause = detail['cause'][0];
+                const counterMeasure = detail['counter_measure'][0];
+                const message = `SOAP Request Error! (code: ${code}, diagnosis: ${diagnosis}, cause: ${cause}, counter_measure: ${counterMeasure})`;
+                return Promise.reject(new GaroonError({
+                    code: code,
+                    diagnosis: diagnosis,
+                    cause: cause,
+                    counterMeasure: counterMeasure
+                }, message));
+            }
+            return data['soap:Envelope']['soap:Body'];
         });
     }
 
