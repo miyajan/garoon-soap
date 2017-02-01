@@ -2,6 +2,7 @@ import {GaroonError} from "./error";
 import Setting from "./setting";
 import * as xml from "xml";
 import * as xml2js from "xml2js";
+import * as processors from "xml2js/lib/processors";
 import fetch from "node-fetch";
 
 interface Action {
@@ -13,12 +14,12 @@ interface Body {
 }
 
 interface Envelope {
-    'soap:Header': any
-    'soap:Body': Body
+    Header: any
+    Body: Body
 }
 
 interface SoapResponse {
-    'soap:Envelope': Envelope
+    Envelope: Envelope
 }
 
 export default class Client {
@@ -83,7 +84,8 @@ export default class Client {
         }).then(text => {
             return new Promise((resolve, reject) => {
                 xml2js.parseString(text, {
-                    trim: true
+                    trim: true,
+                    tagNameProcessors: [processors.stripPrefix]
                 }, (err, data) => {
                     if (err) {
                         reject(err);
@@ -92,8 +94,8 @@ export default class Client {
                 });
             });
         }).then((data: SoapResponse) => {
-            if (data['soap:Envelope']['soap:Body'][0]['soap:Fault']) {
-                const detail = data['soap:Envelope']['soap:Body'][0]['soap:Fault'][0]['soap:Detail'][0];
+            if (data['Envelope']['Body'][0]['Fault']) {
+                const detail = data['Envelope']['Body'][0]['Fault'][0]['Detail'][0];
                 const code = detail['code'][0];
                 const diagnosis = detail['diagnosis'][0];
                 const cause = detail['cause'][0];
@@ -106,7 +108,7 @@ export default class Client {
                     counterMeasure: counterMeasure
                 }, message));
             }
-            return data['soap:Envelope']['soap:Body'];
+            return data['Envelope']['Body'];
         });
     }
 

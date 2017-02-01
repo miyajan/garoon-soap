@@ -27,6 +27,12 @@
   },
   "homepage": "https://github.com/miyajan/garoon-soap",
   "devDependencies": {
+    "@types/es6-promise": "0.0.32",
+    "@types/mocha": "^2.2.38",
+    "@types/node": "^7.0.4",
+    "@types/node-fetch": "^1.6.7",
+    "@types/xml": "^1.0.0",
+    "@types/xml2js": "0.0.32",
     "browserify": "^13.3.0",
     "mocha": "^3.2.0",
     "power-assert": "^1.4.2",

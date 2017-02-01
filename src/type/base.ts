@@ -61,7 +61,7 @@ export interface CityXMLObject {
 
 export interface RegionXMLObject {
     $: Object
-    'b:city'?: Array<CityXMLObject>
+    city?: Array<CityXMLObject>
 }
 
 export interface CityType {

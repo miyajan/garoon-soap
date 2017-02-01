@@ -60,8 +60,8 @@ export class Region {
         Util.copyProps(attrs, region);
 
         region['cities'] = [];
-        if (Array.isArray(xmlObj['b:city']) && xmlObj['b:city']!.length > 0) {
-            xmlObj['b:city']!.forEach(cityObj => {
+        if (Array.isArray(xmlObj['city']) && xmlObj['city']!.length > 0) {
+            xmlObj['city']!.forEach(cityObj => {
                 const city = {};
                 const attrs = cityObj['$'];
                 Util.copyProps(attrs, city);
