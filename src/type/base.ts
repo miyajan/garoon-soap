@@ -54,3 +54,22 @@ export interface BaseGetCalendarEventType {
     content: string,
     type: string
 }
+
+export interface CityXMLObject {
+    $: Object
+}
+
+export interface RegionXMLObject {
+    $: Object
+    'b:city'?: Array<CityXMLObject>
+}
+
+export interface CityType {
+    name?: string
+    timezone?: string
+}
+
+export interface RegionType {
+    name?: string
+    cities: Array<CityType>
+}

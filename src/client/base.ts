@@ -70,4 +70,14 @@ export default class Base {
             return calendarEvents;
         });
     }
+
+    public getRegionsList(): Promise<Array<base.RegionType>> {
+        return this.client.post(this.path, 'BaseGetRegionsList', []).then(res => {
+            const regions: Array<base.RegionType> = [];
+            res[0]['base:BaseGetRegionsListResponse'][0]['returns'][0]['region'].forEach((obj: base.RegionXMLObject) => {
+                regions.push(BaseConverter.Region.toObject(obj));
+            });
+            return regions;
+        });
+    }
 }

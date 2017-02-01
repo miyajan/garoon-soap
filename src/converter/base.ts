@@ -51,3 +51,24 @@ export class BaseGetCalendarEvent {
         return calendarEvent;
     }
 }
+
+export class Region {
+    static toObject(xmlObj: base.RegionXMLObject): base.RegionType {
+        const region: any = {};
+
+        const attrs: Object = xmlObj['$'];
+        Util.copyProps(attrs, region);
+
+        region['cities'] = [];
+        if (Array.isArray(xmlObj['b:city']) && xmlObj['b:city']!.length > 0) {
+            xmlObj['b:city']!.forEach(cityObj => {
+                const city = {};
+                const attrs = cityObj['$'];
+                Util.copyProps(attrs, city);
+                region['cities'].push(city);
+            });
+        }
+
+        return region;
+    }
+}
