@@ -17,9 +17,9 @@ export default class Base {
         userIds.forEach(userId => {
             parameters.push({'user_id': userId});
         });
-        return this.client.post(this.path, 'BaseGetUsersById', parameters).then(res => {
+        return this.client.post(this.path, 'BaseGetUsersById', parameters).then((res: base.UsersResponse) => {
             const users: Array<base.UserType> = [];
-            res[0]['BaseGetUsersByIdResponse'][0]['returns'][0]['user'].forEach((obj: base.UserXMLObject) => {
+            res['user'].forEach((obj: base.UserXMLObject) => {
                 users.push(BaseConverter.User.toObject(obj));
             });
             return users;
@@ -31,9 +31,9 @@ export default class Base {
         loginNames.forEach(loginName => {
             parameters.push({'login_name': loginName});
         });
-        return this.client.post(this.path, 'BaseGetUsersByLoginName', parameters).then(res => {
+        return this.client.post(this.path, 'BaseGetUsersByLoginName', parameters).then((res: base.UsersResponse) => {
             const users: Array<base.UserType> = [];
-            res[0]['BaseGetUsersByLoginNameResponse'][0]['returns'][0]['user'].forEach((obj: base.UserXMLObject) => {
+            res['user'].forEach(obj => {
                 users.push(BaseConverter.User.toObject(obj));
             });
             return users;
@@ -52,9 +52,9 @@ export default class Base {
                 }
             });
         });
-        return this.client.post(this.path, 'BaseGetUserVersions', parameters).then(res => {
+        return this.client.post(this.path, 'BaseGetUserVersions', parameters).then((res: base.UserItemsResponse) => {
             const userVersions: Array<base.ItemVersionResultType> = [];
-            res[0]['BaseGetUserVersionsResponse'][0]['returns'][0]['user_item'].forEach((obj: base.ItemVersionResultXMLObject) => {
+            res['user_item'].forEach(obj => {
                 userVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
             });
             return userVersions;
@@ -62,9 +62,9 @@ export default class Base {
     }
 
     public getCalendarEvents(): Promise<Array<base.BaseGetCalendarEventType>> {
-        return this.client.post(this.path, 'BaseGetCalendarEvents', []).then(res => {
+        return this.client.post(this.path, 'BaseGetCalendarEvents', []).then((res: base.CalendarEventsResponse) => {
             const calendarEvents: Array<base.BaseGetCalendarEventType> = [];
-            res[0]['BaseGetCalendarEventsResponse'][0]['returns'][0]['calendar_event'].forEach((obj: base.BaseGetCalendarEventXMLObject) => {
+            res['calendar_event'].forEach(obj => {
                 calendarEvents.push(BaseConverter.BaseGetCalendarEvent.toObject(obj));
             });
             return calendarEvents;
@@ -72,9 +72,9 @@ export default class Base {
     }
 
     public getRegionsList(): Promise<Array<base.RegionType>> {
-        return this.client.post(this.path, 'BaseGetRegionsList', []).then(res => {
+        return this.client.post(this.path, 'BaseGetRegionsList', []).then((res: base.RegionsResponse) => {
             const regions: Array<base.RegionType> = [];
-            res[0]['BaseGetRegionsListResponse'][0]['returns'][0]['region'].forEach((obj: base.RegionXMLObject) => {
+            res['region'].forEach(obj => {
                 regions.push(BaseConverter.Region.toObject(obj));
             });
             return regions;

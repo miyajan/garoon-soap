@@ -30,7 +30,7 @@ export default class Client {
         this.setting = setting;
     }
 
-    public post(path: string, action: string, parameters: Array<any>): Promise<Body> {
+    public post(path: string, action: string, parameters: Array<any>): Promise<Object> {
         const actionObject: Action = {};
         actionObject[action] = [{'parameters': parameters}];
         const xmlObject = {
@@ -108,7 +108,7 @@ export default class Client {
                     counterMeasure: counterMeasure
                 }, message));
             }
-            return data['Envelope']['Body'];
+            return data['Envelope']['Body'][0][`${action}Response`][0]['returns'][0];
         });
     }
 

@@ -7,6 +7,10 @@ export interface ItemVersionResultXMLObject {
     $: Object
 }
 
+export interface UserItemsResponse {
+    user_item: Array<ItemVersionResultXMLObject>
+}
+
 export interface ItemVersionResultType {
     id: string,
     version: string,
@@ -25,6 +29,10 @@ export interface UserXMLObject {
     $: Object
     organization?: Array<UserOrganizationXMLObject>
     photo?: Array<UserPhotoXMLObject>
+}
+
+export interface UsersResponse {
+    user: Array<UserXMLObject>
 }
 
 export interface UserType {
@@ -49,6 +57,10 @@ export interface BaseGetCalendarEventXMLObject {
     $: Object
 }
 
+export interface CalendarEventsResponse {
+    calendar_event: Array<BaseGetCalendarEventXMLObject>
+}
+
 export interface BaseGetCalendarEventType {
     date: Date,
     content: string,
@@ -62,6 +74,10 @@ export interface CityXMLObject {
 export interface RegionXMLObject {
     $: Object
     city?: Array<CityXMLObject>
+}
+
+export interface RegionsResponse {
+    region: Array<RegionXMLObject>
 }
 
 export interface CityType {
