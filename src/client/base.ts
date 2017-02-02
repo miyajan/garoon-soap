@@ -80,4 +80,10 @@ export default class Base {
             return regions;
         });
     }
+
+    public getTimezoneVersion(): Promise<string> {
+        return this.client.post(this.path, 'BaseGetTimezoneVersion', []).then((res: base.TimezoneVersionResponse) => {
+            return res['timezone_version'][0];
+        });
+    }
 }

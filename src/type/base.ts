@@ -89,3 +89,7 @@ export interface RegionType {
     name?: string
     cities: Array<CityType>
 }
+
+export interface TimezoneVersionResponse {
+    timezone_version: Array<string>
+}
