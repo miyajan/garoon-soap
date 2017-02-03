@@ -86,4 +86,14 @@ export default class Base {
             return res['timezone_version'][0];
         });
     }
+
+    public getApplicationStatus(): Promise<Array<base.BaseApplicationType>> {
+        return this.client.post(this.path, 'BaseGetApplicationStatus', []).then((res: base.ApplicationStatusResponse) => {
+            const applications: Array<base.BaseApplicationType> = [];
+            res['application'].forEach(obj => {
+                applications.push(BaseConverter.Application.toObject(obj));
+            });
+            return applications;
+        });
+    }
 }

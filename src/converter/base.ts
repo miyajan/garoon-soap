@@ -72,3 +72,14 @@ export class Region {
         return region;
     }
 }
+
+export class Application {
+    static toObject(xmlObj: base.ApplicationXMLObject): base.BaseApplicationType {
+        const application: any = {};
+
+        const attrs: Object = xmlObj['$'];
+        Util.copyProps(attrs, application);
+
+        return application;
+    }
+}

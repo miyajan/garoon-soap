@@ -93,3 +93,16 @@ export interface RegionType {
 export interface TimezoneVersionResponse {
     timezone_version: Array<string>
 }
+
+export interface ApplicationXMLObject {
+    $: Object
+}
+
+export interface ApplicationStatusResponse {
+    application: Array<ApplicationXMLObject>
+}
+
+export interface BaseApplicationType {
+    code: string
+    status: string
+}
