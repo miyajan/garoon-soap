@@ -96,4 +96,14 @@ export default class Base {
             return applications;
         });
     }
+
+    public getApplicationInformation(): Promise<Array<base.BaseApplicationInformationType>> {
+        return this.client.post(this.path, 'BaseGetApplicationInformation', []).then((res: base.ApplicationInformationResponse) => {
+            const applications: Array<base.BaseApplicationInformationType> = [];
+            res['application'].forEach(obj => {
+                applications.push(BaseConverter.ApplicationInformation.toObject(obj));
+            });
+            return applications;
+        });
+    }
 }

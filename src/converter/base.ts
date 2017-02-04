@@ -83,3 +83,23 @@ export class Application {
         return application;
     }
 }
+
+export class ApplicationInformation {
+    static toObject(xmlObj: base.ApplicationInformationXMLObject): base.BaseApplicationInformationType {
+        const application: any = {};
+
+        const attrs: Object = xmlObj['$'];
+        Util.copyProps(attrs, application);
+
+        application['available_client'] = [];
+        if (Array.isArray(xmlObj['available_client']) && xmlObj['available_client']!.length > 0) {
+            xmlObj['available_client']!.forEach(client => {
+                const attrs: any = client['$'];
+                const name = attrs['name'];
+                application['available_client'].push(attrs['name']);
+            });
+        }
+
+        return application;
+    }
+}

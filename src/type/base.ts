@@ -106,3 +106,24 @@ export interface BaseApplicationType {
     code: string
     status: string
 }
+
+export interface AvailableClientXMLObject {
+    $: Object
+}
+
+export interface ApplicationInformationXMLObject {
+    $: Object
+    available_client?: Array<AvailableClientXMLObject>
+}
+
+export interface ApplicationInformationResponse {
+    application: Array<ApplicationInformationXMLObject>
+}
+
+export interface BaseApplicationInformationType {
+    module_id: string
+    name: string
+    url?: string
+    available_feature: string
+    available_client: Array<string>
+}
