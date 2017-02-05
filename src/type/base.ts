@@ -127,3 +127,8 @@ export interface BaseApplicationInformationType {
     available_feature: string
     available_client: Array<string>
 }
+
+export interface BaseManagerApplicationType {
+    code: string
+    active: boolean
+}

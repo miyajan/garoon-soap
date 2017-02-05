@@ -106,4 +106,25 @@ export default class Base {
             return applications;
         });
     }
+
+    public manageApplication(applications: Array<base.BaseManagerApplicationType>): Promise<Array<base.BaseApplicationType>> {
+        const parameters: Array<Object> = [];
+        applications.forEach(application => {
+            parameters.push({
+                'application': {
+                    '_attr': {
+                        code: application.code,
+                        active: application.active
+                    }
+                }
+            })
+        });
+        return this.client.post(this.path, 'BaseManagerApplication', parameters).then((res: base.ApplicationStatusResponse) => {
+            const applications: Array<base.BaseApplicationType> = [];
+            res['application'].forEach(obj => {
+                applications.push(BaseConverter.Application.toObject(obj));
+            });
+            return applications;
+        });
+    }
 }
