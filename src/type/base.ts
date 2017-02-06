@@ -11,6 +11,10 @@ export interface UserItemsResponse {
     user_item: Array<ItemVersionResultXMLObject>
 }
 
+export interface OrgItemsResponse {
+    organization_item: Array<ItemVersionResultXMLObject>
+}
+
 export interface ItemVersionResultType {
     id: string,
     version: string,

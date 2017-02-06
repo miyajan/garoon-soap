@@ -127,4 +127,25 @@ export default class Base {
             return applications;
         });
     }
+
+    public getOrganizationVersions(orgItems: Array<base.ItemVersionType>): Promise<Array<base.ItemVersionResultType>> {
+        const parameters: Array<Object> = [];
+        orgItems.forEach(orgItem => {
+            parameters.push({
+                'organization_item': {
+                    '_attr': {
+                        id: orgItem.id,
+                        version: orgItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'BaseGetOrganizationVersions', parameters).then((res: base.OrgItemsResponse) => {
+            const orgVersions: Array<base.ItemVersionResultType> = [];
+            res['organization_item'].forEach(obj => {
+                orgVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+            });
+            return orgVersions;
+        });
+    }
 }
