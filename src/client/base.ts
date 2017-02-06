@@ -12,13 +12,13 @@ export default class Base {
         this.path = setting.needCsp ? '/cbpapi/base/api.csp' : '/cbpapi/base/api';
     }
 
-    public getUsersById(userIds: number[]): Promise<Array<base.UserType>> {
-        const parameters: Array<Object> = [];
+    public getUsersById(userIds: number[]): Promise<base.UserType[]> {
+        const parameters: Object[] = [];
         userIds.forEach(userId => {
             parameters.push({'user_id': userId});
         });
         return this.client.post(this.path, 'BaseGetUsersById', parameters).then((res: base.UsersResponse) => {
-            const users: Array<base.UserType> = [];
+            const users: base.UserType[] = [];
             res['user'].forEach((obj: base.UserXMLObject) => {
                 users.push(BaseConverter.User.toObject(obj));
             });
@@ -26,13 +26,13 @@ export default class Base {
         });
     }
 
-    public getUsersByLoginName(loginNames: string[]): Promise<Array<base.UserType>> {
-        const parameters: Array<Object> = [];
+    public getUsersByLoginName(loginNames: string[]): Promise<base.UserType[]> {
+        const parameters: Object[] = [];
         loginNames.forEach(loginName => {
             parameters.push({'login_name': loginName});
         });
         return this.client.post(this.path, 'BaseGetUsersByLoginName', parameters).then((res: base.UsersResponse) => {
-            const users: Array<base.UserType> = [];
+            const users: base.UserType[] = [];
             res['user'].forEach(obj => {
                 users.push(BaseConverter.User.toObject(obj));
             });
@@ -40,8 +40,8 @@ export default class Base {
         });
     }
 
-    public getUserVersions(userItems: base.ItemVersionType[]): Promise<Array<base.ItemVersionResultType>> {
-        const parameters: Array<Object> = [];
+    public getUserVersions(userItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
         userItems.forEach(userItem => {
             parameters.push({
                 'user_item': {
@@ -53,7 +53,7 @@ export default class Base {
             });
         });
         return this.client.post(this.path, 'BaseGetUserVersions', parameters).then((res: base.UserItemsResponse) => {
-            const userVersions: Array<base.ItemVersionResultType> = [];
+            const userVersions: base.ItemVersionResultType[] = [];
             res['user_item'].forEach(obj => {
                 userVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
             });
@@ -61,9 +61,9 @@ export default class Base {
         });
     }
 
-    public getCalendarEvents(): Promise<Array<base.BaseGetCalendarEventType>> {
+    public getCalendarEvents(): Promise<base.BaseGetCalendarEventType[]> {
         return this.client.post(this.path, 'BaseGetCalendarEvents', []).then((res: base.CalendarEventsResponse) => {
-            const calendarEvents: Array<base.BaseGetCalendarEventType> = [];
+            const calendarEvents: base.BaseGetCalendarEventType[] = [];
             res['calendar_event'].forEach(obj => {
                 calendarEvents.push(BaseConverter.BaseGetCalendarEvent.toObject(obj));
             });
@@ -71,9 +71,9 @@ export default class Base {
         });
     }
 
-    public getRegionsList(): Promise<Array<base.RegionType>> {
+    public getRegionsList(): Promise<base.RegionType[]> {
         return this.client.post(this.path, 'BaseGetRegionsList', []).then((res: base.RegionsResponse) => {
-            const regions: Array<base.RegionType> = [];
+            const regions: base.RegionType[] = [];
             res['region'].forEach(obj => {
                 regions.push(BaseConverter.Region.toObject(obj));
             });
@@ -87,9 +87,9 @@ export default class Base {
         });
     }
 
-    public getApplicationStatus(): Promise<Array<base.BaseApplicationType>> {
+    public getApplicationStatus(): Promise<base.BaseApplicationType[]> {
         return this.client.post(this.path, 'BaseGetApplicationStatus', []).then((res: base.ApplicationStatusResponse) => {
-            const applications: Array<base.BaseApplicationType> = [];
+            const applications: base.BaseApplicationType[] = [];
             res['application'].forEach(obj => {
                 applications.push(BaseConverter.Application.toObject(obj));
             });
@@ -97,9 +97,9 @@ export default class Base {
         });
     }
 
-    public getApplicationInformation(): Promise<Array<base.BaseApplicationInformationType>> {
+    public getApplicationInformation(): Promise<base.BaseApplicationInformationType[]> {
         return this.client.post(this.path, 'BaseGetApplicationInformation', []).then((res: base.ApplicationInformationResponse) => {
-            const applications: Array<base.BaseApplicationInformationType> = [];
+            const applications: base.BaseApplicationInformationType[] = [];
             res['application'].forEach(obj => {
                 applications.push(BaseConverter.ApplicationInformation.toObject(obj));
             });
@@ -107,8 +107,8 @@ export default class Base {
         });
     }
 
-    public manageApplication(applications: Array<base.BaseManagerApplicationType>): Promise<Array<base.BaseApplicationType>> {
-        const parameters: Array<Object> = [];
+    public manageApplication(applications: base.BaseManagerApplicationType[]): Promise<base.BaseApplicationType[]> {
+        const parameters: Object[] = [];
         applications.forEach(application => {
             parameters.push({
                 'application': {
@@ -120,7 +120,7 @@ export default class Base {
             })
         });
         return this.client.post(this.path, 'BaseManagerApplication', parameters).then((res: base.ApplicationStatusResponse) => {
-            const applications: Array<base.BaseApplicationType> = [];
+            const applications: base.BaseApplicationType[] = [];
             res['application'].forEach(obj => {
                 applications.push(BaseConverter.Application.toObject(obj));
             });
@@ -128,8 +128,8 @@ export default class Base {
         });
     }
 
-    public getOrganizationVersions(orgItems: Array<base.ItemVersionType>): Promise<Array<base.ItemVersionResultType>> {
-        const parameters: Array<Object> = [];
+    public getOrganizationVersions(orgItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
         orgItems.forEach(orgItem => {
             parameters.push({
                 'organization_item': {
@@ -141,7 +141,7 @@ export default class Base {
             });
         });
         return this.client.post(this.path, 'BaseGetOrganizationVersions', parameters).then((res: base.OrgItemsResponse) => {
-            const orgVersions: Array<base.ItemVersionResultType> = [];
+            const orgVersions: base.ItemVersionResultType[] = [];
             res['organization_item'].forEach(obj => {
                 orgVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
             });

@@ -8,11 +8,11 @@ export interface ItemVersionResultXMLObject {
 }
 
 export interface UserItemsResponse {
-    user_item: Array<ItemVersionResultXMLObject>
+    user_item: ItemVersionResultXMLObject[]
 }
 
 export interface OrgItemsResponse {
-    organization_item: Array<ItemVersionResultXMLObject>
+    organization_item: ItemVersionResultXMLObject[]
 }
 
 export interface ItemVersionResultType {
@@ -31,12 +31,12 @@ export interface UserPhotoXMLObject {
 
 export interface UserXMLObject {
     $: Object
-    organization?: Array<UserOrganizationXMLObject>
-    photo?: Array<UserPhotoXMLObject>
+    organization?: UserOrganizationXMLObject[]
+    photo?: UserPhotoXMLObject[]
 }
 
 export interface UsersResponse {
-    user: Array<UserXMLObject>
+    user: UserXMLObject[]
 }
 
 export interface UserType {
@@ -62,7 +62,7 @@ export interface BaseGetCalendarEventXMLObject {
 }
 
 export interface CalendarEventsResponse {
-    calendar_event: Array<BaseGetCalendarEventXMLObject>
+    calendar_event: BaseGetCalendarEventXMLObject[]
 }
 
 export interface BaseGetCalendarEventType {
@@ -77,11 +77,11 @@ export interface CityXMLObject {
 
 export interface RegionXMLObject {
     $: Object
-    city?: Array<CityXMLObject>
+    city?: CityXMLObject[]
 }
 
 export interface RegionsResponse {
-    region: Array<RegionXMLObject>
+    region: RegionXMLObject[]
 }
 
 export interface CityType {
@@ -91,11 +91,11 @@ export interface CityType {
 
 export interface RegionType {
     name?: string
-    cities: Array<CityType>
+    cities: CityType[]
 }
 
 export interface TimezoneVersionResponse {
-    timezone_version: Array<string>
+    timezone_version: string[]
 }
 
 export interface ApplicationXMLObject {
@@ -103,7 +103,7 @@ export interface ApplicationXMLObject {
 }
 
 export interface ApplicationStatusResponse {
-    application: Array<ApplicationXMLObject>
+    application: ApplicationXMLObject[]
 }
 
 export interface BaseApplicationType {
@@ -117,11 +117,11 @@ export interface AvailableClientXMLObject {
 
 export interface ApplicationInformationXMLObject {
     $: Object
-    available_client?: Array<AvailableClientXMLObject>
+    available_client?: AvailableClientXMLObject[]
 }
 
 export interface ApplicationInformationResponse {
-    application: Array<ApplicationInformationXMLObject>
+    application: ApplicationInformationXMLObject[]
 }
 
 export interface BaseApplicationInformationType {
@@ -129,7 +129,7 @@ export interface BaseApplicationInformationType {
     name: string
     url?: string
     available_feature: string
-    available_client: Array<string>
+    available_client: string[]
 }
 
 export interface BaseManagerApplicationType {
