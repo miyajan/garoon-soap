@@ -136,3 +136,32 @@ export interface BaseManagerApplicationType {
     code: string
     active: boolean
 }
+
+export interface OrganizationType {
+    key: string
+    name: string
+    version: string
+    description?: string
+    order?: string
+    parent_organization: string
+    organization: string[]
+    members: string[]
+}
+
+export interface MemberXMLObject {
+    $: Object
+}
+
+export interface MembersXMLObject {
+    user: MemberXMLObject[]
+}
+
+export interface OrganizationXMLObject {
+    $: Object
+    organization?: OrganizationXMLObject[]
+    members?: MembersXMLObject[]
+}
+
+export interface OrganizationsResponse {
+    organization: OrganizationXMLObject[]
+}

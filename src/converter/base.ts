@@ -19,7 +19,7 @@ export class User {
         const attrs: Object = xmlObj['$'];
         Util.copyProps(attrs, user);
 
-        if (Array.isArray(xmlObj['organization']) && xmlObj['organization']!.length > 0) {
+        if (Array.isArray(xmlObj['organization'])) {
             user['organization'] = [];
             xmlObj['organization']!.forEach(orgObj => {
                 const org = {};
@@ -28,7 +28,7 @@ export class User {
                 user['organization'].push(org);
             });
         }
-        if (Array.isArray(xmlObj['photo']) && xmlObj['photo']!.length > 0) {
+        if (Array.isArray(xmlObj['photo'])) {
             user['photo'] = [];
             xmlObj['photo']!.forEach(photoObj => {
                 const photo = {};
@@ -60,7 +60,7 @@ export class Region {
         Util.copyProps(attrs, region);
 
         region['cities'] = [];
-        if (Array.isArray(xmlObj['city']) && xmlObj['city']!.length > 0) {
+        if (Array.isArray(xmlObj['city'])) {
             xmlObj['city']!.forEach(cityObj => {
                 const city = {};
                 const attrs = cityObj['$'];
@@ -92,7 +92,7 @@ export class ApplicationInformation {
         Util.copyProps(attrs, application);
 
         application['available_client'] = [];
-        if (Array.isArray(xmlObj['available_client']) && xmlObj['available_client']!.length > 0) {
+        if (Array.isArray(xmlObj['available_client'])) {
             xmlObj['available_client']!.forEach(client => {
                 const attrs: any = client['$'];
                 const name = attrs['name'];
@@ -101,5 +101,38 @@ export class ApplicationInformation {
         }
 
         return application;
+    }
+}
+
+export class Organization {
+    static toObject(xmlObj: base.OrganizationXMLObject): base.OrganizationType {
+        const org: any = {};
+
+        const attrs: Object = xmlObj['$'];
+        Util.copyProps(attrs, org);
+
+        org['organization'] = [];
+        if (Array.isArray(xmlObj['organization'])) {
+            xmlObj['organization']!.forEach(childOrg => {
+                const attrs: any = childOrg['$'];
+                const childOrgId = attrs['key'];
+                org['organization'].push(childOrgId);
+            });
+        }
+
+        org['members'] = [];
+        if (Array.isArray(xmlObj['members'])) {
+            xmlObj['members']!.forEach(member => {
+                if (Array.isArray(member['user'])) {
+                    member['user'].forEach(user => {
+                        const attrs: any = user['$'];
+                        const userId = attrs['id'];
+                        org['members'].push(userId);
+                    });
+                }
+            });
+        }
+
+        return org;
     }
 }

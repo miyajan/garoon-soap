@@ -12,7 +12,7 @@ export default class Base {
         this.path = setting.needCsp ? '/cbpapi/base/api.csp' : '/cbpapi/base/api';
     }
 
-    public getUsersById(userIds: number[]): Promise<base.UserType[]> {
+    public getUsersById(userIds: string[]): Promise<base.UserType[]> {
         const parameters: Object[] = [];
         userIds.forEach(userId => {
             parameters.push({'user_id': userId});
@@ -146,6 +146,20 @@ export default class Base {
                 orgVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
             });
             return orgVersions;
+        });
+    }
+
+    public getOrganizationsById(orgIds: string[]): Promise<base.OrganizationType[]> {
+        const parameters: Object[] = [];
+        orgIds.forEach(orgId => {
+            parameters.push({'organization_id': orgId})
+        });
+        return this.client.post(this.path, 'BaseGetOrganizationsById', parameters).then((res: base.OrganizationsResponse) => {
+            const orgs: base.OrganizationType[] = [];
+            res['organization'].forEach(org => {
+                orgs.push(BaseConverter.Organization.toObject(org));
+            });
+            return orgs;
         });
     }
 }
