@@ -162,4 +162,25 @@ export default class Base {
             return orgs;
         });
     }
+
+    public getMyGroupVersions(myGroupItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        myGroupItems.forEach(myGroupItem => {
+            parameters.push({
+                'my_group_item': {
+                    '_attr': {
+                        id: myGroupItem.id,
+                        version: myGroupItem.version
+                    }
+                }
+            })
+        });
+        return this.client.post(this.path, 'BaseGetMyGroupVersions', parameters).then((res: base.MyGroupItemsResponse) => {
+            const myGroupVersions: base.ItemVersionResultType[] = [];
+            res['my_group_item'].forEach(obj => {
+                myGroupVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+            });
+            return myGroupVersions;
+        });
+    }
 }

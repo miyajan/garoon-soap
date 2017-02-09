@@ -165,3 +165,7 @@ export interface OrganizationXMLObject {
 export interface OrganizationsResponse {
     organization: OrganizationXMLObject[]
 }
+
+export interface MyGroupItemsResponse {
+    my_group_item: ItemVersionResultXMLObject[]
+}
