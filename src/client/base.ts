@@ -183,4 +183,18 @@ export default class Base {
             return myGroupVersions;
         });
     }
+
+    public getMyGroupsById(groupIds: string[]): Promise<base.MyGroupType[]> {
+        const parameters: Object[] = [];
+        groupIds.forEach(groupId => {
+            parameters.push({'my_group_id': groupId});
+        });
+        return this.client.post(this.path, 'BaseGetMyGroupsById', parameters).then((res: base.MyGroupsResponse) => {
+            const myGroups: base.MyGroupType[] = [];
+            res['my_group'].forEach(myGroup => {
+                myGroups.push(BaseConverter.MyGroup.toObject(myGroup));
+            });
+            return myGroups;
+        });
+    }
 }

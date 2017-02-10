@@ -169,3 +169,31 @@ export interface OrganizationsResponse {
 export interface MyGroupItemsResponse {
     my_group_item: ItemVersionResultXMLObject[]
 }
+
+export interface MyGroupType {
+    key: string
+    name: string
+    version: string
+    description?: string
+    order?: string
+    belong_member: string[]
+    belong_facility: string[]
+}
+
+export interface BelongMemberXMLObject {
+    $: Object
+}
+
+export interface BelongFacilityXMLObject {
+    $: Object
+}
+
+export interface MyGroupXMLObject {
+    $: Object
+    belong_member?: BelongMemberXMLObject[]
+    belong_facility?: BelongFacilityXMLObject[]
+}
+
+export interface MyGroupsResponse {
+    my_group: MyGroupXMLObject[]
+}

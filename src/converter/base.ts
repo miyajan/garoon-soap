@@ -136,3 +136,28 @@ export class Organization {
         return org;
     }
 }
+
+export class MyGroup {
+    static toObject(xmlObj: base.MyGroupXMLObject): base.MyGroupType {
+        const myGroup: any = {};
+
+        const attrs: Object = xmlObj['$'];
+        Util.copyProps(attrs, myGroup);
+
+        myGroup['belong_member'] = [];
+        if (Array.isArray(xmlObj['belong_member'])) {
+            xmlObj['belong_member']!.forEach(member => {
+                myGroup['belong_member'].push(member);
+            });
+        }
+
+        myGroup['belong_facility'] = [];
+        if (Array.isArray(xmlObj['belong_facility'])) {
+            xmlObj['belong_facility']!.forEach(facility => {
+                myGroup['belong_facility'].push(facility);
+            });
+        }
+
+        return myGroup;
+    }
+}
