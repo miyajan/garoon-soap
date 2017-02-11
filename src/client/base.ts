@@ -197,4 +197,14 @@ export default class Base {
             return myGroups;
         });
     }
+
+    public getFrequentUsers(): Promise<string[]> {
+        return this.client.post(this.path, 'BaseGetFrequentUsers', []).then((res: base.UserIdsResponse) => {
+            const userIds: string[] = [];
+            res['user_id'].forEach(userId => {
+                userIds.push(userId);
+            });
+            return userIds;
+        });
+    }
 }

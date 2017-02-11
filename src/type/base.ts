@@ -197,3 +197,7 @@ export interface MyGroupXMLObject {
 export interface MyGroupsResponse {
     my_group: MyGroupXMLObject[]
 }
+
+export interface UserIdsResponse {
+    user_id: string[]
+}
