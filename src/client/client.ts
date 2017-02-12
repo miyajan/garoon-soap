@@ -30,7 +30,7 @@ export default class Client {
         this.setting = setting;
     }
 
-    public post(path: string, action: string, parameters: any[]): Promise<Object> {
+    public post(path: string, action: string, parameters: any): Promise<Object> {
         const actionObject: Action = {};
         actionObject[action] = [{'parameters': parameters}];
         const xmlObject = {

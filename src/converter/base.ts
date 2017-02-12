@@ -161,3 +161,10 @@ export class MyGroup {
         return myGroup;
     }
 }
+
+export class File {
+    static toBuffer(xmlObj: base.FileXMLObject): Buffer {
+        const content = xmlObj['content']![0];
+        return Buffer.from(content, 'base64');
+    }
+}

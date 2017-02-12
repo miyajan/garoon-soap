@@ -207,4 +207,15 @@ export default class Base {
             return userIds;
         });
     }
+
+    public downloadFile(fileId: string): Promise<Buffer> {
+        const parameters = {
+            '_attr': {
+                file_id: fileId
+            }
+        };
+        return this.client.post(this.path, 'BaseFileDownload', parameters).then((res: base.FileResponse) => {
+            return BaseConverter.File.toBuffer(res['file'][0]);
+        });
+    }
 }

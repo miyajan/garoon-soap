@@ -201,3 +201,11 @@ export interface MyGroupsResponse {
 export interface UserIdsResponse {
     user_id: string[]
 }
+
+export interface FileXMLObject {
+    content?: string[]
+}
+
+export interface FileResponse {
+    file: FileXMLObject[]
+}
