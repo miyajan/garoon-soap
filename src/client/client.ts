@@ -108,7 +108,8 @@ export default class Client {
                     counterMeasure: counterMeasure
                 }, message));
             }
-            return data['Envelope']['Body'][0][`${action}Response`][0]['returns'][0];
+            const responseParam = action.substr(0, 5) === 'Admin' ? `${action.substr(5)}Response` : `${action}Response`;
+            return data['Envelope']['Body'][0][responseParam][0]['returns'][0];
         });
     }
 
