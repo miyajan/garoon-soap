@@ -1,6 +1,6 @@
 import Client from "./client";
 import Setting from "./setting";
-import * as BaseConverter from "../converter/base";
+import * as Converter from "../converter/base";
 import * as base from "../type/base";
 
 export default class Base {
@@ -20,7 +20,7 @@ export default class Base {
         return this.client.post(this.path, 'BaseGetUsersById', parameters).then((res: base.UsersResponse) => {
             const users: base.UserType[] = [];
             res['user'].forEach((obj: base.UserXMLObject) => {
-                users.push(BaseConverter.User.toObject(obj));
+                users.push(Converter.User.toObject(obj));
             });
             return users;
         });
@@ -34,7 +34,7 @@ export default class Base {
         return this.client.post(this.path, 'BaseGetUsersByLoginName', parameters).then((res: base.UsersResponse) => {
             const users: base.UserType[] = [];
             res['user'].forEach(obj => {
-                users.push(BaseConverter.User.toObject(obj));
+                users.push(Converter.User.toObject(obj));
             });
             return users;
         });
@@ -55,7 +55,7 @@ export default class Base {
         return this.client.post(this.path, 'BaseGetUserVersions', parameters).then((res: base.UserItemsResponse) => {
             const userVersions: base.ItemVersionResultType[] = [];
             res['user_item'].forEach(obj => {
-                userVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                userVersions.push(Converter.ItemVersionResult.toObject(obj));
             });
             return userVersions;
         });
@@ -65,7 +65,7 @@ export default class Base {
         return this.client.post(this.path, 'BaseGetCalendarEvents', []).then((res: base.CalendarEventsResponse) => {
             const calendarEvents: base.BaseGetCalendarEventType[] = [];
             res['calendar_event'].forEach(obj => {
-                calendarEvents.push(BaseConverter.BaseGetCalendarEvent.toObject(obj));
+                calendarEvents.push(Converter.BaseGetCalendarEvent.toObject(obj));
             });
             return calendarEvents;
         });
@@ -75,7 +75,7 @@ export default class Base {
         return this.client.post(this.path, 'BaseGetRegionsList', []).then((res: base.RegionsResponse) => {
             const regions: base.RegionType[] = [];
             res['region'].forEach(obj => {
-                regions.push(BaseConverter.Region.toObject(obj));
+                regions.push(Converter.Region.toObject(obj));
             });
             return regions;
         });
@@ -91,7 +91,7 @@ export default class Base {
         return this.client.post(this.path, 'BaseGetApplicationStatus', []).then((res: base.ApplicationStatusResponse) => {
             const applications: base.BaseApplicationType[] = [];
             res['application'].forEach(obj => {
-                applications.push(BaseConverter.Application.toObject(obj));
+                applications.push(Converter.Application.toObject(obj));
             });
             return applications;
         });
@@ -101,7 +101,7 @@ export default class Base {
         return this.client.post(this.path, 'BaseGetApplicationInformation', []).then((res: base.ApplicationInformationResponse) => {
             const applications: base.BaseApplicationInformationType[] = [];
             res['application'].forEach(obj => {
-                applications.push(BaseConverter.ApplicationInformation.toObject(obj));
+                applications.push(Converter.ApplicationInformation.toObject(obj));
             });
             return applications;
         });
@@ -122,7 +122,7 @@ export default class Base {
         return this.client.post(this.path, 'BaseManagerApplication', parameters).then((res: base.ApplicationStatusResponse) => {
             const applications: base.BaseApplicationType[] = [];
             res['application'].forEach(obj => {
-                applications.push(BaseConverter.Application.toObject(obj));
+                applications.push(Converter.Application.toObject(obj));
             });
             return applications;
         });
@@ -143,7 +143,7 @@ export default class Base {
         return this.client.post(this.path, 'BaseGetOrganizationVersions', parameters).then((res: base.OrgItemsResponse) => {
             const orgVersions: base.ItemVersionResultType[] = [];
             res['organization_item'].forEach(obj => {
-                orgVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                orgVersions.push(Converter.ItemVersionResult.toObject(obj));
             });
             return orgVersions;
         });
@@ -157,7 +157,7 @@ export default class Base {
         return this.client.post(this.path, 'BaseGetOrganizationsById', parameters).then((res: base.OrganizationsResponse) => {
             const orgs: base.OrganizationType[] = [];
             res['organization'].forEach(org => {
-                orgs.push(BaseConverter.Organization.toObject(org));
+                orgs.push(Converter.Organization.toObject(org));
             });
             return orgs;
         });
@@ -178,7 +178,7 @@ export default class Base {
         return this.client.post(this.path, 'BaseGetMyGroupVersions', parameters).then((res: base.MyGroupItemsResponse) => {
             const myGroupVersions: base.ItemVersionResultType[] = [];
             res['my_group_item'].forEach(obj => {
-                myGroupVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                myGroupVersions.push(Converter.ItemVersionResult.toObject(obj));
             });
             return myGroupVersions;
         });
@@ -192,7 +192,7 @@ export default class Base {
         return this.client.post(this.path, 'BaseGetMyGroupsById', parameters).then((res: base.MyGroupsResponse) => {
             const myGroups: base.MyGroupType[] = [];
             res['my_group'].forEach(myGroup => {
-                myGroups.push(BaseConverter.MyGroup.toObject(myGroup));
+                myGroups.push(Converter.MyGroup.toObject(myGroup));
             });
             return myGroups;
         });
@@ -215,7 +215,7 @@ export default class Base {
             }
         };
         return this.client.post(this.path, 'BaseFileDownload', parameters).then((res: base.FileResponse) => {
-            return BaseConverter.File.toBuffer(res['file'][0]);
+            return Converter.File.toBuffer(res['file'][0]);
         });
     }
 }
