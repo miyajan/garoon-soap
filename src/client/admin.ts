@@ -1,5 +1,6 @@
 import Client from "./client";
 import Setting from "./setting";
+import * as AdminConverter from "../converter/admin";
 import * as admin from "../type/admin";
 
 export default class Admin {
@@ -27,6 +28,20 @@ export default class Admin {
                 });
             }
             return userIds;
+        });
+    }
+
+    public getUserDetailByIds(userIds: string[]): Promise<admin.UserDetail[]> {
+        const parameters: Object[] = [];
+        userIds.forEach(userId => {
+            parameters.push({'userId': userId});
+        });
+        return this.client.post(this.path, 'AdminGetUserDetailByIds', parameters).then((res: admin.UserDetailsResponse) => {
+            const userDetails: admin.UserDetail[] = [];
+            res.userDetail.forEach(userDetail => {
+                userDetails.push(AdminConverter.UserDetail.toObject(userDetail));
+            });
+            return userDetails;
         });
     }
 }
