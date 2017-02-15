@@ -44,4 +44,10 @@ export default class Admin {
             return userDetails;
         });
     }
+
+    public countUsers(): Promise<number> {
+        return this.client.post(this.path, 'AdminCountUsers', []).then((res: any) => {
+            return Number(res.number_users[0]);
+        });
+    }
 }
