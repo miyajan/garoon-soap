@@ -59,4 +59,23 @@ export default class Admin {
             return Number(res.number_users[0]);
         });
     }
+
+    public getUserIdsInOrg(orgId: string, offset?: number, limit?: number): Promise<string[]> {
+        const parameters: Object[] = [{'orgId': orgId}];
+        if (offset) {
+            parameters.push({'offset': offset});
+        }
+        if (limit) {
+            parameters.push({'limit': limit});
+        }
+        return this.client.post(this.path, 'AdminGetUserIdsInOrg', parameters).then((res: admin.UserIdsResponse) => {
+            const userIds: string[] = [];
+            if (Array.isArray(res['userId'])) {
+                res['userId']!.forEach((userId: string) => {
+                    userIds.push(userId);
+                });
+            }
+            return userIds;
+        });
+    }
 }
