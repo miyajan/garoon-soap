@@ -50,4 +50,13 @@ export default class Admin {
             return Number(res.number_users[0]);
         });
     }
+
+    public countUsersInOrg(orgId: string): Promise<number> {
+        const parameters = [
+            {'orgId': orgId}
+        ];
+        return this.client.post(this.path, 'AdminCountUsersInOrg', parameters).then((res: any) => {
+            return Number(res.number_users[0]);
+        });
+    }
 }
