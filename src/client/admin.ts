@@ -84,4 +84,23 @@ export default class Admin {
             return Number(res.number_users[0]);
         });
     }
+
+    public getNoGroupUserIds(offset?: number, limit?: number): Promise<string[]> {
+        const parameters: Object[] = [];
+        if (offset) {
+            parameters.push({'offset': offset});
+        }
+        if (limit) {
+            parameters.push({'limit': limit});
+        }
+        return this.client.post(this.path, 'AdminGetNoGroupUserIds', parameters).then((res: admin.UserIdsResponse) => {
+            const userIds: string[] = [];
+            if (Array.isArray(res['userId'])) {
+                res['userId']!.forEach((userId: string) => {
+                    userIds.push(userId);
+                });
+            }
+            return userIds;
+        });
+    }
 }
