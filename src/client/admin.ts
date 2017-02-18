@@ -78,4 +78,10 @@ export default class Admin {
             return userIds;
         });
     }
+
+    public countNoGroupUsers(): Promise<number> {
+        return this.client.post(this.path, 'AdminCountNoGroupUsers', []).then((res: any) => {
+            return Number(res.number_users[0]);
+        });
+    }
 }
