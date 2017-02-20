@@ -103,4 +103,11 @@ export default class Admin {
             return userIds;
         });
     }
+
+    public countOrgsOfUser(userId: string): Promise<number> {
+        const parameters: Object[] = [{'userId': userId}];
+        return this.client.post(this.path, 'AdminCountOrgsOfUser', parameters).then((res: any) => {
+            return Number(res.number_orgs[0]);
+        });
+    }
 }
