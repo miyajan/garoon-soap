@@ -110,4 +110,17 @@ export default class Admin {
             return Number(res.number_orgs[0]);
         });
     }
+
+    public getOrgIdsOfUser(userId: string): Promise<string[]> {
+        const parameters: Object[] = [{'userId': userId}];
+        return this.client.post(this.path, 'AdminGetOrgIdsOfUser', parameters).then((res: any) => {
+            const orgIds: string[] = [];
+            if (Array.isArray(res['orgId'])) {
+                res['orgId'].forEach((orgId: string) => {
+                    orgIds.push(orgId);
+                });
+            }
+            return orgIds;
+        });
+    }
 }
