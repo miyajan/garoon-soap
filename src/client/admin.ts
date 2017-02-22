@@ -123,4 +123,11 @@ export default class Admin {
             return orgIds;
         });
     }
+
+    public getUserIdByLoginName(loginName: string): Promise<number> {
+        const parameters: Object[] = [{'login_name': loginName}];
+        return this.client.post(this.path, 'AdminGetUserIdByLoginName', parameters).then((res: any) => {
+            return res['userId'][0];
+        });
+    }
 }
