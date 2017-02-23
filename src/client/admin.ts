@@ -130,4 +130,10 @@ export default class Admin {
             return res['userId'][0];
         });
     }
+
+    public countOrgs(): Promise<number> {
+        return this.client.post(this.path, 'AdminCountOrgs', []).then((res: any) => {
+            return Number(res['number_orgs'][0]);
+        });
+    }
 }
