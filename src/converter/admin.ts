@@ -9,3 +9,13 @@ export class UserDetail {
         };
     }
 }
+
+export class OrgDetail {
+    static toObject(xmlObj: admin.OrgDetailXMLObject): admin.OrgDetail {
+        return {
+            orgId: xmlObj.orgId[0],
+            code: xmlObj.org_code[0],
+            name: xmlObj.org_name[0]
+        }
+    }
+}

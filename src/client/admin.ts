@@ -155,4 +155,20 @@ export default class Admin {
             return orgIds;
         });
     }
+
+    public getOrgDetailByIds(orgIds: string[]): Promise<admin.OrgDetail[]> {
+        const parameters: Object[] = [];
+        orgIds.forEach(orgId => {
+            parameters.push({'orgId': orgId});
+        });
+        return this.client.post(this.path, 'AdminGetOrgDetailByIds', parameters).then((res: admin.OrgDetailsResponse) => {
+            const orgDetails: admin.OrgDetail[] = [];
+            if (Array.isArray(res['OrgDetail'])) {
+                res['OrgDetail'].forEach(orgDetail => {
+                    orgDetails.push(AdminConverter.OrgDetail.toObject(orgDetail));
+                });
+            }
+            return orgDetails;
+        });
+    }
 }

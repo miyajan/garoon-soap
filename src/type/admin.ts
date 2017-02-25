@@ -17,3 +17,19 @@ export interface UserDetailXMLObject {
 export interface UserDetailsResponse {
     userDetail: UserDetailXMLObject[]
 }
+
+export interface OrgDetail {
+    orgId: string
+    code: string
+    name: string
+}
+
+export interface OrgDetailXMLObject {
+    orgId: string[]
+    org_code: string[]
+    org_name: string[]
+}
+
+export interface OrgDetailsResponse {
+    OrgDetail: OrgDetailXMLObject[]
+}
