@@ -171,4 +171,11 @@ export default class Admin {
             return orgDetails;
         });
     }
+
+    public countChildOrgs(orgId: string): Promise<number> {
+        const parameters: Object[] = [{'parent_orgId': orgId}];
+        return this.client.post(this.path, 'AdminCountChildOrgs', parameters).then((res: any) => {
+            return Number(res['number_child_orgs'][0]);
+        });
+    }
 }
