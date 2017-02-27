@@ -178,4 +178,23 @@ export default class Admin {
             return Number(res['number_child_orgs'][0]);
         });
     }
+
+    public getChildOrgs(orgId: string, offset?: number, limit?: number): Promise<string[]> {
+        const parameters: Object[] = [{'parent_orgId': orgId}];
+        if (offset) {
+            parameters.push({'offset': offset});
+        }
+        if (limit) {
+            parameters.push({'limit': limit});
+        }
+        return this.client.post(this.path, 'AdminGetChildOrgs', parameters).then((res: any) => {
+            const orgIds: string[] = [];
+            if (Array.isArray(res['orgId'])) {
+                res['orgId'].forEach((orgId: string) => {
+                    orgIds.push(orgId);
+                });
+            }
+            return orgIds;
+        });
+    }
 }
