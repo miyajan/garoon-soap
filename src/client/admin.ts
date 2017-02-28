@@ -197,4 +197,11 @@ export default class Admin {
             return orgIds;
         });
     }
+
+    public getParentOrgId(orgId: string): Promise<string> {
+        const parameters: Object[] = [{'child_orgId': orgId}];
+        return this.client.post(this.path, 'AdminGetParentOrgId', parameters).then((res: any) => {
+            return res['parent_orgId'][0];
+        });
+    }
 }
