@@ -204,4 +204,11 @@ export default class Admin {
             return res['parent_orgId'][0];
         });
     }
+
+    public getOrgIdByOrgCode(orgCode: string): Promise<string> {
+        const parameters: Object[] = [{'org_code': orgCode}];
+        return this.client.post(this.path, 'AdminGetOrgIdByOrgCode', parameters).then((res: any) => {
+            return res['orgId'][0];
+        });
+    }
 }
