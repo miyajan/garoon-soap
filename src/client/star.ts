@@ -1,5 +1,8 @@
 import Client from "./client";
 import Setting from "./setting";
+import * as Converter from "../converter/base";
+import * as base from "./../type/base";
+import * as star from "./../type/star";
 
 export default class Admin {
     private client: Client;
@@ -13,6 +16,27 @@ export default class Admin {
     public getProfiles(): Promise<number> {
         return this.client.post(this.path, 'StarGetProfiles', []).then((res: any) => {
             return Number(res['$']['star_num_allow']);
+        });
+    }
+
+    public getStarVersions(starItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        starItems.forEach(starItem => {
+            parameters.push({
+                'star_item': {
+                    '_attr': {
+                        id: starItem.id,
+                        version: starItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'StarGetStarVersions', parameters).then((res: star.StarItemsResponse) => {
+            const starVersions: base.ItemVersionResultType[] = [];
+            res['star_item'].forEach(obj => {
+                starVersions.push(Converter.ItemVersionResult.toObject(obj));
+            });
+            return starVersions;
         });
     }
 }
