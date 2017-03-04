@@ -1,6 +1,7 @@
 import Client from "./client";
 import Setting from "./setting";
-import * as Converter from "../converter/base";
+import * as BaseConverter from "../converter/base";
+import * as StarConverter from "../converter/star";
 import * as base from "./../type/base";
 import * as star from "./../type/star";
 
@@ -34,9 +35,25 @@ export default class Admin {
         return this.client.post(this.path, 'StarGetStarVersions', parameters).then((res: star.StarItemsResponse) => {
             const starVersions: base.ItemVersionResultType[] = [];
             res['star_item'].forEach(obj => {
-                starVersions.push(Converter.ItemVersionResult.toObject(obj));
+                starVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
             });
             return starVersions;
+        });
+    }
+
+    getStarsById(starIds: string[]): Promise<star.StarDataType[]> {
+        const parameters: Object[] = [];
+        starIds.forEach(starId => {
+            parameters.push({'star_id': starId});
+        });
+        return this.client.post(this.path, 'StarGetStarsById', parameters).then((res: star.StarDataResponse) => {
+            const starData: star.StarDataType[] = [];
+            if (Array.isArray(res.star_data)) {
+                res.star_data.forEach(obj => {
+                    starData.push(StarConverter.StarData.toObject(obj));
+                });
+            }
+            return starData;
         });
     }
 }
