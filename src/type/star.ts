@@ -19,3 +19,10 @@ export interface StarDataXMLObject {
 export interface StarDataResponse {
     star_data: StarDataXMLObject[]
 }
+
+export interface StarItem {
+    moduleId: string
+    item: string
+    date?: Date
+    isDraft?: boolean
+}

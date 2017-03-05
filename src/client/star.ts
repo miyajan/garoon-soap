@@ -4,6 +4,7 @@ import * as BaseConverter from "../converter/base";
 import * as StarConverter from "../converter/star";
 import * as base from "./../type/base";
 import * as star from "./../type/star";
+import * as Util from "./../util";
 
 export default class Admin {
     private client: Client;
@@ -41,12 +42,42 @@ export default class Admin {
         });
     }
 
-    getStarsById(starIds: string[]): Promise<star.StarDataType[]> {
+    public getStarsById(starIds: string[]): Promise<star.StarDataType[]> {
         const parameters: Object[] = [];
         starIds.forEach(starId => {
             parameters.push({'star_id': starId});
         });
         return this.client.post(this.path, 'StarGetStarsById', parameters).then((res: star.StarDataResponse) => {
+            const starData: star.StarDataType[] = [];
+            if (Array.isArray(res.star_data)) {
+                res.star_data.forEach(obj => {
+                    starData.push(StarConverter.StarData.toObject(obj));
+                });
+            }
+            return starData;
+        });
+    }
+
+    public addStars(starItems: star.StarItem[]): Promise<star.StarDataType[]> {
+        const parameters: Object[] = [];
+        starItems.forEach(starItem => {
+            const attr: any = {
+                module_id: starItem.moduleId,
+                item: starItem.item
+            };
+            if (starItem.date instanceof Date) {
+                attr.date = Util.formatDate(starItem.date);
+            }
+            if (starItem.hasOwnProperty('isDraft')) {
+                attr.is_draft = String(starItem.isDraft);
+            }
+            parameters.push({
+                'star_item': {
+                    '_attr': attr
+                }
+            })
+        });
+        return this.client.post(this.path, 'StarAddStars', parameters).then((res: star.StarDataResponse) => {
             const starData: star.StarDataType[] = [];
             if (Array.isArray(res.star_data)) {
                 res.star_data.forEach(obj => {
