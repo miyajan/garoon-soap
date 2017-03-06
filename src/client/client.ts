@@ -30,7 +30,7 @@ export default class Client {
         this.setting = setting;
     }
 
-    public post(path: string, action: string, parameters: any): Promise<Object> {
+    public post(path: string, action: string, parameters: any): Promise<Object|void> {
         const actionObject: Action = {};
         actionObject[action] = [{'parameters': parameters}];
         const xmlObject = {
@@ -109,7 +109,10 @@ export default class Client {
                 }, message));
             }
             const responseParam = action.substr(0, 5) === 'Admin' ? `${action.substr(5)}Response` : `${action}Response`;
-            return data['Envelope']['Body'][0][responseParam][0]['returns'][0];
+            if (Array.isArray(data['Envelope']['Body'][0][responseParam])) {
+                return data['Envelope']['Body'][0][responseParam][0]['returns'][0];
+            }
+            // no response
         });
     }
 

@@ -87,4 +87,26 @@ export default class Admin {
             return starData;
         });
     }
+
+    public removeStars(starItems: star.StarItem[]): Promise<void> {
+        const parameters: Object[] = [];
+        starItems.forEach(starItem => {
+            const attr: any = {
+                module_id: starItem.moduleId,
+                item: starItem.item
+            };
+            if (starItem.date instanceof Date) {
+                attr.date = Util.formatDate(starItem.date);
+            }
+            if (starItem.hasOwnProperty('isDraft')) {
+                attr.is_draft = String(starItem.isDraft);
+            }
+            parameters.push({
+                'star_item': {
+                    '_attr': attr
+                }
+            })
+        });
+        return this.client.post(this.path, 'StarRemoveStars', parameters).then(() => {});
+    }
 }
