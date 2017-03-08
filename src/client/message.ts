@@ -1,6 +1,7 @@
 import Client from "./client";
 import Setting from "./setting";
 import * as BaseConverter from "../converter/base";
+import * as MessageConverter from "../converter/message";
 import * as base from "./../type/base";
 import * as message from "./../type/message";
 import * as Util from "./../util";
@@ -36,10 +37,28 @@ export default class Admin {
         parameters.push({'_attr': attr});
         return this.client.post(this.path, 'MessageGetThreadVersions', parameters).then((res: message.ThreadItemsResponse) => {
             const threadVersions: base.ItemVersionResultType[] = [];
-            res['thread_item'].forEach(obj => {
-                threadVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
-            });
+            if (Array.isArray(res['thread_item'])) {
+                res['thread_item']!.forEach(obj => {
+                    threadVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
             return threadVersions;
+        });
+    }
+
+    public getThreadsById(threadIds: string[]): Promise<message.ThreadType[]> {
+        const parameters: Object[] = [];
+        threadIds.forEach(threadId => {
+            parameters.push({'thread_id': threadId});
+        });
+        return this.client.post(this.path, 'MessageGetThreadsById', parameters).then((res: message.ThreadsResponse) => {
+            const threads: message.ThreadType[] = [];
+            if (Array.isArray(res.thread)) {
+                res.thread!.forEach(obj => {
+                    threads.push(MessageConverter.Thread.toObject(obj));
+                });
+            }
+            return threads;
         });
     }
 }

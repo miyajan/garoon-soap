@@ -168,3 +168,14 @@ export class File {
         return Buffer.from(content, 'base64');
     }
 }
+
+export class ChangeLog {
+    static toObject(xmlObj: base.ChangeLogXMLObject): base.ChangeLogType {
+        const attrs = xmlObj['$'];
+        return {
+            userId: attrs.user_id,
+            name: attrs.name,
+            date: Util.toDate(attrs.date)
+        }
+    }
+}

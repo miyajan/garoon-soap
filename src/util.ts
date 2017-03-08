@@ -31,3 +31,11 @@ export function formatDateTime(date: Date): string {
     const ss = second < 10 ? '0' + second : '' + second;
     return `${YY}-${MM}-${DD}T${hh}:${mm}:${ss}Z`;
 }
+
+export function toBoolean(str: string): boolean {
+    return str === 'true';
+}
+
+export function toDate(str: string): Date {
+    return new Date(str);
+}

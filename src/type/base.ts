@@ -209,3 +209,13 @@ export interface FileXMLObject {
 export interface FileResponse {
     file: FileXMLObject[]
 }
+
+export interface ChangeLogType {
+    userId: string
+    name: string
+    date: Date
+}
+
+export interface ChangeLogXMLObject {
+    $: any
+}
