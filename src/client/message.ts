@@ -61,4 +61,35 @@ export default class Admin {
             return threads;
         });
     }
+
+    public searchThreads(option: message.SearchOption): Promise<message.ThreadType[]> {
+        const attr: any = {
+            text: option.text,
+            start: Util.formatDateTime(option.start),
+            title_search: option.titleSearch.toString(),
+            body_search: option.bodySearch.toString(),
+            from_search: option.fromSearch.toString(),
+            addressee_search: option.addresseeSearch.toString(),
+            follow_search: option.followSearch.toString()
+        };
+        if (option.end instanceof Date) {
+            attr.end = Util.formatDateTime(option.end);
+        }
+        if (option.hasOwnProperty('folderId')) {
+            attr.folder_id = option.folderId;
+        }
+        if (option.hasOwnProperty('searchSubFolders')) {
+            attr.search_sub_folders = option.searchSubFolders;
+        }
+        const parameters: Object[] = [{'_attr': attr}];
+        return this.client.post(this.path, 'MessageSearchThreads', parameters).then((res: message.ThreadsResponse) => {
+            const threads: message.ThreadType[] = [];
+            if (Array.isArray(res.thread)) {
+                res.thread!.forEach(obj => {
+                    threads.push(MessageConverter.Thread.toObject(obj));
+                })
+            }
+            return threads;
+        });
+    }
 }

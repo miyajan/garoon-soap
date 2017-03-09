@@ -78,3 +78,16 @@ export interface ThreadXMLObject {
 export interface ThreadsResponse {
     thread?: ThreadXMLObject[]
 }
+
+export interface SearchOption {
+    text: string
+    start: Date
+    end?: Date
+    folderId?: string
+    searchSubFolders?: boolean
+    titleSearch: boolean
+    bodySearch: boolean
+    fromSearch: boolean
+    addresseeSearch: boolean
+    followSearch: boolean
+}
