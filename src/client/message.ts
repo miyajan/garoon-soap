@@ -92,4 +92,20 @@ export default class Admin {
             return threads;
         });
     }
+
+    public confirmThreads(threadIds: string[]): Promise<message.ThreadType[]> {
+        const parameters: Object[] = [];
+        threadIds.forEach(threadId => {
+            parameters.push({'thread_id': threadId});
+        });
+        return this.client.post(this.path, 'MessageConfirmThreads', parameters).then((res: message.ThreadsResponse) => {
+            const threads: message.ThreadType[] = [];
+            if (Array.isArray(res.thread)) {
+                res.thread!.forEach(obj => {
+                    threads.push(MessageConverter.Thread.toObject(obj));
+                })
+            }
+            return threads;
+        });
+    }
 }
