@@ -119,4 +119,68 @@ export default class Admin {
             return BaseConverter.File.toBuffer(res['file'][0]);
         });
     }
+
+    public createThreads(threads: message.CreateThreadType[]): Promise<message.ThreadType[]> {
+        const parameters: Object[] = [];
+        threads.forEach(thread => {
+            const createThread: any = [];
+            const threadObj: any = [];
+            const attrObj: any = {
+                '_attr': {
+                    'id': 'dummy',
+                    'version': 'dummy',
+                    'subject': thread.subject,
+                    'confirm': thread.confirm.toString()
+                }
+            };
+            if (thread.hasOwnProperty('isDraft')) {
+                attrObj['is_draft'] = thread.isDraft!.toString();
+            }
+            threadObj.push(attrObj);
+
+            thread.addressees.forEach(addressee => {
+                const addresseeAttrObj: any = {
+                    user_id: addressee.userId,
+                    name: 'dummy',
+                    deleted: 'false'
+                };
+                if (addressee.hasOwnProperty('confirmed')) {
+                    addresseeAttrObj.confirmed = addressee.confirmed;
+                }
+                threadObj.push({'addressee': [{
+                    '_attr': addresseeAttrObj
+                }]});
+            });
+
+            const contentAttrObj: any = {
+                'body': thread.content.body
+            };
+            if (thread.content.hasOwnProperty('htmlBody')) {
+                contentAttrObj['html_body'] = thread.content.htmlBody;
+            }
+            threadObj.push({'content': [{
+                '_attr': contentAttrObj
+            }]});
+
+            if (Array.isArray(thread.files)) {
+                thread.files.forEach(file => {
+                    const fileObj: any = [{'content': file.content.toString('base64')}];
+                    threadObj.push({'file': fileObj});
+                });
+            }
+
+            createThread.push({'thread': threadObj});
+
+            parameters.push({'create_thread': createThread});
+        });
+        return this.client.post(this.path, 'MessageCreateThreads', parameters).then((res: message.ThreadsResponse) => {
+            const threads: message.ThreadType[] = [];
+            if (Array.isArray(res.thread)) {
+                res.thread!.forEach(obj => {
+                    threads.push(MessageConverter.Thread.toObject(obj));
+                });
+            }
+            return threads;
+        });
+    }
 }

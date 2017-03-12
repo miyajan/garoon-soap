@@ -8,7 +8,7 @@ export interface Addressee {
     userId?: string
     name: string
     deleted: boolean
-    confirmed: boolean
+    confirmed?: boolean
 }
 
 export interface File {
@@ -90,4 +90,27 @@ export interface SearchOption {
     fromSearch: boolean
     addresseeSearch: boolean
     followSearch: boolean
+}
+
+export interface CreateFile {
+    content: Buffer
+}
+
+export interface CreateAddressee {
+    userId: string
+    confirmed?: boolean
+}
+
+export interface CreateContent {
+    body: string
+    htmlBody?: string
+}
+
+export interface CreateThreadType {
+    addressees: CreateAddressee[]
+    content: CreateContent
+    subject: string
+    confirm: boolean
+    isDraft?: boolean
+    files?: CreateFile[]
 }
