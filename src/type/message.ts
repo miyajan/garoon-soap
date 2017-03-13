@@ -96,21 +96,35 @@ export interface CreateFile {
     content: Buffer
 }
 
-export interface CreateAddressee {
-    userId: string
-    confirmed?: boolean
-}
-
 export interface CreateContent {
     body: string
     htmlBody?: string
 }
 
 export interface CreateThreadType {
-    addressees: CreateAddressee[]
+    addressees: string[]
     content: CreateContent
     subject: string
     confirm: boolean
     isDraft?: boolean
     files?: CreateFile[]
+}
+
+export interface ModifyContent {
+    body: string
+    htmlBody?: string
+}
+
+export interface ModifyFile {
+    content: Buffer
+    id: string
+}
+
+export interface ModifyThreadType {
+    addressees: string[]
+    content: ModifyContent
+    id: string
+    subject: string
+    isDraft?: boolean
+    files?: ModifyFile[]
 }
