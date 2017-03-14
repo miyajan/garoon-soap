@@ -244,4 +244,62 @@ export default class Admin {
             return threads;
         });
     }
+
+    public saveDraftThreads(threads: message.DraftThreadType[]): Promise<message.ThreadType[]> {
+        const parameters: Object[] = [];
+        threads.forEach(thread => {
+            const draftThread: any = [];
+            const threadObj: any = [];
+            const attrObj: any = {
+                '_attr': {
+                    'id': 'dummy',
+                    'version': 'dummy',
+                    'subject': thread.subject,
+                    'confirm': thread.confirm.toString()
+                }
+            };
+            threadObj.push(attrObj);
+
+            thread.addressees.forEach(addressee => {
+                const addresseeAttrObj: any = {
+                    user_id: addressee,
+                    name: 'dummy',
+                    deleted: 'false'
+                };
+                threadObj.push({'addressee': [{
+                    '_attr': addresseeAttrObj
+                }]});
+            });
+
+            const contentAttrObj: any = {
+                'body': thread.content.body
+            };
+            if (thread.content.hasOwnProperty('htmlBody')) {
+                contentAttrObj['html_body'] = thread.content.htmlBody;
+            }
+            threadObj.push({'content': [{
+                '_attr': contentAttrObj
+            }]});
+
+            if (Array.isArray(thread.files)) {
+                thread.files.forEach(file => {
+                    const fileObj: any = [{'content': file.content.toString('base64')}];
+                    threadObj.push({'file': fileObj});
+                });
+            }
+
+            draftThread.push({'thread': threadObj});
+
+            parameters.push({'save_draft_thread': draftThread});
+        });
+        return this.client.post(this.path, 'MessageSaveDraftThreads', parameters).then((res: message.ThreadsResponse) => {
+            const threads: message.ThreadType[] = [];
+            if (Array.isArray(res.thread)) {
+                res.thread!.forEach(obj => {
+                    threads.push(MessageConverter.Thread.toObject(obj));
+                });
+            }
+            return threads;
+        });
+    }
 }

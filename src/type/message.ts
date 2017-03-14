@@ -128,3 +128,20 @@ export interface ModifyThreadType {
     isDraft?: boolean
     files?: ModifyFile[]
 }
+
+export interface DraftFile {
+    content: Buffer
+}
+
+export interface DraftContent {
+    body: string
+    htmlBody?: string
+}
+
+export interface DraftThreadType {
+    addressees: string[]
+    content: CreateContent
+    subject: string
+    confirm: boolean
+    files?: CreateFile[]
+}
