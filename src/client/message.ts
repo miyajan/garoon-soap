@@ -302,4 +302,24 @@ export default class Admin {
             return threads;
         });
     }
+
+    public removeThreads(threads: message.RemoveThreadType[], deleteAllInbox?: boolean): Promise<void> {
+        const parameters: Object[] = [];
+        threads.forEach(thread => {
+            parameters.push({
+                'param': {
+                    '_attr': {
+                        'folder_id': thread.folderId,
+                        'thread_id': thread.threadId
+                    }
+                }
+            })
+        });
+        if (typeof(deleteAllInbox) === 'boolean') {
+            parameters.push({
+                '_attr': {'delete_all_inbox': deleteAllInbox.toString()}
+            });
+        }
+        return this.client.post(this.path, 'MessageRemoveThreads', parameters).then(() => {});
+    }
 }

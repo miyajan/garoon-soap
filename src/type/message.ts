@@ -145,3 +145,8 @@ export interface DraftThreadType {
     confirm: boolean
     files?: CreateFile[]
 }
+
+export interface RemoveThreadType {
+    folderId: string
+    threadId: string
+}
