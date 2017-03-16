@@ -322,4 +322,23 @@ export default class Admin {
         }
         return this.client.post(this.path, 'MessageRemoveThreads', parameters).then(() => {});
     }
+
+    public getFollows(threadId: string, offset: number, limit: number): Promise<message.FollowType[]> {
+        const parameters: Object[] = [{
+            '_attr': {
+                'thread_id': threadId,
+                'offset': offset,
+                'limit': limit
+            }
+        }];
+        return this.client.post(this.path, 'MessageGetFollows', parameters).then((res: message.FollowsResponseType) => {
+            const follows: message.FollowType[] = [];
+            if (Array.isArray(res.follow)) {
+                res.follow!.forEach(obj => {
+                    follows.push(MessageConverter.Follow.toObject(obj));
+                });
+            }
+            return follows;
+        });
+    }
 }

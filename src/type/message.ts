@@ -140,13 +140,32 @@ export interface DraftContent {
 
 export interface DraftThreadType {
     addressees: string[]
-    content: CreateContent
+    content: DraftContent
     subject: string
     confirm: boolean
-    files?: CreateFile[]
+    files?: DraftFile[]
 }
 
 export interface RemoveThreadType {
     folderId: string
     threadId: string
+}
+
+export interface FollowType {
+    files: File[]
+    creator?: base.ChangeLogType
+    id: string
+    number: string
+    text: string
+    htmlText?: string
+}
+
+export interface FollowTypeXMLObject {
+    $: any
+    file?: FileXMLObject[]
+    creator?: base.ChangeLogXMLObject[]
+}
+
+export interface FollowsResponseType {
+    follow?: FollowTypeXMLObject[]
 }

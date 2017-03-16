@@ -2,6 +2,22 @@ import * as message from "../type/message";
 import * as Util from "../util";
 import * as BaseConverter from "./base";
 
+class File {
+    static toObject(xmlObj: message.FileXMLObject): message.File {
+        const attrs = xmlObj['$'];
+        const file: any = {};
+        file.id = attrs.id;
+        file.name = attrs.name;
+        if (attrs.hasOwnProperty('size')) {
+            file.size = Number(attrs.size);
+        }
+        if (attrs.hasOwnProperty('mime_type')) {
+            file.mimeType = attrs.mime_type;
+        }
+        return file;
+    }
+}
+
 export class Thread {
     static toObject(xmlObj: message.ThreadXMLObject): message.ThreadType {
         const thread: any = {};
@@ -45,17 +61,7 @@ export class Thread {
         thread.content.files = [];
         if (Array.isArray(contentObj.file)) {
             contentObj.file!.forEach(obj => {
-                const attrs = obj['$'];
-                const file: any = {};
-                file.id = attrs.id;
-                file.name = attrs.name;
-                if (attrs.hasOwnProperty('size')) {
-                    file.size = Number(attrs.size);
-                }
-                if (attrs.hasOwnProperty('mime_type')) {
-                    file.mimeType = attrs.mime_type;
-                }
-                thread.content.files.push(file);
+                thread.content.files.push(File.toObject(obj));
             });
         }
 
@@ -84,5 +90,32 @@ export class Thread {
         }
 
         return thread;
+    }
+}
+
+export class Follow {
+    static toObject(xmlObj: message.FollowTypeXMLObject): message.FollowType {
+        const follow: any = {};
+
+        const attrs = xmlObj['$'];
+        follow.id = attrs.id;
+        follow.number = attrs.number;
+        follow.text = attrs.text;
+        if (attrs.hasOwnProperty('html_text')) {
+            follow.htmlText = attrs.html_text;
+        }
+
+        if (Array.isArray(xmlObj.creator)) {
+            follow.creator = BaseConverter.ChangeLog.toObject(xmlObj.creator[0]);
+        }
+
+        follow.files = [];
+        if (Array.isArray(xmlObj.file)) {
+            xmlObj.file!.forEach(obj => {
+                follow.files.push(File.toObject(obj));
+            });
+        }
+
+        return follow;
     }
 }
