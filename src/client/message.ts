@@ -341,4 +341,64 @@ export default class Admin {
             return follows;
         });
     }
+
+    public addFollows(follows: message.AddFollowType[]): Promise<message.ThreadType[]> {
+        const parameters: Object[] = [];
+        follows.forEach(follow => {
+            const addFollow: any = [{
+                '_attr': {
+                    'thread_id': follow.threadId
+                }
+            }];
+            const followAttr: any = {
+                'id': 'dummy',
+                'number': 'dummy',
+                'text': follow.text
+            };
+            if (follow.hasOwnProperty('htmlText')) {
+                followAttr['html_text'] = follow.htmlText;
+            }
+            const followObj: any = [{
+                '_attr': followAttr
+            }];
+            if (Array.isArray(follow.files)) {
+                follow.files.forEach((file, i) => {
+                    const id = i + 1;
+                    followObj.append({
+                        'file': {
+                            '_attr': {
+                                'id': id,
+                                'name': file.name
+                            }
+                        }
+                    });
+                    addFollow.append({
+                        'file': [
+                            {
+                                '_attr': {
+                                    'id': id
+                                }
+                            },
+                            {
+                                'content': file.content.toString('base64')
+                            }
+                        ]
+                    })
+                });
+            }
+            addFollow.push({'follow': followObj});
+            parameters.push({
+                'add_follow': addFollow
+            });
+        });
+        return this.client.post(this.path, 'MessageAddFollows', parameters).then((res: message.ThreadsResponse) => {
+            const threads: message.ThreadType[] = [];
+            if (Array.isArray(res.thread)) {
+                res.thread!.forEach(obj => {
+                    threads.push(MessageConverter.Thread.toObject(obj));
+                });
+            }
+            return threads;
+        });
+    }
 }

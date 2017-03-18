@@ -169,3 +169,15 @@ export interface FollowTypeXMLObject {
 export interface FollowsResponseType {
     follow?: FollowTypeXMLObject[]
 }
+
+export interface AddFile {
+    name: string
+    content: Buffer
+}
+
+export interface AddFollowType {
+    threadId: string
+    files?: AddFile[]
+    text: string
+    htmlText?: string
+}
