@@ -181,3 +181,7 @@ export interface AddFollowType {
     text: string
     htmlText?: string
 }
+
+export interface FolderItemsResponse {
+    folder_item?: base.ItemVersionResultXMLObject[]
+}

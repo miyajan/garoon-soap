@@ -409,4 +409,27 @@ export default class Admin {
         });
         return this.client.post(this.path, 'MessageRemoveFollows', parameters).then(() => {});
     }
+
+    public getFolderVersions(folderItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        folderItems.forEach(folderItem => {
+            parameters.push({
+                'folder_item': {
+                    '_attr': {
+                        id: folderItem.id,
+                        version: folderItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'MessageGetFolderVersions', parameters).then((res: message.FolderItemsResponse) => {
+            const folderVersions: base.ItemVersionResultType[] = [];
+            if (Array.isArray(res['folder_item'])) {
+                res['folder_item']!.forEach(obj => {
+                    folderVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return folderVersions;
+        });
+    }
 }
