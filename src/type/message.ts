@@ -185,3 +185,33 @@ export interface AddFollowType {
 export interface FolderItemsResponse {
     folder_item?: base.ItemVersionResultXMLObject[]
 }
+
+export interface FolderType {
+    children: string[]
+    threads: string[]
+    id: string
+    version: string
+    name: string
+    description?: string
+    order?: number
+    parent?: string
+    folderType: string
+}
+
+export interface ChildFolderXMLObject {
+    $: any
+}
+
+export interface FolderThreadXMLObject {
+    $: any
+}
+
+export interface FolderTypeXMLObject {
+    $: any
+    folder?: ChildFolderXMLObject[]
+    thread?: FolderThreadXMLObject[]
+}
+
+export interface FoldersResponse {
+    folder?: FolderTypeXMLObject[]
+}

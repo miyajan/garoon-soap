@@ -432,4 +432,20 @@ export default class Admin {
             return folderVersions;
         });
     }
+
+    public getFoldersById(folderIds: string[]): Promise<message.FolderType[]> {
+        const parameters: Object[] = [];
+        folderIds.forEach(folderId => {
+            parameters.push({'folder_id': folderId});
+        });
+        return this.client.post(this.path, 'MessageGetFoldersById', parameters).then((res: message.FoldersResponse) => {
+            const folders: message.FolderType[] = [];
+            if (Array.isArray(res.folder)) {
+                res.folder!.forEach(obj => {
+                    folders.push(MessageConverter.Folder.toObject(obj));
+                });
+            }
+            return folders;
+        });
+    }
 }

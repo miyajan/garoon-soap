@@ -119,3 +119,34 @@ export class Follow {
         return follow;
     }
 }
+
+export class Folder {
+    static toObject(xmlObj: message.FolderTypeXMLObject): message.FolderType {
+        const folder: any = {};
+
+        const attrs = xmlObj['$'];
+        folder.id = attrs.id;
+        folder.version = attrs.version;
+        folder.name = attrs.name;
+        folder.description = attrs.description;
+        folder.order = attrs.order;
+        folder.parent = attrs.parent_folder_id;
+        folder.folderType = attrs.folder_type;
+
+        folder.children = [];
+        if (Array.isArray(xmlObj.folder)) {
+            xmlObj.folder!.forEach(obj => {
+                folder.children.push(obj['$'].id);
+            });
+        }
+
+        folder.threads = [];
+        if (Array.isArray(xmlObj.thread)) {
+            xmlObj.thread!.forEach(obj => {
+                folder.threads.push(obj['$'].id);
+            });
+        }
+
+        return folder;
+    }
+}
