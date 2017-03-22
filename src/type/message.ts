@@ -215,3 +215,23 @@ export interface FolderTypeXMLObject {
 export interface FoldersResponse {
     folder?: FolderTypeXMLObject[]
 }
+
+export interface ProfileType {
+    useTrash: boolean
+    trashDuration: number
+    checkSendConfirm?: boolean
+    confirmAction?: string
+}
+
+export interface PersonalProfileXMLObject {
+    $: any
+}
+
+export interface SystemProfileXMLObject {
+    $: any
+}
+
+export interface ProfilesResponse {
+    personal_profile: PersonalProfileXMLObject[]
+    system_profile: SystemProfileXMLObject[]
+}

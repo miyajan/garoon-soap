@@ -448,4 +448,24 @@ export default class Admin {
             return folders;
         });
     }
+
+    public getProfiles(includeSystemProfile?: boolean): Promise<message.ProfileType> {
+        const parameters: Object[] = [];
+        if (typeof includeSystemProfile === 'boolean') {
+            parameters.push({'_attr': {'include_system_profile': includeSystemProfile}});
+        }
+        return this.client.post(this.path, 'MessageGetProfiles', parameters).then((res: message.ProfilesResponse) => {
+            const personalAttr = res.personal_profile[0]['$'];
+            const profile: any = {
+                useTrash: Util.toBoolean(personalAttr['use_trash']),
+                trashDuration: Number(personalAttr['trash_duration'])
+            };
+            if (res.hasOwnProperty('system_profile')) {
+                const systemAttr = res.system_profile[0]['$'];
+                profile.checkSendConfirm = Util.toBoolean(systemAttr['check_send_confirm']);
+                profile.confirmAction = systemAttr['confirm_action'];
+            }
+            return profile;
+        });
+    }
 }
