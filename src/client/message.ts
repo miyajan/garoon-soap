@@ -468,4 +468,22 @@ export default class Admin {
             return profile;
         });
     }
+
+    public setProfiles(useTrash: boolean, trashDuration: number): Promise<message.ProfileType> {
+        const parameters: Object[] = [];
+        parameters.push({'personal_profile': {
+            '_attr': {
+                'use_trash': useTrash,
+                'trash_duration': trashDuration
+            }
+        }});
+        return this.client.post(this.path, 'MessageSetProfiles', parameters).then((res: message.ProfilesResponse) => {
+            const personalAttr = res.personal_profile[0]['$'];
+            const profile: any = {
+                useTrash: Util.toBoolean(personalAttr['use_trash']),
+                trashDuration: Number(personalAttr['trash_duration'])
+            };
+            return profile;
+        });
+    }
 }
