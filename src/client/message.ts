@@ -6,7 +6,7 @@ import * as base from "./../type/base";
 import * as message from "./../type/message";
 import * as Util from "./../util";
 
-export default class Admin {
+export default class Message {
     private client: Client;
     private readonly path: string;
 
