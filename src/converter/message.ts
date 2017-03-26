@@ -1,5 +1,6 @@
 import * as message from "../type/message";
 import * as Util from "../util";
+import * as datetime from "../util/datetime";
 import * as BaseConverter from "./base";
 
 class File {
@@ -28,7 +29,7 @@ export class Thread {
         thread.subject = attrs.subject;
         thread.confirm = Util.toBoolean(attrs.confirm);
         if (attrs.hasOwnProperty('snapshot')) {
-            thread.snapshot = Util.toDate(attrs.snapshot);
+            thread.snapshot = datetime.toDate(attrs.snapshot);
         }
         if (attrs.hasOwnProperty('is_draft')) {
             thread.isDraft = Util.toBoolean(attrs.is_draft);

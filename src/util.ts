@@ -35,7 +35,3 @@ export function formatDateTime(date: Date): string {
 export function toBoolean(str: string): boolean {
     return str === 'true';
 }
-
-export function toDate(str: string): Date {
-    return new Date(str);
-}

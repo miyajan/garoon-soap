@@ -1,5 +1,6 @@
 import * as base from "../type/base";
 import * as Util from "../util";
+import * as datetime from "../util/datetime";
 
 export class ItemVersionResult {
     static toObject(xmlObj: base.ItemVersionResultXMLObject): base.ItemVersionResultType {
@@ -175,7 +176,7 @@ export class ChangeLog {
         return {
             userId: attrs.user_id,
             name: attrs.name,
-            date: Util.toDate(attrs.date)
+            date: datetime.toDate(attrs.date)
         }
     }
 }
