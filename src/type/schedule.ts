@@ -201,3 +201,22 @@ export interface EventTypeXMLObject {
 export interface EventsResponse {
     schedule_event?: EventTypeXMLObject[]
 }
+
+export interface CandidateType {
+    start: Date
+    end: Date
+}
+
+export interface FreeTimeType {
+    start: Date
+    end: Date
+    facilityId?: string
+}
+
+export interface CandidateXMLObject {
+    $: any
+}
+
+export interface FreeTimesResponse {
+    candidate?: CandidateXMLObject[]
+}

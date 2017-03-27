@@ -228,3 +228,17 @@ export class Event {
         return event;
     }
 }
+
+export class FreeTime {
+    static toObject(xmlObj: schedule.CandidateXMLObject): schedule.FreeTimeType {
+        const attrs = xmlObj.$;
+        const freeTime: schedule.FreeTimeType = {
+            start: datetime.toDate(attrs.start),
+            end: datetime.toDate(attrs.end)
+        };
+        if (attrs.facility_id !== undefined) {
+            freeTime.facilityId = attrs.facility_id;
+        }
+        return freeTime;
+    }
+}

@@ -3,6 +3,8 @@ import Setting from "./setting";
 import * as schedule from "../type/schedule";
 import * as Util from "../util";
 import * as ScheduleConverter from "../converter/schedule";
+import * as datetime from "../util/datetime";
+import * as time from "../util/time";
 
 export default class Schedule {
     private client: Client;
@@ -24,10 +26,10 @@ export default class Schedule {
             'all_repeat_events': false
         };
         if (options.start !== undefined) {
-            attrs['start'] = Util.formatDateTime(options.start);
+            attrs['start'] = datetime.toString(options.start);
         }
         if (options.end !== undefined) {
-            attrs['end'] = Util.formatDateTime(options.end!);
+            attrs['end'] = datetime.toString(options.end!);
         }
         if (options.startForDaily !== undefined) {
             attrs['start_for_daily'] = Util.formatDate(options.startForDaily);
@@ -59,6 +61,67 @@ export default class Schedule {
                 });
             }
             return events;
+        });
+    }
+
+    public searchFreeTimes(candidates: schedule.CandidateType[], userIds: string[], orgIds: string[], facilityIds: string[], searchTimeMinutes: number, needAllFacilities?: boolean): Promise<schedule.FreeTimeType[]> {
+        const parameters: Object[] = [];
+        candidates.forEach(candidate => {
+            parameters.push({
+                'candidate': [{
+                    '_attr': {
+                        'start': datetime.toString(candidate.start),
+                        'end': datetime.toString(candidate.end)
+                    }
+                }]
+            });
+        });
+        userIds.forEach(userId => {
+            parameters.push({
+                'member': [{
+                    'user': [{
+                        '_attr': {'id': userId}
+                    }]
+                }]
+            });
+        });
+        orgIds.forEach(orgId => {
+            parameters.push({
+                'member': [{
+                    'organization': [{
+                        '_attr': {'id': orgId}
+                    }]
+                }]
+            });
+        });
+        facilityIds.forEach(facilityId => {
+            parameters.push({
+                'member': [{
+                    'facility': [{
+                        '_attr': {'id': facilityId}
+                    }]
+                }]
+            });
+        });
+        const searchTime = new Date();
+        searchTime.setHours(0);
+        searchTime.setMinutes(searchTimeMinutes);
+        searchTime.setSeconds(0);
+        const searchCondition = needAllFacilities ? 'and' : 'or';
+        parameters.push({
+            '_attr': {
+                search_time: time.toString(new Date(searchTime)),
+                search_condition: searchCondition
+            }
+        });
+        return this.client.post(this.path, 'ScheduleSearchFreeTimes', parameters).then((res: schedule.FreeTimesResponse) => {
+            const freeTimes: schedule.FreeTimeType[] = [];
+            if (res.candidate !== undefined) {
+                res.candidate.forEach(obj => {
+                    freeTimes.push(ScheduleConverter.FreeTime.toObject(obj));
+                });
+            }
+            return freeTimes;
         });
     }
 }

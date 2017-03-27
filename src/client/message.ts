@@ -5,6 +5,7 @@ import * as MessageConverter from "../converter/message";
 import * as base from "./../type/base";
 import * as message from "./../type/message";
 import * as Util from "./../util";
+import * as datetime from "../util/datetime";
 
 export default class Message {
     private client: Client;
@@ -30,9 +31,9 @@ export default class Message {
         folderIds.forEach(folderId => {
             parameters.push({'folder_id': folderId});
         });
-        const attr: any = {'start': Util.formatDateTime(start)};
+        const attr: any = {'start': datetime.toString(start)};
         if (end instanceof Date) {
-            attr['end'] = Util.formatDateTime(end);
+            attr['end'] = datetime.toString(end);
         }
         parameters.push({'_attr': attr});
         return this.client.post(this.path, 'MessageGetThreadVersions', parameters).then((res: message.ThreadItemsResponse) => {
@@ -65,7 +66,7 @@ export default class Message {
     public searchThreads(option: message.SearchOption): Promise<message.ThreadType[]> {
         const attr: any = {
             text: option.text,
-            start: Util.formatDateTime(option.start),
+            start: datetime.toString(option.start),
             title_search: option.titleSearch.toString(),
             body_search: option.bodySearch.toString(),
             from_search: option.fromSearch.toString(),
@@ -73,7 +74,7 @@ export default class Message {
             follow_search: option.followSearch.toString()
         };
         if (option.end instanceof Date) {
-            attr.end = Util.formatDateTime(option.end);
+            attr.end = datetime.toString(option.end);
         }
         if (option.hasOwnProperty('folderId')) {
             attr.folder_id = option.folderId;
@@ -144,9 +145,11 @@ export default class Message {
                     name: 'dummy',
                     deleted: 'false'
                 };
-                threadObj.push({'addressee': [{
-                    '_attr': addresseeAttrObj
-                }]});
+                threadObj.push({
+                    'addressee': [{
+                        '_attr': addresseeAttrObj
+                    }]
+                });
             });
 
             const contentAttrObj: any = {
@@ -155,9 +158,11 @@ export default class Message {
             if (thread.content.hasOwnProperty('htmlBody')) {
                 contentAttrObj['html_body'] = thread.content.htmlBody;
             }
-            threadObj.push({'content': [{
-                '_attr': contentAttrObj
-            }]});
+            threadObj.push({
+                'content': [{
+                    '_attr': contentAttrObj
+                }]
+            });
 
             if (Array.isArray(thread.files)) {
                 thread.files.forEach(file => {
@@ -205,9 +210,11 @@ export default class Message {
                     name: 'dummy',
                     deleted: 'false'
                 };
-                threadObj.push({'addressee': [{
-                    '_attr': addresseeAttrObj
-                }]});
+                threadObj.push({
+                    'addressee': [{
+                        '_attr': addresseeAttrObj
+                    }]
+                });
             });
 
             const contentAttrObj: any = {
@@ -216,9 +223,11 @@ export default class Message {
             if (thread.content.hasOwnProperty('htmlBody')) {
                 contentAttrObj['html_body'] = thread.content.htmlBody;
             }
-            threadObj.push({'content': [{
-                '_attr': contentAttrObj
-            }]});
+            threadObj.push({
+                'content': [{
+                    '_attr': contentAttrObj
+                }]
+            });
 
             if (Array.isArray(thread.files)) {
                 thread.files.forEach(file => {
@@ -266,9 +275,11 @@ export default class Message {
                     name: 'dummy',
                     deleted: 'false'
                 };
-                threadObj.push({'addressee': [{
-                    '_attr': addresseeAttrObj
-                }]});
+                threadObj.push({
+                    'addressee': [{
+                        '_attr': addresseeAttrObj
+                    }]
+                });
             });
 
             const contentAttrObj: any = {
@@ -277,9 +288,11 @@ export default class Message {
             if (thread.content.hasOwnProperty('htmlBody')) {
                 contentAttrObj['html_body'] = thread.content.htmlBody;
             }
-            threadObj.push({'content': [{
-                '_attr': contentAttrObj
-            }]});
+            threadObj.push({
+                'content': [{
+                    '_attr': contentAttrObj
+                }]
+            });
 
             if (Array.isArray(thread.files)) {
                 thread.files.forEach(file => {
@@ -320,7 +333,8 @@ export default class Message {
                 '_attr': {'delete_all_inbox': deleteAllInbox.toString()}
             });
         }
-        return this.client.post(this.path, 'MessageRemoveThreads', parameters).then(() => {});
+        return this.client.post(this.path, 'MessageRemoveThreads', parameters).then(() => {
+        });
     }
 
     public getFollows(threadId: string, offset: number, limit: number): Promise<message.FollowType[]> {
@@ -407,7 +421,8 @@ export default class Message {
         followIds.forEach(followId => {
             parameters.push({'follow_id': followId});
         });
-        return this.client.post(this.path, 'MessageRemoveFollows', parameters).then(() => {});
+        return this.client.post(this.path, 'MessageRemoveFollows', parameters).then(() => {
+        });
     }
 
     public getFolderVersions(folderItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
@@ -471,12 +486,14 @@ export default class Message {
 
     public setProfiles(useTrash: boolean, trashDuration: number): Promise<message.ProfileType> {
         const parameters: Object[] = [];
-        parameters.push({'personal_profile': {
-            '_attr': {
-                'use_trash': useTrash,
-                'trash_duration': trashDuration
+        parameters.push({
+            'personal_profile': {
+                '_attr': {
+                    'use_trash': useTrash,
+                    'trash_duration': trashDuration
+                }
             }
-        }});
+        });
         return this.client.post(this.path, 'MessageSetProfiles', parameters).then((res: message.ProfilesResponse) => {
             const personalAttr = res.personal_profile[0]['$'];
             const profile: any = {
