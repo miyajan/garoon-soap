@@ -220,3 +220,7 @@ export interface CandidateXMLObject {
 export interface FreeTimesResponse {
     candidate?: CandidateXMLObject[]
 }
+
+export interface FacilityItemsResponse {
+    facility_item: base.ItemVersionResultXMLObject[]
+}

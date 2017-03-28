@@ -1,7 +1,9 @@
 import Client from "./client";
 import Setting from "./setting";
+import * as base from "../type/base";
 import * as schedule from "../type/schedule";
 import * as Util from "../util";
+import * as BaseConverter from "../converter/base";
 import * as ScheduleConverter from "../converter/schedule";
 import * as datetime from "../util/datetime";
 import * as time from "../util/time";
@@ -122,6 +124,29 @@ export default class Schedule {
                 });
             }
             return freeTimes;
+        });
+    }
+
+    public getFacilityVersions(facilityItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        facilityItems.forEach(facilityItem => {
+            parameters.push({
+                'facility_item': {
+                    '_attr': {
+                        id: facilityItem.id,
+                        version: facilityItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleGetFacilityVersions', parameters).then((res: schedule.FacilityItemsResponse) => {
+            const facilityVersions: base.ItemVersionResultType[] = [];
+            if (Array.isArray(res['facility_item'])) {
+                res['facility_item'].forEach(obj => {
+                    facilityVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return facilityVersions;
         });
     }
 }
