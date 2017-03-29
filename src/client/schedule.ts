@@ -149,4 +149,20 @@ export default class Schedule {
             return facilityVersions;
         });
     }
+
+    public getFacilitiesById(facilityIds: string[]): Promise<schedule.FacilityType[]> {
+        const parameters: Object[] = [];
+        facilityIds.forEach(facilityId => {
+            parameters.push({'facility_id': facilityId});
+        });
+        return this.client.post(this.path, 'ScheduleGetFacilitiesById', parameters).then((res: schedule.FacilitiesResponse) => {
+            const facilities: schedule.FacilityType[] = [];
+            if (res.facility !== undefined) {
+                res.facility.forEach(obj => {
+                    facilities.push(ScheduleConverter.Facility.toObject(obj));
+                });
+            }
+            return facilities;
+        });
+    }
 }

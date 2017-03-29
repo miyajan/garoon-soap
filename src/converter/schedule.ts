@@ -242,3 +242,25 @@ export class FreeTime {
         return freeTime;
     }
 }
+
+export class Facility {
+    static toObject(xmlObj: schedule.FacilityXMLObject): schedule.FacilityType {
+        const attrs = xmlObj.$;
+        const facility: any = {
+            key: attrs.key,
+            name: attrs.name,
+            facilityCode: attrs.facility_code,
+            version: attrs.version
+        };
+        if (attrs.order !== undefined) {
+            facility.order = Number(attrs.order);
+        }
+        if (attrs.description !== undefined) {
+            facility.description = attrs.description;
+        }
+        if (attrs.belong_facility_group !== undefined) {
+            facility.belongFacilityGroup = attrs.belong_facility_group;
+        }
+        return facility;
+    }
+}

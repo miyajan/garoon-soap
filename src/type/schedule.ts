@@ -224,3 +224,21 @@ export interface FreeTimesResponse {
 export interface FacilityItemsResponse {
     facility_item: base.ItemVersionResultXMLObject[]
 }
+
+export interface FacilityType {
+    key: string
+    name: string
+    facilityCode: string
+    version: string
+    order?: number
+    description?: string
+    belongFacilityGroup: string
+}
+
+export interface FacilityXMLObject {
+    $: any
+}
+
+export interface FacilitiesResponse {
+    facility?: FacilityXMLObject[]
+}
