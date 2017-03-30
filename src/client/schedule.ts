@@ -141,8 +141,8 @@ export default class Schedule {
         });
         return this.client.post(this.path, 'ScheduleGetFacilityVersions', parameters).then((res: schedule.FacilityItemsResponse) => {
             const facilityVersions: base.ItemVersionResultType[] = [];
-            if (Array.isArray(res['facility_item'])) {
-                res['facility_item'].forEach(obj => {
+            if (res.facility_item !== undefined) {
+                res.facility_item.forEach(obj => {
                     facilityVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
                 });
             }
@@ -163,6 +163,29 @@ export default class Schedule {
                 });
             }
             return facilities;
+        });
+    }
+
+    public getFacilityGroupsVersions(facilityGroupItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        facilityGroupItems.forEach(facilityGroupItem => {
+            parameters.push({
+                'facility_group_item': {
+                    '_attr': {
+                        id: facilityGroupItem.id,
+                        version: facilityGroupItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleGetFacilityGroupsVersions', parameters).then((res: schedule.FacilityGroupItemsResponse) => {
+            const facilityGroupsVersions: base.ItemVersionResultType[] = [];
+            if (res.facility_group_item !== undefined) {
+                res.facility_group_item.forEach(obj => {
+                    facilityGroupsVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return facilityGroupsVersions;
         });
     }
 }

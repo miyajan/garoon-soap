@@ -222,7 +222,7 @@ export interface FreeTimesResponse {
 }
 
 export interface FacilityItemsResponse {
-    facility_item: base.ItemVersionResultXMLObject[]
+    facility_item?: base.ItemVersionResultXMLObject[]
 }
 
 export interface FacilityType {
@@ -241,4 +241,8 @@ export interface FacilityXMLObject {
 
 export interface FacilitiesResponse {
     facility?: FacilityXMLObject[]
+}
+
+export interface FacilityGroupItemsResponse {
+    facility_group_item?: base.ItemVersionResultXMLObject[]
 }
