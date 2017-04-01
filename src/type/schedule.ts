@@ -246,3 +246,27 @@ export interface FacilitiesResponse {
 export interface FacilityGroupItemsResponse {
     facility_group_item?: base.ItemVersionResultXMLObject[]
 }
+
+export interface FacilityGroupType {
+    id: string
+    name: string
+    version: string
+    order?: number
+    parentFacilityGroup?: string
+    children: string[]
+    facilities: string[]
+}
+
+export interface IdXMLObject {
+    $: any
+}
+
+export interface FacilityGroupXMLObject {
+    $: any
+    facility_group?: IdXMLObject[]
+    facility?: IdXMLObject[]
+}
+
+export interface FacilityGroupsResponse {
+    facility_group?: FacilityGroupXMLObject[]
+}

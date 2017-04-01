@@ -188,4 +188,20 @@ export default class Schedule {
             return facilityGroupsVersions;
         });
     }
+
+    public getFacilityGroupsById(facilityGroupIds: string[]): Promise<schedule.FacilityGroupType[]> {
+        const parameters: Object[] = [];
+        facilityGroupIds.forEach(facilityGroupId => {
+            parameters.push({'facility_group_id': facilityGroupId});
+        });
+        return this.client.post(this.path, 'ScheduleGetFacilityGroupsById', parameters).then((res: schedule.FacilityGroupsResponse) => {
+            const facilityGroups: schedule.FacilityGroupType[] = [];
+            if (res.facility_group !== undefined) {
+                res.facility_group.forEach(obj => {
+                    facilityGroups.push(ScheduleConverter.FacilityGroup.toObject(obj));
+                });
+            }
+            return facilityGroups;
+        });
+    }
 }

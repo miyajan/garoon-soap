@@ -264,3 +264,36 @@ export class Facility {
         return facility;
     }
 }
+
+export class FacilityGroup {
+    static toObject(xmlObj: schedule.FacilityGroupXMLObject): schedule.FacilityGroupType {
+        const attrs = xmlObj.$;
+        const facilityGroup: any = {
+            id: attrs.id,
+            name: attrs.name,
+            version: attrs.version,
+        };
+        if (attrs.order !== undefined) {
+            facilityGroup.order = Number(attrs.order);
+        }
+        if (attrs.parent_facility_group !== undefined) {
+            facilityGroup.parentFacilityGroup = attrs.parent_facility_group;
+        }
+
+        facilityGroup.children = [];
+        if (xmlObj.facility_group !== undefined) {
+            xmlObj.facility_group.forEach(obj => {
+                facilityGroup.children.push(obj.$.id);
+            });
+        }
+
+        facilityGroup.facilities = [];
+        if (xmlObj.facility !== undefined) {
+            xmlObj.facility.forEach(obj => {
+                facilityGroup.facilities.push(obj.$.id);
+            });
+        }
+
+        return facilityGroup;
+    }
+}
