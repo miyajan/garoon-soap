@@ -297,3 +297,13 @@ export class FacilityGroup {
         return facilityGroup;
     }
 }
+
+export class FacilityProfile {
+    static toObject(xmlObj: schedule.FacilityProfileXMLObject): schedule.FacilityProfileType {
+        const attrs = xmlObj.$;
+        return {
+            key: attrs.key,
+            approvalRequired: Util.toBoolean(attrs.approval_required)
+        }
+    }
+}

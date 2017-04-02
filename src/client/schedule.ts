@@ -227,4 +227,22 @@ export default class Schedule {
             return facilityProfileVersions;
         });
     }
+
+    public getFacilityProfilesById(facilityIds: string[]): Promise<schedule.FacilityProfileType[]> {
+        const parameters: Object[] = [];
+        facilityIds.forEach(facilityId => {
+            parameters.push({
+                'facility_id': facilityId
+            });
+        });
+        return this.client.post(this.path, 'ScheduleGetFacilityProfilesById', parameters).then((res: schedule.FacilityProfilesResponse) => {
+            const facilityProfiles: schedule.FacilityProfileType[] = [];
+            if (res.facility_profile !== undefined) {
+                res.facility_profile.forEach(obj => {
+                    facilityProfiles.push(ScheduleConverter.FacilityProfile.toObject(obj));
+                });
+            }
+            return facilityProfiles;
+        });
+    }
 }

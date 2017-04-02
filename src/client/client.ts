@@ -134,11 +134,16 @@ export default class Client {
         return `${year}-${month}-${day}T${hour}:${minute}:${second}Z`;
     }
 
+    private readonly noResponseTags = [
+        'ScheduleGetFacilityProfileVersions',
+        'ScheduleGetFacilityProfilesById'
+    ];
+
     private getResponseTag(action: string): string {
         if (action.substr(0, 5) === 'Admin') {
             return `${action.substr(5)}Response`
         }
-        if (action === 'ScheduleGetFacilityProfileVersions') {
+        if (this.noResponseTags.indexOf(action) >= 0) {
             return action;
         }
         return `${action}Response`;

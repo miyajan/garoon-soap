@@ -274,3 +274,16 @@ export interface FacilityGroupsResponse {
 export interface FacilityProfileItemsResponse {
     facility_profile_item?: base.ItemVersionResultXMLObject[]
 }
+
+export interface FacilityProfileType {
+    key: string
+    approvalRequired: boolean
+}
+
+export interface FacilityProfileXMLObject {
+    $: any
+}
+
+export interface FacilityProfilesResponse {
+    facility_profile: FacilityProfileXMLObject[]
+}
