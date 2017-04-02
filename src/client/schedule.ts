@@ -204,4 +204,27 @@ export default class Schedule {
             return facilityGroups;
         });
     }
+
+    public getFacilityProfileVersions(facilityProfileItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        facilityProfileItems.forEach(facilityProfileItem => {
+            parameters.push({
+                'facility_profile_item': {
+                    '_attr': {
+                        id: facilityProfileItem.id,
+                        version: facilityProfileItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleGetFacilityProfileVersions', parameters).then((res: schedule.FacilityProfileItemsResponse) => {
+            const facilityProfileVersions: base.ItemVersionResultType[] = [];
+            if (res.facility_profile_item !== undefined) {
+                res.facility_profile_item.forEach(obj => {
+                    facilityProfileVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return facilityProfileVersions;
+        });
+    }
 }

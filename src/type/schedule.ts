@@ -270,3 +270,7 @@ export interface FacilityGroupXMLObject {
 export interface FacilityGroupsResponse {
     facility_group?: FacilityGroupXMLObject[]
 }
+
+export interface FacilityProfileItemsResponse {
+    facility_profile_item?: base.ItemVersionResultXMLObject[]
+}

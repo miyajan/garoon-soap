@@ -108,7 +108,7 @@ export default class Client {
                     counterMeasure: counterMeasure
                 }, message));
             }
-            const responseParam = action.substr(0, 5) === 'Admin' ? `${action.substr(5)}Response` : `${action}Response`;
+            const responseParam = this.getResponseTag(action);
             if (Array.isArray(data['Envelope']['Body'][0][responseParam])) {
                 return data['Envelope']['Body'][0][responseParam][0]['returns'][0];
             }
@@ -132,5 +132,15 @@ export default class Client {
         const minute = this.pad(date.getUTCMinutes());
         const second = this.pad(date.getUTCSeconds());
         return `${year}-${month}-${day}T${hour}:${minute}:${second}Z`;
+    }
+
+    private getResponseTag(action: string): string {
+        if (action.substr(0, 5) === 'Admin') {
+            return `${action.substr(5)}Response`
+        }
+        if (action === 'ScheduleGetFacilityProfileVersions') {
+            return action;
+        }
+        return `${action}Response`;
     }
 }
