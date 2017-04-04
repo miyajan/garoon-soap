@@ -287,3 +287,47 @@ export interface FacilityProfileXMLObject {
 export interface FacilityProfilesResponse {
     facility_profile: FacilityProfileXMLObject[]
 }
+
+export interface PersonalProfileType {
+    startTimeInDayView?: number
+    endTimeInDayView?: number
+    showSunday?: boolean
+    showEndTime?: boolean
+    planMenu?: string
+    notifyMail?: boolean
+    isUserAddressMail?: boolean
+    notifyMailAddress?: string
+}
+
+export interface SystemProfileType {
+    planMenu?: string
+    eventReserveUnit?: number
+    eventRepeatMaxTime?: number
+    registerPrivateEvent?: boolean
+    showMemo?: boolean
+    showPrivateEvent?: boolean
+    managedNotify?: boolean
+    showGroupEvent?: boolean
+    showHoliday?: boolean
+    allowFileAttachment?: boolean
+    allowAttendanceCheck?: boolean
+    visibilityDefault?: number
+}
+
+export interface ProfileType {
+    personalProfileType: PersonalProfileType
+    systemProfileType?: SystemProfileType
+}
+
+export interface PersonalProfileXMLObject {
+    $: any
+}
+
+export interface SystemProfileXMLObject {
+    $: any
+}
+
+export interface ProfilesResponse {
+    personal_profile: PersonalProfileXMLObject[]
+    system_profile?: SystemProfileXMLObject[]
+}

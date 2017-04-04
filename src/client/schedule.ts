@@ -245,4 +245,24 @@ export default class Schedule {
             return facilityProfiles;
         });
     }
+
+    public getProfiles(includeSystemProfile?: boolean): Promise<schedule.ProfileType> {
+        const parameters: Object[] = [];
+        if (includeSystemProfile !== undefined) {
+            parameters.push({
+                '_attr': {
+                    'include_system_profile': includeSystemProfile.toString()
+                }
+            });
+        }
+        return this.client.post(this.path, 'ScheduleGetProfiles', parameters).then((res: schedule.ProfilesResponse) => {
+            const profiles: schedule.ProfileType = {
+                personalProfileType: ScheduleConverter.PersonalProfile.toObject(res.personal_profile[0])
+            };
+            if (res.system_profile !== undefined) {
+                profiles.systemProfileType = ScheduleConverter.SystemProfile.toObject(res.system_profile[0]);
+            }
+            return profiles;
+        });
+    }
 }

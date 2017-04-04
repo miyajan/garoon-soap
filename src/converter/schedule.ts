@@ -307,3 +307,79 @@ export class FacilityProfile {
         }
     }
 }
+
+export class PersonalProfile {
+    static toObject(xmlObj: schedule.PersonalProfileXMLObject): schedule.PersonalProfileType {
+        const attrs = xmlObj.$;
+        const profile: schedule.PersonalProfileType = {};
+        if (attrs.start_time_in_dayview !== undefined) {
+            profile.startTimeInDayView = Number(attrs.start_time_in_dayview);
+        }
+        if (attrs.end_time_in_dayview !== undefined) {
+            profile.endTimeInDayView = Number(attrs.end_time_in_dayview);
+        }
+        if (attrs.show_sunday !== undefined) {
+            profile.showSunday = Util.toBoolean(attrs.show_sunday);
+        }
+        if (attrs.show_end_time !== undefined) {
+            profile.showEndTime = Util.toBoolean(attrs.show_end_time);
+        }
+        if (attrs.plan_menu !== undefined) {
+            profile.planMenu = attrs.plan_menu;
+        }
+        if (attrs.notify_mail !== undefined) {
+            profile.notifyMail = Util.toBoolean(attrs.notify_mail);
+        }
+        if (attrs.is_user_address_mail !== undefined) {
+            profile.isUserAddressMail = Util.toBoolean(attrs.is_user_address_mail);
+        }
+        if (attrs.notify_mail_address !== undefined) {
+            profile.notifyMailAddress = attrs.notify_mail_address;
+        }
+        return profile;
+    }
+}
+
+export class SystemProfile {
+    static toObject(xmlObj: schedule.SystemProfileXMLObject): schedule.SystemProfileType {
+        const attrs = xmlObj.$;
+        const profile: schedule.SystemProfileType = {};
+        if (attrs.plan_menu !== undefined) {
+            profile.planMenu = attrs.plan_menu;
+        }
+        if (attrs.event_reserve_unit !== undefined) {
+            profile.eventReserveUnit = Number(attrs.event_reserve_unit);
+        }
+        if (attrs.event_repeat_max_time !== undefined) {
+            profile.eventRepeatMaxTime = Number(attrs.event_repeat_max_time);
+        }
+        if (attrs.register_private_event !== undefined) {
+            profile.registerPrivateEvent = Util.toBoolean(attrs.register_private_event);
+        }
+        if (attrs.show_memo !== undefined) {
+            profile.showMemo = Util.toBoolean(attrs.show_memo);
+        }
+        if (attrs.show_private_event !== undefined) {
+            profile.showPrivateEvent = Util.toBoolean(attrs.show_private_event);
+        }
+        if (attrs.managed_notify !== undefined) {
+            profile.managedNotify = Util.toBoolean(attrs.managed_notify);
+        }
+        if (attrs.show_group_event !== undefined) {
+            profile.showGroupEvent = Util.toBoolean(attrs.show_group_event);
+        }
+        if (attrs.show_holiday !== undefined) {
+            profile.showHoliday = Util.toBoolean(attrs.show_holiday);
+        }
+        if (attrs.allow_file_attachment !== undefined) {
+            profile.allowFileAttachment = Util.toBoolean(attrs.allow_file_attachment);
+        }
+        if (attrs.allow_attendance_check !== undefined) {
+            profile.allowAttendanceCheck = Util.toBoolean(attrs.allow_attendance_check);
+        }
+        if (attrs.visibility_default !== undefined) {
+            profile.visibilityDefault = Number(attrs.visibility_default);
+        }
+        return profile;
+    }
+}
