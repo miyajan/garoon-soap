@@ -265,4 +265,40 @@ export default class Schedule {
             return profiles;
         });
     }
+
+    public setProfiles(profile: schedule.PersonalProfileType): Promise<schedule.PersonalProfileType> {
+        const attrs: any = {};
+        if (profile.startTimeInDayView !== undefined) {
+            attrs['start_time_in_dayview'] = profile.startTimeInDayView;
+        }
+        if (profile.endTimeInDayView !== undefined) {
+            attrs['end_time_in_dayview'] = profile.endTimeInDayView;
+        }
+        if (profile.showSunday !== undefined) {
+            attrs['show_sunday'] = profile.showSunday;
+        }
+        if (profile.showEndTime !== undefined) {
+            attrs['show_end_time'] = profile.showEndTime;
+        }
+        if (profile.planMenu !== undefined) {
+            attrs['plan_menu'] = profile.planMenu;
+        }
+        if (profile.notifyMail !== undefined) {
+            attrs['notify_mail'] = profile.notifyMail;
+        }
+        if (profile.isUserAddressMail !== undefined) {
+            attrs['is_user_address_mail'] = profile.isUserAddressMail;
+        }
+        if (profile.notifyMailAddress !== undefined) {
+            attrs['notify_mail_address'] = profile.notifyMailAddress;
+        }
+        const parameters: Object[] = [{
+            'personal_profile': {
+                '_attr': attrs
+            }
+        }];
+        return this.client.post(this.path, 'ScheduleSetProfiles', parameters).then((res: schedule.PersonalProfileResponse) => {
+            return ScheduleConverter.PersonalProfile.toObject(res.personal_profile[0]);
+        });
+    }
 }
