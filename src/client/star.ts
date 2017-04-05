@@ -5,6 +5,7 @@ import * as StarConverter from "../converter/star";
 import * as base from "./../type/base";
 import * as star from "./../type/star";
 import * as Util from "./../util";
+import * as date from "./../util/date";
 
 export default class Admin {
     private client: Client;
@@ -66,7 +67,7 @@ export default class Admin {
                 item: starItem.item
             };
             if (starItem.date instanceof Date) {
-                attr.date = Util.formatDate(starItem.date);
+                attr.date = date.toString(starItem.date);
             }
             if (starItem.hasOwnProperty('isDraft')) {
                 attr.is_draft = String(starItem.isDraft);
@@ -96,7 +97,7 @@ export default class Admin {
                 item: starItem.item
             };
             if (starItem.date instanceof Date) {
-                attr.date = Util.formatDate(starItem.date);
+                attr.date = date.toString(starItem.date);
             }
             if (starItem.hasOwnProperty('isDraft')) {
                 attr.is_draft = String(starItem.isDraft);

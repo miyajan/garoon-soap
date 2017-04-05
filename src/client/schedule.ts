@@ -2,10 +2,10 @@ import Client from "./client";
 import Setting from "./setting";
 import * as base from "../type/base";
 import * as schedule from "../type/schedule";
-import * as Util from "../util";
 import * as BaseConverter from "../converter/base";
 import * as ScheduleConverter from "../converter/schedule";
 import * as datetime from "../util/datetime";
+import * as date from "../util/date";
 import * as time from "../util/time";
 
 export default class Schedule {
@@ -34,10 +34,10 @@ export default class Schedule {
             attrs['end'] = datetime.toString(options.end!);
         }
         if (options.startForDaily !== undefined) {
-            attrs['start_for_daily'] = Util.formatDate(options.startForDaily);
+            attrs['start_for_daily'] = date.toString(options.startForDaily);
         }
         if (options.endForDaily !== undefined) {
-            attrs['end_for_daily'] = Util.formatDate(options.endForDaily);
+            attrs['end_for_daily'] = date.toString(options.endForDaily);
         }
         if (options.titleSearch !== undefined) {
             attrs['title_search'] = options.titleSearch;
@@ -299,6 +299,42 @@ export default class Schedule {
         }];
         return this.client.post(this.path, 'ScheduleSetProfiles', parameters).then((res: schedule.PersonalProfileResponse) => {
             return ScheduleConverter.PersonalProfile.toObject(res.personal_profile[0]);
+        });
+    }
+
+    public getEventVersions(eventItems: base.ItemVersionType[], start: Date, end?: Date, startForDaily?: Date, endForDaily?: Date): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        eventItems.forEach(eventItem => {
+            parameters.push({
+                'event_item': {
+                    '_attr': {
+                        id: eventItem.id,
+                        version: eventItem.version
+                    }
+                }
+            })
+        });
+        const attrs: any = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attrs.end = datetime.toString(end);
+        }
+        if (startForDaily !== undefined) {
+            attrs.start_for_daily = date.toString(startForDaily);
+        }
+        if (endForDaily !== undefined) {
+            attrs.end_for_daily = date.toString(endForDaily);
+        }
+        parameters.push({'_attr': attrs});
+        return this.client.post(this.path, 'ScheduleGetEventVersions', parameters).then((res: schedule.EventItemsResponse) => {
+            const versions: base.ItemVersionResultType[] = [];
+            if (res.event_item !== undefined) {
+                res.event_item.forEach(obj => {
+                    versions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
         });
     }
 }

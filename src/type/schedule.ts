@@ -335,3 +335,7 @@ export interface ProfilesResponse {
 export interface PersonalProfileResponse {
     personal_profile: PersonalProfileXMLObject[]
 }
+
+export interface EventItemsResponse {
+    event_item?: base.ItemVersionResultXMLObject[]
+}
