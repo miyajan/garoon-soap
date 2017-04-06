@@ -337,4 +337,27 @@ export default class Schedule {
             return versions;
         });
     }
+
+    public getEvents(start: Date, end: Date, startForDaily?: Date, endForDaily?: Date): Promise<schedule.EventType[]> {
+        const attrs: any = {
+            start: datetime.toString(start),
+            end: datetime.toString(end)
+        };
+        if (startForDaily !== undefined) {
+            attrs.start_for_daily = date.toString(startForDaily);
+        }
+        if (endForDaily !== undefined) {
+            attrs.end_for_daily = date.toString(endForDaily);
+        }
+        const parameters: Object[] = [{'_attr': attrs}];
+        return this.client.post(this.path, 'ScheduleGetEvents', parameters).then((res: schedule.EventsResponse) => {
+            const events: schedule.EventType[] = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(obj => {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    }
 }
