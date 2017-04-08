@@ -360,4 +360,20 @@ export default class Schedule {
             return events;
         });
     }
+
+    public getEventsById(eventIds: string[]): Promise<schedule.EventType[]> {
+        const parameters: Object[] = [];
+        eventIds.forEach(eventId => {
+            parameters.push({'event_id': eventId});
+        });
+        return this.client.post(this.path, 'ScheduleGetEventsById', parameters).then((res: schedule.EventsResponse) => {
+            const events: schedule.EventType[] = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(obj => {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    }
 }
