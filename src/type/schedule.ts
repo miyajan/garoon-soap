@@ -358,3 +358,23 @@ export interface AddEventType {
     repeatInfo?: RepeatInfoType
     when?: WhenType
 }
+
+export interface ModifyEventType {
+    id: string
+    eventType: string
+    publicType?: string
+    plan?: string
+    detail?: string
+    description?: string
+    timezone?: string
+    endTimezone?: string
+    allDay?: boolean
+    startOnly?: boolean
+    hiddenPrivate?: boolean
+    facilityUsingPurpose?: string
+    members: MembersType
+    observers?: ObserversType
+    customer?: CustomerType
+    repeatInfo?: RepeatInfoType
+    when?: WhenType
+}
