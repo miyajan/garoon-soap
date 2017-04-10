@@ -339,3 +339,22 @@ export interface PersonalProfileResponse {
 export interface EventItemsResponse {
     event_item?: base.ItemVersionResultXMLObject[]
 }
+
+export interface AddEventType {
+    eventType: string
+    publicType?: string
+    plan?: string
+    detail?: string
+    description?: string
+    timezone?: string
+    endTimezone?: string
+    allDay?: boolean
+    startOnly?: boolean
+    hiddenPrivate?: boolean
+    facilityUsingPurpose?: string
+    members: MembersType
+    observers?: ObserversType
+    customer?: CustomerType
+    repeatInfo?: RepeatInfoType
+    when?: WhenType
+}
