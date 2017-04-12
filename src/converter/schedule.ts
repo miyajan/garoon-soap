@@ -383,3 +383,259 @@ export class SystemProfile {
         return profile;
     }
 }
+
+export class ModifyEventType {
+    static toParameterObject(event: schedule.ModifyEventType): Object[] {
+        const attrs: any = {
+            id: event.id,
+            event_type: event.eventType,
+            version: 'dummy',
+        };
+        if (event.publicType !== undefined) {
+            attrs.public_type = event.publicType;
+        }
+        if (event.plan !== undefined) {
+            attrs.plan = event.plan;
+        }
+        if (event.detail !== undefined) {
+            attrs.detail = event.detail;
+        }
+        if (event.description !== undefined) {
+            attrs.description = event.description;
+        }
+        if (event.timezone !== undefined) {
+            attrs.timezone = event.timezone;
+        }
+        if (event.endTimezone !== undefined) {
+            attrs.end_timezone = event.endTimezone;
+        }
+        if (event.allDay !== undefined) {
+            attrs.allday = event.allDay;
+        }
+        if (event.startOnly !== undefined) {
+            attrs.start_only = event.startOnly;
+        }
+        if (event.hiddenPrivate !== undefined) {
+            attrs.hidden_private = event.hiddenPrivate;
+        }
+        if (event.facilityUsingPurpose !== undefined) {
+            attrs.facility_using_purpose = event.facilityUsingPurpose;
+        }
+        const scheduleEvent: Object[] = [{
+            _attr: attrs
+        }];
+        if (event.members !== undefined) {
+            const members: Object[] = [];
+            event.members.users.forEach(user => {
+                const attrs: any = {
+                    id: user.id
+                };
+                if (user.order !== undefined) {
+                    attrs.order = user.order;
+                }
+                members.push({
+                    member: [{
+                        user: {
+                            _attr: attrs
+                        }
+                    }]
+                });
+            });
+            event.members.organizations.forEach(organization => {
+                const attrs: any = {
+                    id: organization.id
+                };
+                if (organization.order !== undefined) {
+                    attrs.order = organization.order;
+                }
+                members.push({
+                    member: [{
+                        organization: {
+                            _attr: attrs
+                        }
+                    }]
+                });
+            });
+            event.members.facilities.forEach(facility => {
+                const attrs: any = {
+                    id: facility.id
+                };
+                if (facility.order !== undefined) {
+                    attrs.order = facility.order;
+                }
+                members.push({
+                    member: [{
+                        facility: {
+                            _attr: attrs
+                        }
+                    }]
+                });
+            });
+            scheduleEvent.push({members: members});
+        }
+        if (event.observers !== undefined) {
+            const observers: Object[] = [];
+            event.observers.users.forEach(user => {
+                const attrs: any = {
+                    id: user.id
+                };
+                if (user.order !== undefined) {
+                    attrs.order = user.order;
+                }
+                observers.push({
+                    observer: [{
+                        user: {
+                            _attr: attrs
+                        }
+                    }]
+                });
+            });
+            event.observers.organizations.forEach(organization => {
+                const attrs: any = {
+                    id: organization.id
+                };
+                if (organization.order !== undefined) {
+                    attrs.order = organization.order;
+                }
+                observers.push({
+                    observer: [{
+                        organization: {
+                            _attr: attrs
+                        }
+                    }]
+                });
+            });
+            event.observers.roles.forEach(role => {
+                const attrs: any = {
+                    id: role.id
+                };
+                if (role.order !== undefined) {
+                    attrs.order = role.order;
+                }
+                observers.push({
+                    observer: [{
+                        role: {
+                            _attr: attrs
+                        }
+                    }]
+                });
+            });
+            scheduleEvent.push({observers: observers});
+        }
+        if (event.customer !== undefined) {
+            const attrs: any = {};
+            if (event.customer.name !== undefined) {
+                attrs.name = event.customer.name;
+            }
+            if (event.customer.zipcode !== undefined) {
+                attrs.zipcode = event.customer.zipcode;
+            }
+            if (event.customer.address !== undefined) {
+                attrs.address = event.customer.address;
+            }
+            if (event.customer.map !== undefined) {
+                attrs.map = event.customer.map;
+            }
+            if (event.customer.route !== undefined) {
+                attrs.route = event.customer.route;
+            }
+            if (event.customer.routeTime !== undefined) {
+                attrs.route_time = event.customer.routeTime;
+            }
+            if (event.customer.routeFare !== undefined) {
+                attrs.route_faire = event.customer.routeFare;
+            }
+            if (event.customer.phone !== undefined) {
+                attrs.phone = event.customer.phone;
+            }
+            scheduleEvent.push({customer: {_attr: attrs}});
+        }
+        if (event.repeatInfo !== undefined) {
+            const attrs: any = {
+                type: event.repeatInfo.condition.type,
+                start_date: date.toString(event.repeatInfo.condition.startDate)
+            };
+            if (event.repeatInfo.condition.endDate !== undefined) {
+                attrs.end_date = date.toString(event.repeatInfo.condition.endDate);
+            }
+            if (event.repeatInfo.condition.startTime !== undefined) {
+                attrs.start_time = time.toString(event.repeatInfo.condition.startTime);
+            }
+            if (event.repeatInfo.condition.endTime !== undefined) {
+                attrs.end_time = time.toString(event.repeatInfo.condition.endTime);
+            }
+            if (event.repeatInfo.condition.day !== undefined) {
+                attrs.day = event.repeatInfo.condition.day;
+            }
+            if (event.repeatInfo.condition.week !== undefined) {
+                attrs.week = event.repeatInfo.condition.week;
+            }
+            const condition = {
+                _attr: attrs
+            };
+            const repeatInfo: Object[] = [{
+                condition: condition
+            }];
+            if (event.repeatInfo.exclusiveDatetimes !== undefined) {
+                const exclusiveDatetimes: Object[] = [];
+                event.repeatInfo.exclusiveDatetimes.forEach(exclusiveDatetime => {
+                    exclusiveDatetimes.push({
+                        exclusive_datetime: {
+                            _attr: {
+                                start: datetime.toString(exclusiveDatetime.start),
+                                end: datetime.toString(exclusiveDatetime.end)
+                            }
+                        }
+                    });
+                });
+                repeatInfo.push({exclusive_datetimes: exclusiveDatetimes});
+            }
+            scheduleEvent.push({repeat_info: repeatInfo});
+        }
+        if (event.when !== undefined) {
+            const when: any = [];
+            event.when.datetimes.forEach(dt => {
+                const attrs: any = {
+                    start: datetime.toString(dt.start)
+                };
+                if (dt.end !== undefined) {
+                    attrs.end = datetime.toString(dt.end);
+                }
+                if (dt.facilityCode !== undefined) {
+                    attrs.facility_code = dt.facilityCode;
+                }
+                when.push({
+                    datetime: {
+                        _attr: attrs
+                    }
+                })
+            });
+            event.when.dates.forEach(d => {
+                const attrs: any = {
+                    start: date.toString(d.start)
+                };
+                if (d.end !== undefined) {
+                    attrs.end = date.toString(d.end);
+                }
+                when.push({
+                    date: {
+                        _attr: attrs
+                    }
+                })
+            });
+            scheduleEvent.push({when: when});
+        }
+        return scheduleEvent;
+    }
+}
+
+export class ModifyRepeatEventsResult {
+    static toObject(xmlObj: schedule.ModifyRepeatEventsResultXMLObject): schedule.ModifyRepeatEventsResultType {
+        const original = Event.toObject(xmlObj.original[0]);
+        const modified = Event.toObject(xmlObj.modified[0]);
+        return {
+            original: original,
+            modified: modified
+        };
+    }
+}

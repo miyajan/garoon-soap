@@ -378,3 +378,23 @@ export interface ModifyEventType {
     repeatInfo?: RepeatInfoType
     when?: WhenType
 }
+
+export interface ModifyRepeatEventsOperationType {
+    scheduleEvent: ModifyEventType
+    type: string
+    date?: Date
+}
+
+export interface ModifyRepeatEventsResultType {
+    original: EventType
+    modified: EventType
+}
+
+export interface ModifyRepeatEventsResultXMLObject {
+    original: EventTypeXMLObject[]
+    modified: EventTypeXMLObject[]
+}
+
+export interface ModifyRepeatEventsResultsResponse {
+    result: ModifyRepeatEventsResultXMLObject[]
+}
