@@ -730,4 +730,13 @@ export default class Schedule {
             return results;
         });
     }
+
+    public removeEvents(eventIds: string[]): Promise<void> {
+        const parameters: Object[] = [];
+        eventIds.forEach(eventId => {
+            parameters.push({'event_id': eventId});
+        });
+        return this.client.post(this.path, 'ScheduleRemoveEvents', parameters).then(res => {
+        });
+    }
 }
