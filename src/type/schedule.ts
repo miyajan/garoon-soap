@@ -398,3 +398,9 @@ export interface ModifyRepeatEventsResultXMLObject {
 export interface ModifyRepeatEventsResultsResponse {
     result: ModifyRepeatEventsResultXMLObject[]
 }
+
+export interface RemoveEventsFromRepeatEventOperationType {
+    eventId: string
+    type: string
+    date?: Date
+}
