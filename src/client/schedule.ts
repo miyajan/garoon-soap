@@ -759,4 +759,20 @@ export default class Schedule {
         return this.client.post(this.path, 'ScheduleRemoveEventsFromRepeatEvent', parameters).then(res => {
         });
     }
+
+    public participateEvents(eventIds: string[]): Promise<schedule.EventType[]> {
+        const parameters: Object[] = [];
+        eventIds.forEach(eventId => {
+            parameters.push({'event_id': eventId});
+        });
+        return this.client.post(this.path, 'ScheduleParticipateEvents', parameters).then((res: schedule.EventsResponse) => {
+            const events: schedule.EventType[] = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(obj => {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    }
 }
