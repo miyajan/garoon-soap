@@ -404,3 +404,9 @@ export interface RemoveEventsFromRepeatEventOperationType {
     type: string
     date?: Date
 }
+
+export interface ParticipateEventsToRepeatEventOperationType {
+    eventId: string
+    type: string
+    date?: Date
+}

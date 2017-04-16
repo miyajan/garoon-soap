@@ -791,4 +791,29 @@ export default class Schedule {
             return events;
         });
     }
+
+    public participateEventsToRepeatEvent(operations: schedule.ParticipateEventsToRepeatEventOperationType[]): Promise<schedule.ModifyRepeatEventsResultType[]> {
+        const parameters: Object[] = [];
+        operations.forEach(operation => {
+            const attrs: any = {
+                event_id: operation.eventId,
+                type: operation.type
+            };
+            if (operation.date !== undefined) {
+                attrs.date = date.toString(operation.date);
+            }
+            parameters.push({
+                operation: {
+                    _attr: attrs
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleParticipateEventsToRepeatEvent', parameters).then((res: schedule.ModifyRepeatEventsResultsResponse) => {
+            const results: schedule.ModifyRepeatEventsResultType[] = [];
+            res.result.forEach(obj => {
+                results.push(ScheduleConverter.ModifyRepeatEventsResult.toObject(obj));
+            });
+            return results;
+        });
+    }
 }
