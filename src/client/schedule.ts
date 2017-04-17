@@ -816,4 +816,24 @@ export default class Schedule {
             return results;
         });
     }
+
+    public leaveEventsFromRepeatEvent(operations: schedule.RemoveEventsFromRepeatEventOperationType[]): Promise<void> {
+        const parameters: Object[] = [];
+        operations.forEach(operation => {
+            const attrs: any = {
+                event_id: operation.eventId,
+                type: operation.type
+            };
+            if (operation.date !== undefined) {
+                attrs.date = date.toString(operation.date);
+            }
+            parameters.push({
+                operation: {
+                    _attr: attrs
+                }
+            })
+        });
+        return this.client.post(this.path, 'ScheduleLeaveEventsFromRepeatEvent', parameters).then(res => {
+        });
+    }
 }
