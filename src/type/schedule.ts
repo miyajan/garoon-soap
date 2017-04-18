@@ -410,3 +410,10 @@ export interface ParticipateEventsToRepeatEventOperationType {
     type: string
     date?: Date
 }
+
+export interface CandidateItemType {
+    eventId: string
+    start: Date
+    end: Date
+    facilityId?: string
+}
