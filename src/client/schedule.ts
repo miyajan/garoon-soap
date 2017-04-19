@@ -860,4 +860,28 @@ export default class Schedule {
             return events;
         });
     }
+
+    public removeTemporaryEventCandidates(candidates: schedule.CandidateItemType[]): Promise<schedule.EventType[]> {
+        const parameters: Object[] = [];
+        candidates.forEach(candidate => {
+            const attrs: any = {
+                event_id: candidate.eventId,
+                start: datetime.toString(candidate.start),
+                end: datetime.toString(candidate.end)
+            };
+            if (candidate.facilityId !== undefined) {
+                attrs.facility_id = candidate.facilityId;
+            }
+            parameters.push({candidate: {_attr: attrs}});
+        });
+        return this.client.post(this.path, 'ScheduleRemoveTemporaryEventCandidates', parameters).then((res: schedule.EventsResponse) => {
+            const events: schedule.EventType[] = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(obj => {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    }
 }
