@@ -884,4 +884,27 @@ export default class Schedule {
             return events;
         });
     }
+
+    public addFollows(follows: schedule.FollowContentType[]): Promise<schedule.EventType[]> {
+        const parameters: Object[] = [];
+        follows.forEach(follow => {
+            parameters.push({
+                follow: {
+                    _attr: {
+                        event_id: follow.eventId,
+                        content: follow.content
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleAddFollows', parameters).then((res: schedule.EventsResponse) => {
+            const events: schedule.EventType[] = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(obj => {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    }
 }

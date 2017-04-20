@@ -417,3 +417,8 @@ export interface CandidateItemType {
     end: Date
     facilityId?: string
 }
+
+export interface FollowContentType {
+    eventId: string
+    content: string
+}
