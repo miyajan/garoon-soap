@@ -422,3 +422,9 @@ export interface FollowContentType {
     eventId: string
     content: string
 }
+
+export interface FollowToRepeatEventContentType {
+    eventId: string
+    date: Date
+    content: string
+}

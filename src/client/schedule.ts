@@ -907,4 +907,26 @@ export default class Schedule {
             return events;
         });
     }
+
+    public addFollowsToRepeatEvent(follows: schedule.FollowToRepeatEventContentType[]): Promise<schedule.ModifyRepeatEventsResultType[]> {
+        const parameters: Object[] = [];
+        follows.forEach(follow => {
+            parameters.push({
+                follow: {
+                    _attr: {
+                        event_id: follow.eventId,
+                        date: date.toString(follow.date),
+                        content: follow.content
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleAddFollowsToRepeatEvent', parameters).then((res: schedule.ModifyRepeatEventsResultsResponse) => {
+            const results: schedule.ModifyRepeatEventsResultType[] = [];
+            res.result.forEach(obj => {
+                results.push(ScheduleConverter.ModifyRepeatEventsResult.toObject(obj));
+            });
+            return results;
+        });
+    }
 }
