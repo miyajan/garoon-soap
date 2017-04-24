@@ -428,3 +428,7 @@ export interface FollowToRepeatEventContentType {
     date: Date
     content: string
 }
+
+export interface UserIdsResponse {
+    user_id?: string[]
+}

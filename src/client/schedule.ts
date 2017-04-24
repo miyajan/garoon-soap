@@ -938,4 +938,16 @@ export default class Schedule {
         return this.client.post(this.path, 'ScheduleRemoveFollows', parameters).then(() => {
         });
     }
+
+    public getReadAllowUsers(): Promise<string[]> {
+        return this.client.post(this.path, 'ScheduleGetReadAllowUsers', []).then((res: schedule.UserIdsResponse) => {
+            const userIds: string[] = [];
+            if (res.user_id !== undefined) {
+                res.user_id.forEach(userId => {
+                    userIds.push(userId);
+                });
+            }
+            return userIds;
+        });
+    }
 }
