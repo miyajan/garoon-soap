@@ -432,3 +432,7 @@ export interface FollowToRepeatEventContentType {
 export interface UserIdsResponse {
     user_id?: string[]
 }
+
+export interface GroupIdsResponse {
+    group_id?: string[]
+}
