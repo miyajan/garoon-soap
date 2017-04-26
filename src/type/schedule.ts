@@ -436,3 +436,7 @@ export interface UserIdsResponse {
 export interface GroupIdsResponse {
     group_id?: string[]
 }
+
+export interface FacilityIdsResponse {
+    facility_id?: string[]
+}

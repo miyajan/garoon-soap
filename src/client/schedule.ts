@@ -962,4 +962,16 @@ export default class Schedule {
             return groupIds;
         });
     }
+
+    public getReadAllowFacilities(): Promise<string[]> {
+        return this.client.post(this.path, 'ScheduleGetReadAllowFacilities', []).then((res: schedule.FacilityIdsResponse) => {
+            const facilityIds: string[] = [];
+            if (res.facility_id !== undefined) {
+                res.facility_id.forEach(facilityId => {
+                    facilityIds.push(facilityId);
+                });
+            }
+            return facilityIds;
+        });
+    }
 }
