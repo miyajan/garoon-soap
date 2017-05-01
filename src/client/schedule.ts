@@ -1010,4 +1010,16 @@ export default class Schedule {
             return facilityIds;
         });
     }
+
+    public getModifyAllowUsers(): Promise<string[]> {
+        return this.client.post(this.path, 'ScheduleGetModifyAllowUsers', []).then((res: schedule.UserIdsResponse) => {
+            const userIds: string[] = [];
+            if (res.user_id !== undefined) {
+                res.user_id.forEach(userId => {
+                    userIds.push(userId);
+                });
+            }
+            return userIds;
+        });
+    }
 }
