@@ -1022,4 +1022,16 @@ export default class Schedule {
             return userIds;
         });
     }
+
+    public getModifyAllowGroups(): Promise<string[]> {
+        return this.client.post(this.path, 'ScheduleGetModifyAllowGroups', []).then((res: schedule.GroupIdsResponse) => {
+            const groupIds: string[] = [];
+            if (res.group_id !== undefined) {
+                res.group_id.forEach(groupId => {
+                    groupIds.push(groupId);
+                });
+            }
+            return groupIds;
+        });
+    }
 }
