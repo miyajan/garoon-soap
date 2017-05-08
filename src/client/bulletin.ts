@@ -3,6 +3,7 @@ import Setting from "./setting";
 import * as base from "../type/base";
 import * as bulletin from "../type/bulletin";
 import * as BaseConverter from "../converter/base";
+import * as BulletinConverter from "../converter/bulletin";
 
 export default class Bulletin {
     private client: Client;
@@ -33,6 +34,15 @@ export default class Bulletin {
                 });
             }
             return categoryVersions;
+        });
+    }
+
+    public getCategories(): Promise<bulletin.CategoryType|null> {
+        return this.client.post(this.path, 'BulletinGetCategories', []).then((res: bulletin.CategoriesResponse) => {
+            if (res.categories !== undefined) {
+                return BulletinConverter.Category.toObject(res.categories[0].root[0]);
+            }
+            return null;
         });
     }
 }
