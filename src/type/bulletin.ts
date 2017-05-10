@@ -50,3 +50,7 @@ export interface CategoryInformationXMLObject {
 export interface CategoriesResponse {
     categories?: CategoryInformationXMLObject[]
 }
+
+export interface TopicItemsResponse {
+    topic_item?: base.ItemVersionResultXMLObject[]
+}

@@ -4,6 +4,7 @@ import * as base from "../type/base";
 import * as bulletin from "../type/bulletin";
 import * as BaseConverter from "../converter/base";
 import * as BulletinConverter from "../converter/bulletin";
+import * as datetime from "../util/datetime";
 
 export default class Bulletin {
     private client: Client;
@@ -43,6 +44,46 @@ export default class Bulletin {
                 return BulletinConverter.Category.toObject(res.categories[0].root[0]);
             }
             return null;
+        });
+    }
+
+    public getTopicVersions(start: Date, end?: Date, topicItems?: base.ItemVersionType[], categoryIds?: string[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        const attr: any = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        parameters.push({_attr: attr});
+
+        if (topicItems !== undefined) {
+            topicItems.forEach(topicItem => {
+                parameters.push({
+                    topic_item: {
+                        _attr: {
+                            id: topicItem.id,
+                            version: topicItem.version
+                        }
+                    }
+                });
+            });
+        }
+
+        if (categoryIds !== undefined) {
+            categoryIds.forEach(categoryId => {
+                parameters.push({category_id: categoryId});
+            });
+        }
+
+        return this.client.post(this.path, 'BulletinGetTopicVersions', parameters).then((res: bulletin.TopicItemsResponse) => {
+            const topicVersions: base.ItemVersionResultType[] = [];
+            if (res.topic_item !== undefined) {
+                res.topic_item.forEach(obj => {
+                    topicVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return topicVersions;
         });
     }
 }
