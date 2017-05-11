@@ -47,6 +47,54 @@ export default class Bulletin {
         });
     }
 
+    public searchTopics(options: bulletin.SearchOptions): Promise<bulletin.TopicType[]> {
+        const parameters: Object[] = [];
+        const attr: any = {
+            text: options.text,
+            start: datetime.toString(options.start),
+            category_id: 0,
+            search_sub_categories: true,
+            title_search: true,
+            body_search: true,
+            from_search: true,
+            follow_search: true
+        };
+        if (options.sensitive !== undefined) {
+            attr.sensitive = options.sensitive;
+        }
+        if (options.end !== undefined) {
+            attr.end = datetime.toString(options.end);
+        }
+        if (options.categoryId !== undefined) {
+            attr.category_id = options.categoryId;
+        }
+        if (options.searchSubCategories !== undefined) {
+            attr.search_sub_categories = options.searchSubCategories;
+        }
+        if (options.titleSearch !== undefined) {
+            attr.title_search = options.titleSearch;
+        }
+        if (options.bodySearch !== undefined) {
+            attr.body_search = options.bodySearch;
+        }
+        if (options.fromSearch !== undefined) {
+            attr.from_search = options.fromSearch;
+        }
+        if (options.followSearch !== undefined) {
+            attr.follow_search = options.followSearch;
+        }
+        parameters.push({_attr: attr});
+        return this.client.post(this.path, 'BulletinSearchTopics', parameters).then((res: bulletin.TopicsResponse) => {
+            const topics: bulletin.TopicType[] = [];
+            if (res.topic !== undefined) {
+                res.topic.forEach(obj => {
+                    topics.push(BulletinConverter.Topic.toObject(obj));
+                });
+            }
+            return topics;
+        });
+    }
+
     public getTopicVersions(start: Date, end?: Date, topicItems?: base.ItemVersionType[], categoryIds?: string[]): Promise<base.ItemVersionResultType[]> {
         const parameters: Object[] = [];
         const attr: any = {

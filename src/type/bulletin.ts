@@ -47,6 +47,74 @@ export interface CategoryInformationXMLObject {
     root: CategoryXMLObject[]
 }
 
+export interface SearchOptions {
+    text: string
+    sensitive?: boolean
+    start: Date
+    end?: Date
+    categoryId?: string
+    searchSubCategories?: boolean
+    titleSearch?: boolean
+    bodySearch?: boolean
+    fromSearch?: boolean
+    followSearch?: boolean
+}
+
+export interface FileType {
+    id: string
+    name: string
+    size: number
+    mimeType: string
+}
+
+export interface TopicType {
+    id: string
+    version: string
+    subject: string
+    isDraft: boolean
+    startDatetime?: Date
+    endDatetime?: Date
+    startIsDatetime?: boolean
+    endIsDatetime?: boolean
+    canFollow: boolean
+    published?: boolean
+    unread?: boolean
+    expired?: boolean
+    categoryId: string
+    body: string
+    htmlBody?: string
+    files: FileType[]
+    followId?: string
+    followNumber?: string
+    creator: base.ChangeLogType
+    modifier: base.ChangeLogType
+}
+
+export interface FileXMLObject {
+    $: any
+}
+
+export interface ContentXMLObject {
+    $: any
+    file?: FileXMLObject[]
+}
+
+export interface FollowXMLObject {
+    $: any
+}
+
+export interface TopicXMLObject {
+    $: any
+    content: ContentXMLObject[]
+    follow: FollowXMLObject[]
+    creator: base.ChangeLogXMLObject[]
+    modifier: base.ChangeLogXMLObject[]
+}
+
+export interface TopicsResponse {
+    topic: TopicXMLObject[]
+}
+
 export interface CategoriesResponse {
     categories?: CategoryInformationXMLObject[]
 }
