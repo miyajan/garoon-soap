@@ -134,4 +134,38 @@ export default class Bulletin {
             return topicVersions;
         });
     }
+
+    public getDraftTopicVersions(start: Date, end?: Date, topicItems?: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        const attr: any = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        parameters.push({_attr: attr});
+
+        if (topicItems !== undefined) {
+            topicItems.forEach(topicItem => {
+                parameters.push({
+                    topic_item: {
+                        _attr: {
+                            id: topicItem.id,
+                            version: topicItem.version
+                        }
+                    }
+                });
+            });
+        }
+
+        return this.client.post(this.path, 'BulletinGetDraftTopicVersions', parameters).then((res: bulletin.TopicItemsResponse) => {
+            const topicVersions: base.ItemVersionResultType[] = [];
+            if (res.topic_item !== undefined) {
+                res.topic_item.forEach(obj => {
+                    topicVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return topicVersions;
+        });
+    }
 }
