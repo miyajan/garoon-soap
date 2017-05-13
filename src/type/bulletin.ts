@@ -122,3 +122,20 @@ export interface CategoriesResponse {
 export interface TopicItemsResponse {
     topic_item?: base.ItemVersionResultXMLObject[]
 }
+
+export interface TopicListType {
+    [key: string]: string[]
+}
+
+export interface TopicIdXMLObject {
+    $: any
+}
+
+export interface TopicListXMLObject {
+    $: any
+    topic?: TopicIdXMLObject[]
+}
+
+export interface TopicListResponse {
+    category?: TopicListXMLObject[]
+}

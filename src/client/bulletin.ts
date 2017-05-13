@@ -168,4 +168,16 @@ export default class Bulletin {
             return topicVersions;
         });
     }
+
+    public getTopics(categoryIds: string[]): Promise<bulletin.TopicListType> {
+        const parameters: Object[] = [];
+        categoryIds.forEach(categoryId => {
+            parameters.push({
+                category_id: categoryId
+            });
+        });
+        return this.client.post(this.path, 'BulletinGetTopics', parameters).then((res: bulletin.TopicListResponse) => {
+            return BulletinConverter.TopicList.toObject(res);
+        });
+    }
 }

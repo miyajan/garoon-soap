@@ -104,3 +104,23 @@ export class Topic {
         return topic;
     }
 }
+
+export class TopicList {
+    static toObject(xmlObj: bulletin.TopicListResponse): bulletin.TopicListType {
+        const topicList: bulletin.TopicListType = {};
+
+        if (xmlObj.category !== undefined) {
+            xmlObj.category.forEach(obj => {
+                const topicIds: string[] = [];
+                if (obj.topic !== undefined) {
+                    obj.topic.forEach(topicObj => {
+                        topicIds.push(topicObj.$.id);
+                    });
+                }
+                topicList[obj.$.category_id] = topicIds;
+            });
+        }
+
+        return topicList;
+    }
+}
