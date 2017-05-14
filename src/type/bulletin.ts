@@ -139,3 +139,8 @@ export interface TopicListXMLObject {
 export interface TopicListResponse {
     category?: TopicListXMLObject[]
 }
+
+export interface TopicIdType {
+    topicId: string
+    isDraft: boolean
+}

@@ -180,4 +180,27 @@ export default class Bulletin {
             return BulletinConverter.TopicList.toObject(res);
         });
     }
+
+    public getTopicByIds(topics: bulletin.TopicIdType[]): Promise<bulletin.TopicType[]> {
+        const parameters: Object[] = [];
+        topics.forEach(topic => {
+            parameters.push({
+                topics: {
+                    _attr: {
+                        topic_id: topic.topicId,
+                        is_draft: topic.isDraft
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'BulletinGetTopicByIds', parameters).then((res: bulletin.TopicsResponse) => {
+            const topics: bulletin.TopicType[] = [];
+            if (res.topic !== undefined) {
+                res.topic.forEach(obj => {
+                    topics.push(BulletinConverter.Topic.toObject(obj));
+                });
+            }
+            return topics;
+        });
+    }
 }
