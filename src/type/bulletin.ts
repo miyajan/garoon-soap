@@ -154,7 +154,6 @@ export interface CreateTopicType {
     creatorGroupId?: string
     subject: string
     manuallyEnterSender?: string
-    isDraft?: boolean
     startDatetime?: Date
     endDatetime?: Date
     canFollow: boolean

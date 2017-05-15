@@ -223,9 +223,6 @@ export default class Bulletin {
             if (topic.manuallyEnterSender !== undefined) {
                 topicAttr.manually_enter_sender = topic.manuallyEnterSender;
             }
-            if (topic.isDraft !== undefined) {
-                topicAttr.is_draft = topic.isDraft;
-            }
             if (topic.startDatetime !== undefined) {
                 topicAttr.start_datetime = datetime.toString(topic.startDatetime);
             }
@@ -275,6 +272,84 @@ export default class Bulletin {
             });
         });
         return this.client.post(this.path, 'BulletinCreateTopics', parameters).then((res: bulletin.TopicsResponse) => {
+            const topics: bulletin.TopicType[] = [];
+            if (res.topic !== undefined) {
+                res.topic.forEach(obj => {
+                    topics.push(BulletinConverter.Topic.toObject(obj));
+                });
+            }
+            return topics;
+        });
+    }
+
+    public saveDraftTopics(topics: bulletin.CreateTopicType[]): Promise<bulletin.TopicType[]> {
+        const parameters: Object[] = [];
+        topics.forEach(topic => {
+            const draftTopic: any = [];
+            const topicAttr: any = {
+                id: 'dummy',
+                version: 'dummy',
+                subject: topic.subject,
+                can_follow: topic.canFollow,
+                category_id: topic.categoryId
+            };
+            const content: any = [];
+
+            if (topic.creatorGroupId !== undefined) {
+                topicAttr.creator_group_id = topic.creatorGroupId;
+            }
+            if (topic.manuallyEnterSender !== undefined) {
+                topicAttr.manually_enter_sender = topic.manuallyEnterSender;
+            }
+            if (topic.startDatetime !== undefined) {
+                topicAttr.start_datetime = datetime.toString(topic.startDatetime);
+            }
+            if (topic.endDatetime !== undefined) {
+                topicAttr.end_datetime = datetime.toString(topic.endDatetime);
+            }
+
+            const contentAttr: any = {
+                body: topic.body
+            };
+            if (topic.htmlBody !== undefined) {
+                contentAttr.html_body = topic.htmlBody;
+            }
+            content.push({_attr: contentAttr});
+
+            if (topic.files !== undefined) {
+                content.file = [];
+                draftTopic.file = [];
+                topic.files.forEach((file, i) => {
+                    const fileId = i + 1;
+                    content.push({
+                        file: {
+                            _attr: {
+                                id: fileId,
+                                name: file.name
+                            }
+                        }
+                    });
+                    draftTopic.push({
+                        file: [
+                            {_attr: {id: fileId}},
+                            {content: file.content.toString('base64')}
+                        ]
+                    });
+                });
+            }
+
+            draftTopic.push({
+                topic: [
+                    {_attr: topicAttr},
+                    {content: content}
+                ]
+            });
+
+            parameters.push({
+                save_draft_topic: draftTopic
+            });
+        });
+        return this.client.post(this.path, 'BulletinSaveDraftTopics', parameters).then((res: bulletin.TopicsResponse) => {
             const topics: bulletin.TopicType[] = [];
             if (res.topic !== undefined) {
                 res.topic.forEach(obj => {
