@@ -144,3 +144,22 @@ export interface TopicIdType {
     topicId: string
     isDraft: boolean
 }
+
+export interface CreateFileType {
+    name: string
+    content: Buffer
+}
+
+export interface CreateTopicType {
+    creatorGroupId?: string
+    subject: string
+    manuallyEnterSender?: string
+    isDraft?: boolean
+    startDatetime?: Date
+    endDatetime?: Date
+    canFollow: boolean
+    categoryId: string
+    body: string
+    htmlBody?: string
+    files?: CreateFileType[]
+}

@@ -38,7 +38,7 @@ export default class Bulletin {
         });
     }
 
-    public getCategories(): Promise<bulletin.CategoryType|null> {
+    public getCategories(): Promise<bulletin.CategoryType | null> {
         return this.client.post(this.path, 'BulletinGetCategories', []).then((res: bulletin.CategoriesResponse) => {
             if (res.categories !== undefined) {
                 return BulletinConverter.Category.toObject(res.categories[0].root[0]);
@@ -194,6 +194,87 @@ export default class Bulletin {
             });
         });
         return this.client.post(this.path, 'BulletinGetTopicByIds', parameters).then((res: bulletin.TopicsResponse) => {
+            const topics: bulletin.TopicType[] = [];
+            if (res.topic !== undefined) {
+                res.topic.forEach(obj => {
+                    topics.push(BulletinConverter.Topic.toObject(obj));
+                });
+            }
+            return topics;
+        });
+    }
+
+    public createTopics(topics: bulletin.CreateTopicType[]): Promise<bulletin.TopicType[]> {
+        const parameters: Object[] = [];
+        topics.forEach(topic => {
+            const createTopic: any = [];
+            const topicAttr: any = {
+                id: 'dummy',
+                version: 'dummy',
+                subject: topic.subject,
+                can_follow: topic.canFollow,
+                category_id: topic.categoryId
+            };
+            const content: any = [];
+
+            if (topic.creatorGroupId !== undefined) {
+                topicAttr.creator_group_id = topic.creatorGroupId;
+            }
+            if (topic.manuallyEnterSender !== undefined) {
+                topicAttr.manually_enter_sender = topic.manuallyEnterSender;
+            }
+            if (topic.isDraft !== undefined) {
+                topicAttr.is_draft = topic.isDraft;
+            }
+            if (topic.startDatetime !== undefined) {
+                topicAttr.start_datetime = datetime.toString(topic.startDatetime);
+            }
+            if (topic.endDatetime !== undefined) {
+                topicAttr.end_datetime = datetime.toString(topic.endDatetime);
+            }
+
+            const contentAttr: any = {
+                body: topic.body
+            };
+            if (topic.htmlBody !== undefined) {
+                contentAttr.html_body = topic.htmlBody;
+            }
+            content.push({_attr: contentAttr});
+
+            if (topic.files !== undefined) {
+                content.file = [];
+                createTopic.file = [];
+                topic.files.forEach((file, i) => {
+                    const fileId = i + 1;
+                    content.push({
+                        file: {
+                            _attr: {
+                                id: fileId,
+                                name: file.name
+                            }
+                        }
+                    });
+                    createTopic.push({
+                        file: [
+                            {_attr: {id: fileId}},
+                            {content: file.content.toString('base64')}
+                        ]
+                    });
+                });
+            }
+
+            createTopic.push({
+                topic: [
+                    {_attr: topicAttr},
+                    {content: content}
+                ]
+            });
+
+            parameters.push({
+                create_topic: createTopic
+            });
+        });
+        return this.client.post(this.path, 'BulletinCreateTopics', parameters).then((res: bulletin.TopicsResponse) => {
             const topics: bulletin.TopicType[] = [];
             if (res.topic !== undefined) {
                 res.topic.forEach(obj => {
