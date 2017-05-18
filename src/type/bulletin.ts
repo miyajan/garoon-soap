@@ -162,3 +162,23 @@ export interface CreateTopicType {
     htmlBody?: string
     files?: CreateFileType[]
 }
+
+export interface ModifyFileType {
+    id?: string
+    name: string
+    content: Buffer
+}
+
+export interface ModifyTopicType {
+    id: string
+    creatorGroupId?: string
+    subject: string
+    manuallyEnterSender?: string
+    startDatetime?: Date
+    endDatetime?: Date
+    canFollow: boolean
+    categoryId: string
+    body: string
+    htmlBody?: string
+    files?: ModifyFileType[]
+}
