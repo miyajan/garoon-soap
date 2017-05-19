@@ -436,4 +436,20 @@ export default class Bulletin {
             return topics;
         });
     }
+
+    public removeTopics(removeTopics: bulletin.RemoveTopicType[]): Promise<void> {
+        const parameters: Object[] = [];
+        removeTopics.forEach(removeTopic => {
+            parameters.push({
+                topics: {
+                    _attr: {
+                        topic_id: removeTopic.id,
+                        is_draft: removeTopic.isDraft
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'BulletinRemoveTopics', parameters).then(() => {
+        });
+    }
 }

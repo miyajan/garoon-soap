@@ -182,3 +182,8 @@ export interface ModifyTopicType {
     htmlBody?: string
     files?: ModifyFileType[]
 }
+
+export interface RemoveTopicType {
+    id: string
+    isDraft: boolean
+}
