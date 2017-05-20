@@ -187,3 +187,20 @@ export interface RemoveTopicType {
     id: string
     isDraft: boolean
 }
+
+export interface FollowType {
+    id: string
+    number: string
+    text: string
+    htmlText?: string
+    files: FileType[]
+}
+
+export interface FollowTypeXMLObject {
+    $: any
+    file?: FileXMLObject[]
+}
+
+export interface FollowsResponse {
+    follow?: FollowTypeXMLObject[]
+}

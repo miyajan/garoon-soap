@@ -41,18 +41,25 @@ export class Category {
     }
 }
 
+export class File {
+    static toObject(xmlObj: bulletin.FileXMLObject): bulletin.FileType {
+        const attr = xmlObj.$;
+        return {
+            id: attr.id,
+            name: attr.name,
+            size: attr.size,
+            mimeType: attr.mime_type
+        };
+    }
+}
+
 export class Topic {
     static toObject(xmlObj: bulletin.TopicXMLObject): bulletin.TopicType {
         const contentObj = xmlObj.content[0];
         const files: bulletin.FileType[] = [];
         if (contentObj.file !== undefined) {
             contentObj.file.forEach(obj => {
-                files.push({
-                    id: obj.$.id,
-                    name: obj.$.name,
-                    size: obj.$.size,
-                    mimeType: obj.$.mime_type
-                });
+                files.push(File.toObject(obj));
             });
         }
 
@@ -122,5 +129,30 @@ export class TopicList {
         }
 
         return topicList;
+    }
+}
+
+export class Follow {
+    static toObject(xmlObj: bulletin.FollowTypeXMLObject): bulletin.FollowType {
+        const attr = xmlObj.$;
+
+        const files: bulletin.FileType[] = [];
+        if (xmlObj.file !== undefined) {
+            xmlObj.file.forEach(obj => {
+                files.push(File.toObject(obj));
+            });
+        }
+
+        const follow: bulletin.FollowType = {
+            id: attr.id,
+            number: attr.number,
+            text: attr.text,
+            files: files
+        };
+        if (attr.html_text !== undefined) {
+            follow.htmlText = attr.html_text;
+        }
+
+        return follow;
     }
 }

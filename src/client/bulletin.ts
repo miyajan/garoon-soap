@@ -452,4 +452,22 @@ export default class Bulletin {
         return this.client.post(this.path, 'BulletinRemoveTopics', parameters).then(() => {
         });
     }
+
+    public getFollows(topicId: string, offset: number, limit: number): Promise<bulletin.FollowType[]> {
+        const parameters: Object[] = [];
+        parameters.push({_attr: {
+            topic_id: topicId,
+            offset: offset,
+            limit: limit
+        }});
+        return this.client.post(this.path, 'BulletinGetFollows', parameters).then((res: bulletin.FollowsResponse) => {
+            const follows: bulletin.FollowType[] = [];
+            if (res.follow !== undefined) {
+                res.follow.forEach(obj => {
+                    follows.push(BulletinConverter.Follow.toObject(obj));
+                });
+            }
+            return follows;
+        });
+    }
 }
