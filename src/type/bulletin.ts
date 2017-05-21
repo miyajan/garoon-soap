@@ -204,3 +204,10 @@ export interface FollowTypeXMLObject {
 export interface FollowsResponse {
     follow?: FollowTypeXMLObject[]
 }
+
+export interface AddFollowType {
+    topicId: string
+    text: string
+    htmlText?: string
+    files?: CreateFileType[]
+}

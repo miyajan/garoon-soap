@@ -455,11 +455,13 @@ export default class Bulletin {
 
     public getFollows(topicId: string, offset: number, limit: number): Promise<bulletin.FollowType[]> {
         const parameters: Object[] = [];
-        parameters.push({_attr: {
-            topic_id: topicId,
-            offset: offset,
-            limit: limit
-        }});
+        parameters.push({
+            _attr: {
+                topic_id: topicId,
+                offset: offset,
+                limit: limit
+            }
+        });
         return this.client.post(this.path, 'BulletinGetFollows', parameters).then((res: bulletin.FollowsResponse) => {
             const follows: bulletin.FollowType[] = [];
             if (res.follow !== undefined) {
@@ -468,6 +470,72 @@ export default class Bulletin {
                 });
             }
             return follows;
+        });
+    }
+
+    public addFollows(follows: bulletin.AddFollowType[]): Promise<bulletin.TopicType[]> {
+        const parameters: Object[] = [];
+        follows.forEach(follow => {
+            const addFollow: Object[] = [];
+            addFollow.push({
+                _attr: {
+                    topic_id: follow.topicId
+                }
+            });
+
+            const followObj: Object[] = [];
+            const followAttr: any = {
+                id: 'dummy',
+                number: 'dummy',
+                text: follow.text
+            };
+            if (follow.htmlText !== undefined) {
+                followAttr.html_text = follow.htmlText;
+            }
+            followObj.push({
+                _attr: followAttr
+            });
+
+            if (follow.files !== undefined) {
+                follow.files.forEach((file, index) => {
+                    const fileId = index + 1;
+                    addFollow.push({
+                        file: [
+                            {
+                                _attr: {
+                                    id: fileId
+                                }
+                            },
+                            {
+                                content: file.content.toString('base64')
+                            }
+                        ]
+                    });
+                    followObj.push({
+                        file: {
+                            _attr: {
+                                id: fileId,
+                                name: file.name
+                            }
+                        }
+                    });
+                });
+            }
+            addFollow.push({
+                follow: followObj
+            });
+            parameters.push({
+                add_follow: addFollow
+            });
+        });
+        return this.client.post(this.path, 'BulletinAddFollows', parameters).then((res: bulletin.TopicsResponse) => {
+            const topics: bulletin.TopicType[] = [];
+            if (res.topic !== undefined) {
+                res.topic.forEach(obj => {
+                    topics.push(BulletinConverter.Topic.toObject(obj));
+                });
+            }
+            return topics;
         });
     }
 }
