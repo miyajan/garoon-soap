@@ -3,6 +3,7 @@ import Setting from "./setting";
 import * as base from "../type/base";
 import * as mail from "../type/mail";
 import * as BaseConverter from "../converter/base";
+import * as MailConverter from "../converter/mail";
 import * as datetime from "../util/datetime";
 
 export default class Mail {
@@ -50,6 +51,22 @@ export default class Mail {
                 });
             }
             return mailItems;
+        });
+    }
+
+    public getMailsById(mailIds: string[]): Promise<mail.MailType[]> {
+        const parameters: Object[] = [];
+        mailIds.forEach(mailId => {
+            parameters.push({mail_id: mailId});
+        });
+        return this.client.post(this.path, 'MailGetMailsById', parameters).then((res: mail.MailsResponse) => {
+            const mails: mail.MailType[] = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(obj => {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
         });
     }
 }
