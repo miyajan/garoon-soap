@@ -69,4 +69,11 @@ export default class Mail {
             return mails;
         });
     }
+
+    public downloadSource(mailId: string): Promise<Buffer> {
+        const parameters = [{_attr: {mail_id: mailId}}];
+        return this.client.post(this.path, 'MailSourceDownload', parameters).then((res: mail.SourceResponse) => {
+            return BaseConverter.File.toBuffer(res.source[0]);
+        });
+    }
 }

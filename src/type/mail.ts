@@ -72,3 +72,7 @@ export interface MailXMLObject {
 export interface MailsResponse {
     mail?: MailXMLObject[]
 }
+
+export interface SourceResponse {
+    source: base.FileXMLObject[]
+}
