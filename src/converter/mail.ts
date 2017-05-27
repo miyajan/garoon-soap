@@ -119,3 +119,19 @@ export class MailSource {
         return source;
     }
 }
+
+export class NewArrivingEmail {
+    static toObject(xmlObj: mail.NewArrivingEmailXMLObject): mail.NewArrivingEmailType {
+        const attrs = xmlObj.$;
+        const disabled = attrs.disabled === 'Inactivate';
+        const deleted = attrs.deleted === 'Deleted';
+        return {
+            id: attrs.id,
+            name: attrs.name,
+            email: attrs.email,
+            newMails: Number(attrs.new_mails),
+            disabled: disabled,
+            deleted: deleted
+        };
+    }
+}

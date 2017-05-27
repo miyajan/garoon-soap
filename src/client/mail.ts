@@ -76,4 +76,16 @@ export default class Mail {
             return BaseConverter.File.toBuffer(res.source[0]);
         });
     }
+
+    public getNewArrivingEmail(): Promise<mail.NewArrivingEmailType[]> {
+        return this.client.post(this.path, 'MailGetNewArrivingEmail', []).then((res: mail.AccountsResponse) => {
+            const mails: mail.NewArrivingEmailType[] = [];
+            if (res.account !== undefined) {
+                res.account.forEach(obj => {
+                    mails.push(MailConverter.NewArrivingEmail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    }
 }

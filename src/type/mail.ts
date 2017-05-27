@@ -76,3 +76,20 @@ export interface MailsResponse {
 export interface SourceResponse {
     source: base.FileXMLObject[]
 }
+
+export interface NewArrivingEmailType {
+    id: string
+    name: string
+    email: string
+    newMails: number
+    disabled: boolean
+    deleted: boolean
+}
+
+export interface NewArrivingEmailXMLObject {
+    $: any
+}
+
+export interface AccountsResponse {
+    account?: NewArrivingEmailXMLObject[]
+}
