@@ -93,3 +93,8 @@ export interface NewArrivingEmailXMLObject {
 export interface AccountsResponse {
     account?: NewArrivingEmailXMLObject[]
 }
+
+export interface MoveMailsOperationType {
+    folderId: string
+    mailId: string
+}

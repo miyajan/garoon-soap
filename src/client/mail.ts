@@ -88,4 +88,27 @@ export default class Mail {
             return mails;
         });
     }
+
+    public moveMailsToOtherFolder(operations: mail.MoveMailsOperationType[]): Promise<mail.MailType[]> {
+        const parameters: Object[] = [];
+        operations.forEach(operation => {
+            parameters.push({
+                operation: {
+                    _attr: {
+                        folder_id: operation.folderId,
+                        mail_id: operation.mailId
+                    }
+                }
+            })
+        });
+        return this.client.post(this.path, 'MailMoveMailsToOtherFolder', parameters).then((res: mail.MailsResponse) => {
+            const mails: mail.MailType[] = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(obj => {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    }
 }
