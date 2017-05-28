@@ -111,4 +111,16 @@ export default class Mail {
             return mails;
         });
     }
+
+    public downloadFile(mailId: string, fileId: string): Promise<Buffer> {
+        const parameters = [{
+            _attr: {
+                mail_id: mailId,
+                file_id: fileId
+            }
+        }];
+        return this.client.post(this.path, 'MailFileDownload', parameters).then((res: base.FileResponse) => {
+            return BaseConverter.File.toBuffer(res.file[0]);
+        });
+    }
 }
