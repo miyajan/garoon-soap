@@ -98,3 +98,32 @@ export interface MoveMailsOperationType {
     folderId: string
     mailId: string
 }
+
+export interface FolderOperationType {
+    accountId: string
+    parentFolderId?: string
+    name: string
+    description?: string
+}
+
+export interface FolderType {
+    id: string
+    description: string
+    subscribe: boolean
+    mailIds: string[]
+    name: string
+    order: string
+}
+
+export interface FolderMailXMLObject {
+    $: any
+}
+
+export interface FolderXMLObject {
+    $: any
+    mail?: FolderMailXMLObject[]
+}
+
+export interface FoldersResponse {
+    folder?: FolderXMLObject[]
+}

@@ -135,3 +135,26 @@ export class NewArrivingEmail {
         };
     }
 }
+
+export class Folder {
+    static toObject(xmlObj: mail.FolderXMLObject): mail.FolderType {
+        const mailIds: string[] = [];
+        if (xmlObj.mail !== undefined) {
+            xmlObj.mail.forEach(obj => {
+                mailIds.push(obj.$.id);
+            });
+        }
+
+        const attrs = xmlObj.$;
+        const description = attrs.description === undefined ? '' : attrs.description;
+        const subscribe = attrs.subscribe === undefined ? false : Util.toBoolean(attrs.subscribe);
+        return {
+            id: attrs.key,
+            description: description,
+            subscribe: subscribe,
+            name: attrs.name,
+            order: attrs.order,
+            mailIds: mailIds
+        };
+    }
+}

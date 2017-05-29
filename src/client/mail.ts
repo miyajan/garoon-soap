@@ -123,4 +123,42 @@ export default class Mail {
             return BaseConverter.File.toBuffer(res.file[0]);
         });
     }
+
+    public addFolders(operations: mail.FolderOperationType[]): Promise<mail.FolderType[]> {
+        const parameters: Object[] = [];
+        operations.forEach(operation => {
+            const attr: any = {account_id: operation.accountId};
+            if (operation.parentFolderId !== undefined) {
+                attr.parent_folder_id = operation.parentFolderId;
+            }
+            const folderAttr: any = {
+                key: 'dummy',
+                name: operation.name
+            };
+            if (operation.description !== undefined) {
+                folderAttr.description = operation.description;
+            }
+            parameters.push({
+                add_folder: [
+                    {
+                        _attr: attr
+                    },
+                    {
+                        folder: {
+                            _attr: folderAttr
+                        }
+                    }
+                ]
+            });
+        });
+        return this.client.post(this.path, 'MailAddFolders', parameters).then((res: mail.FoldersResponse) => {
+            const folders: mail.FolderType[] = [];
+            if (res.folder !== undefined) {
+                res.folder.forEach(obj => {
+                    folders.push(MailConverter.Folder.toObject(obj));
+                });
+            }
+            return folders;
+        });
+    }
 }
