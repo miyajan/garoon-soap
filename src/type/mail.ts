@@ -99,7 +99,7 @@ export interface MoveMailsOperationType {
     mailId: string
 }
 
-export interface FolderOperationType {
+export interface AddFolderOperationType {
     accountId: string
     parentFolderId?: string
     name: string
@@ -126,4 +126,12 @@ export interface FolderXMLObject {
 
 export interface FoldersResponse {
     folder?: FolderXMLObject[]
+}
+
+export interface ModifyFolderOperationType {
+    accountId: string
+    parentFolderId?: string
+    folderId: string
+    name: string
+    description?: string
 }

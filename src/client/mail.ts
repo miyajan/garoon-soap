@@ -124,7 +124,7 @@ export default class Mail {
         });
     }
 
-    public addFolders(operations: mail.FolderOperationType[]): Promise<mail.FolderType[]> {
+    public addFolders(operations: mail.AddFolderOperationType[]): Promise<mail.FolderType[]> {
         const parameters: Object[] = [];
         operations.forEach(operation => {
             const attr: any = {account_id: operation.accountId};
@@ -152,6 +152,44 @@ export default class Mail {
             });
         });
         return this.client.post(this.path, 'MailAddFolders', parameters).then((res: mail.FoldersResponse) => {
+            const folders: mail.FolderType[] = [];
+            if (res.folder !== undefined) {
+                res.folder.forEach(obj => {
+                    folders.push(MailConverter.Folder.toObject(obj));
+                });
+            }
+            return folders;
+        });
+    }
+
+    public modifyFolders(operations: mail.ModifyFolderOperationType[]): Promise<mail.FolderType[]> {
+        const parameters: Object[] = [];
+        operations.forEach(operation => {
+            const attr: any = {account_id: operation.accountId};
+            if (operation.parentFolderId !== undefined) {
+                attr.parent_folder_id = operation.parentFolderId;
+            }
+            const folderAttr: any = {
+                key: operation.folderId,
+                name: operation.name
+            };
+            if (operation.description !== undefined) {
+                folderAttr.description = operation.description;
+            }
+            parameters.push({
+                modify_folder: [
+                    {
+                        _attr: attr
+                    },
+                    {
+                        folder: {
+                            _attr: folderAttr
+                        }
+                    }
+                ]
+            });
+        });
+        return this.client.post(this.path, 'MailModifyFolders', parameters).then((res: mail.FoldersResponse) => {
             const folders: mail.FolderType[] = [];
             if (res.folder !== undefined) {
                 res.folder.forEach(obj => {
