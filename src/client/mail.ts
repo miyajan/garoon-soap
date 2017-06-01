@@ -199,4 +199,13 @@ export default class Mail {
             return folders;
         });
     }
+
+    public removeFolders(folderIds: string[]): Promise<void> {
+        const parameters: Object[] = [];
+        folderIds.forEach(folderId => {
+            parameters.push({folder_id: folderId});
+        });
+        return this.client.post(this.path, 'MailRemoveFolders', parameters).then(() => {
+        });
+    }
 }
