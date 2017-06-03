@@ -208,4 +208,27 @@ export default class Mail {
         return this.client.post(this.path, 'MailRemoveFolders', parameters).then(() => {
         });
     }
+
+    public getAccountVersions(accountItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        accountItems.forEach(accountItem => {
+            parameters.push({
+                account_item: {
+                    _attr: {
+                        id: accountItem.id,
+                        version: accountItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'MailGetAccountVersions', parameters).then((res: mail.AccountItemVersionsResponse) => {
+            const accountVersions: base.ItemVersionResultType[] = [];
+            if (res.account_item !== undefined) {
+                res.account_item.forEach(obj => {
+                   accountVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return accountVersions;
+        });
+    }
 }

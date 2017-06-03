@@ -135,3 +135,7 @@ export interface ModifyFolderOperationType {
     name: string
     description?: string
 }
+
+export interface AccountItemVersionsResponse {
+    account_item?: base.ItemVersionResultXMLObject[]
+}
