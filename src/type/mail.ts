@@ -90,7 +90,7 @@ export interface NewArrivingEmailXMLObject {
     $: any
 }
 
-export interface AccountsResponse {
+export interface NewArrivingEmailAccountsResponse {
     account?: NewArrivingEmailXMLObject[]
 }
 
@@ -138,4 +138,112 @@ export interface ModifyFolderOperationType {
 
 export interface AccountItemVersionsResponse {
     account_item?: base.ItemVersionResultXMLObject[]
+}
+
+export interface SizeConditionType {
+    content: number
+    method: string
+}
+
+export interface ExprConditionType {
+    target: string
+    content?: string
+    method: string
+}
+
+export interface FilterType {
+    name: string
+    folder: string
+    operation: string
+    status?: string
+    sizeConditions?: SizeConditionType[]
+    exprConditions?: ExprConditionType[]
+}
+
+export interface BuiltinFolderType {
+    id: string
+    description: string
+    subscribe: boolean
+    mailIds: string[]
+}
+
+export interface MailboxType {
+    filters: FilterType[]
+    inbox?: BuiltinFolderType
+    sent?: BuiltinFolderType
+    draft?: BuiltinFolderType
+    trash?: BuiltinFolderType
+    folders: FolderType[]
+}
+
+export interface SignatureType {
+    name: string
+    signature: string
+}
+
+export interface AccountType {
+    id: string
+    version: string
+    userId: string
+    serverId: string
+    email: string
+    username: string
+    password: string
+    mailboxes: MailboxType[]
+    signatures: SignatureType[]
+}
+
+export interface SizeConditionXMLObject {
+    $: any
+}
+
+export interface ExprConditionXMLObject {
+    $: any
+}
+
+export interface FiltersXMLObject {
+    filter?: FilterXMLObject[]
+}
+
+export interface FilterXMLObject {
+    $: any
+    size?: SizeConditionXMLObject[]
+    expr?: ExprConditionXMLObject[]
+}
+
+export interface MailIdXMLObject {
+    $: any
+}
+
+export interface BuiltinFolderXMLObject {
+    $: any
+    mail?: MailIdXMLObject[]
+}
+
+export interface MailboxXMLObject {
+    filters?: FiltersXMLObject[]
+    inbox?: BuiltinFolderXMLObject[]
+    sent?: BuiltinFolderXMLObject[]
+    draft?: BuiltinFolderXMLObject[]
+    trash?: BuiltinFolderXMLObject[]
+    folder?: FolderXMLObject[]
+}
+
+export interface SignatureXMLObject {
+    $: any
+    _: string
+}
+
+export interface SignaturesXMLObject {
+    signature?: SignatureXMLObject[]
+}
+
+export interface AccountXMLObject {
+    $: any
+    mailbox?: MailboxXMLObject[]
+    signatures?: SignaturesXMLObject[]
+}
+
+export interface AccountsResponse {
+    account?: AccountXMLObject[]
 }

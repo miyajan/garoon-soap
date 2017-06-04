@@ -78,7 +78,7 @@ export default class Mail {
     }
 
     public getNewArrivingEmail(): Promise<mail.NewArrivingEmailType[]> {
-        return this.client.post(this.path, 'MailGetNewArrivingEmail', []).then((res: mail.AccountsResponse) => {
+        return this.client.post(this.path, 'MailGetNewArrivingEmail', []).then((res: mail.NewArrivingEmailAccountsResponse) => {
             const mails: mail.NewArrivingEmailType[] = [];
             if (res.account !== undefined) {
                 res.account.forEach(obj => {
@@ -229,6 +229,22 @@ export default class Mail {
                 });
             }
             return accountVersions;
+        });
+    }
+
+    public getAccountsById(accountIds: string[]): Promise<mail.AccountType[]> {
+        const parameters: Object[] = [];
+        accountIds.forEach(accountId => {
+            parameters.push({account_id: accountId});
+        });
+        return this.client.post(this.path, 'MailGetAccountsById', parameters).then((res: mail.AccountsResponse) => {
+            const accounts: mail.AccountType[] = [];
+            if (res.account !== undefined) {
+                res.account.forEach(obj => {
+                    accounts.push(MailConverter.Account.toObject(obj));
+                });
+            }
+            return accounts;
         });
     }
 }

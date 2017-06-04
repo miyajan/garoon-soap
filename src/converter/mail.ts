@@ -158,3 +158,159 @@ export class Folder {
         };
     }
 }
+
+export class Account {
+    static toObject(xmlObj: mail.AccountXMLObject): mail.AccountType {
+        const mailboxes: mail.MailboxType[] = [];
+        if (xmlObj.mailbox !== undefined) {
+            xmlObj.mailbox.forEach(obj => {
+                mailboxes.push(Mailbox.toObject(obj));
+            });
+        }
+
+        const signatures: mail.SignatureType[] = [];
+        if (xmlObj.signatures !== undefined) {
+            const signaturesObj = xmlObj.signatures[0];
+            if (signaturesObj.signature !== undefined) {
+                signaturesObj.signature.forEach(obj => {
+                    signatures.push({
+                        name: obj.$.name,
+                        signature: obj._
+                    });
+                });
+            }
+        }
+
+        const attr = xmlObj.$;
+        return {
+            id: attr.key,
+            version: attr.version,
+            userId: attr.user_id,
+            serverId: attr.server_id,
+            email: attr.email,
+            username: attr.usermame,
+            password: attr.password,
+            mailboxes: mailboxes,
+            signatures: signatures
+        };
+    }
+}
+
+export class Mailbox {
+    static toObject(xmlObj: mail.MailboxXMLObject): mail.MailboxType {
+        const filters: mail.FilterType[] = [];
+        if (xmlObj.filters !== undefined) {
+            const filtersObj = xmlObj.filters[0];
+            if (filtersObj.filter !== undefined) {
+                filtersObj.filter.forEach(obj => {
+                    filters.push(Filter.toObject(obj));
+                });
+            }
+        }
+
+        const folders: mail.FolderType[] = [];
+        if (xmlObj.folder !== undefined) {
+            xmlObj.folder.forEach(obj => {
+                folders.push(Folder.toObject(obj));
+            });
+        }
+
+        const mailbox: mail.MailboxType = {
+            filters: filters,
+            folders: folders
+        };
+
+        if (xmlObj.inbox !== undefined) {
+            mailbox.inbox = BuiltinFolder.toObject(xmlObj.inbox[0]);
+        }
+        if (xmlObj.sent !== undefined) {
+            mailbox.sent = BuiltinFolder.toObject(xmlObj.sent[0]);
+        }
+        if (xmlObj.draft !== undefined) {
+            mailbox.draft = BuiltinFolder.toObject(xmlObj.draft[0]);
+        }
+        if (xmlObj.trash !== undefined) {
+            mailbox.trash = BuiltinFolder.toObject(xmlObj.trash[0]);
+        }
+
+        return mailbox;
+    }
+}
+
+export class Filter {
+    static toObject(xmlObj: mail.FilterXMLObject): mail.FilterType {
+        const sizeConditions: mail.SizeConditionType[] = [];
+        if (xmlObj.size !== undefined) {
+            xmlObj.size.forEach(obj => {
+                sizeConditions.push(SizeCondition.toObject(obj));
+            });
+        }
+
+        const exprConditions: mail.ExprConditionType[] = [];
+        if (xmlObj.expr !== undefined) {
+            xmlObj.expr.forEach(obj => {
+                exprConditions.push(ExprCondition.toObject(obj));
+            });
+        }
+
+        const attr = xmlObj.$;
+        const filter: mail.FilterType = {
+            name: attr.name,
+            folder: attr.folder,
+            operation: attr.operation,
+            sizeConditions: sizeConditions,
+            exprConditions: exprConditions
+        };
+
+        if (attr.status !== undefined) {
+            filter.status = attr.status;
+        }
+
+        return filter;
+    }
+}
+
+export class SizeCondition {
+    static toObject(xmlObj: mail.SizeConditionXMLObject): mail.SizeConditionType {
+        const attr = xmlObj.$;
+        return {
+            content: Number(attr.content),
+            method: attr.method
+        };
+    }
+}
+
+export class ExprCondition {
+    static toObject(xmlObj: mail.ExprConditionXMLObject): mail.ExprConditionType {
+        const attr = xmlObj.$;
+        const condition: mail.ExprConditionType = {
+            target: attr.target,
+            method: attr.method
+        };
+
+        if (attr.content !== undefined) {
+            condition.content = attr.content;
+        }
+
+        return condition;
+    }
+}
+
+export class BuiltinFolder {
+    static toObject(xmlObj: mail.BuiltinFolderXMLObject): mail.BuiltinFolderType {
+        const mailIds: string[] = [];
+        if (xmlObj.mail !== undefined) {
+            xmlObj.mail.forEach(obj => {
+                mailIds.push(obj.$.id);
+            });
+        }
+
+        const attr = xmlObj.$;
+        return {
+            id: attr.key,
+            description: attr.description,
+            subscribe: attr.subscribe,
+            mailIds: mailIds
+        };
+    }
+}
