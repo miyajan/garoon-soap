@@ -247,3 +247,44 @@ export interface AccountXMLObject {
 export interface AccountsResponse {
     account?: AccountXMLObject[]
 }
+
+export interface CreateUserAccountType {
+    userId: string
+    userAccountCode: string
+    userAccountName?: string
+    mailServerId: string
+    email: string
+    accountName: string
+    password?: string
+    leaveServerMail?: boolean
+    deactivateUserAccount?: boolean
+}
+
+export interface UserAccountType {
+    accountId: string
+    userId: string
+    userAccountCode: string
+    userAccountName: string
+    mailServerId: string
+    email: string
+    accountName: string
+    leaveServerMail: boolean
+    deactivateUserAccount: boolean
+}
+
+export interface AccountInfoXMLObject {
+    $: any
+}
+
+export interface MailSettingXMLObject {
+    $: any
+}
+
+export interface UserAccountXMLObject {
+    account_info: AccountInfoXMLObject[]
+    mail_setting: MailSettingXMLObject[]
+}
+
+export interface UserAccountsResponse {
+    user_accounts: UserAccountXMLObject[]
+}

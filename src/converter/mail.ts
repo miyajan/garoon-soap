@@ -314,3 +314,22 @@ export class BuiltinFolder {
         };
     }
 }
+
+export class UserAccount {
+    static toObject(xmlObj: mail.UserAccountXMLObject): mail.UserAccountType {
+        const accountInfoAttr = xmlObj.account_info[0].$;
+        const mailSettingAttr = xmlObj.mail_setting[0].$;
+
+        return {
+            accountId: accountInfoAttr.account_id,
+            userId: accountInfoAttr.user_id,
+            userAccountCode: accountInfoAttr.user_account_code,
+            userAccountName: accountInfoAttr.user_account_name,
+            mailServerId: mailSettingAttr.mail_server_id,
+            email: mailSettingAttr.email,
+            accountName: mailSettingAttr.account_name,
+            leaveServerMail: mailSettingAttr.leave_server_mail,
+            deactivateUserAccount: mailSettingAttr.deactivate_user_account
+        };
+    }
+}

@@ -247,4 +247,55 @@ export default class Mail {
             return accounts;
         });
     }
+
+    public createUserAccount(accounts: mail.CreateUserAccountType[]): Promise<mail.UserAccountType[]> {
+        const parameters: Object[] = [];
+        accounts.forEach(account => {
+            const accountAttr: any = {
+                account_id: 'dummy',
+                user_id: account.userId,
+                user_acount_code: account.userAccountCode
+            };
+            if (account.userAccountName !== undefined) {
+                accountAttr.user_account_name = account.userAccountName;
+            }
+
+            const mailSettingAttr: any = {
+                mail_server_id: account.mailServerId,
+                email: account.email,
+                acount_name: account.accountName
+            };
+            if (account.password !== undefined) {
+                mailSettingAttr.password = account.password;
+            }
+            if (account.leaveServerMail !== undefined) {
+                mailSettingAttr.leave_server_mail = account.leaveServerMail;
+            }
+            if (account.deactivateUserAccount !== undefined) {
+                mailSettingAttr.deactivate_user_account = account.deactivateUserAccount;
+            }
+
+            parameters.push({
+                mail_user_accounts: [
+                    {
+                        account_info: {
+                            _attr: accountAttr
+                        }
+                    },
+                    {
+                        mail_setting: {
+                            _attr: mailSettingAttr
+                        }
+                    }
+                ]
+            });
+        });
+        return this.client.post(this.path, 'MailCreateUserAccount', parameters).then((res: mail.UserAccountsResponse) => {
+            const accounts: mail.UserAccountType[] = [];
+            res.user_accounts.forEach(obj => {
+                accounts.push(MailConverter.UserAccount.toObject(obj));
+            });
+            return accounts;
+        });
+    }
 }
