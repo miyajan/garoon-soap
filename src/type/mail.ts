@@ -288,3 +288,16 @@ export interface UserAccountXMLObject {
 export interface UserAccountsResponse {
     user_accounts: UserAccountXMLObject[]
 }
+
+export interface EditUserAccountType {
+    accountId: string
+    userId: string
+    userAccountCode: string
+    userAccountName?: string
+    mailServerId: string
+    email: string
+    accountName: string
+    password?: string
+    leaveServerMail?: boolean
+    deactivateUserAccount?: boolean
+}
