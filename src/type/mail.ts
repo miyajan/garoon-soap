@@ -301,3 +301,8 @@ export interface EditUserAccountType {
     leaveServerMail?: boolean
     deactivateUserAccount?: boolean
 }
+
+export interface DeleteUserAccountType {
+    accountId: string
+    deleteAllEmail?: boolean
+}

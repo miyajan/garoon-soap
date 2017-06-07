@@ -349,4 +349,23 @@ export default class Mail {
             return accounts;
         });
     }
+
+    public deleteUserAccount(accounts: mail.DeleteUserAccountType[]): Promise<void> {
+        const parameters: Object[] = [];
+        accounts.forEach(account => {
+            const attr: any = {
+                account_id: account.accountId
+            };
+            if (account.deleteAllEmail !== undefined) {
+                attr.delete_all_email = account.deleteAllEmail;
+            }
+            parameters.push({
+                delete_user_accounts: {
+                    _attr: attr
+                }
+            });
+        });
+        return this.client.post(this.path, 'DeleteUserAccount', parameters).then(() => {
+        });
+    }
 }
