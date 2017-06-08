@@ -365,7 +365,24 @@ export default class Mail {
                 }
             });
         });
-        return this.client.post(this.path, 'DeleteUserAccount', parameters).then(() => {
+        return this.client.post(this.path, 'MailDeleteUserAccount', parameters).then(() => {
+        });
+    }
+
+    public getSignatures(accountId: string): Promise<mail.SignatureType[]> {
+        const parameters = [{
+            _attr: {
+                account_id: accountId
+            }
+        }];
+        return this.client.post(this.path, 'MailGetSignatures', parameters).then((res: mail.SignaturesResponse) => {
+            const signatures: mail.SignatureType[] = [];
+            if (res.signature !== undefined) {
+                res.signature.forEach(obj => {
+                    signatures.push(MailConverter.Signature.toObject(obj));
+                });
+            }
+            return signatures;
         });
     }
 }

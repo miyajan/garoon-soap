@@ -176,7 +176,7 @@ export interface MailboxType {
     folders: FolderType[]
 }
 
-export interface SignatureType {
+export interface AccountSignatureType {
     name: string
     signature: string
 }
@@ -190,7 +190,7 @@ export interface AccountType {
     username: string
     password: string
     mailboxes: MailboxType[]
-    signatures: SignatureType[]
+    signatures: AccountSignatureType[]
 }
 
 export interface SizeConditionXMLObject {
@@ -229,19 +229,19 @@ export interface MailboxXMLObject {
     folder?: FolderXMLObject[]
 }
 
-export interface SignatureXMLObject {
+export interface AccountSignatureXMLObject {
     $: any
     _: string
 }
 
-export interface SignaturesXMLObject {
-    signature?: SignatureXMLObject[]
+export interface AccountSignaturesXMLObject {
+    signature?: AccountSignatureXMLObject[]
 }
 
 export interface AccountXMLObject {
     $: any
     mailbox?: MailboxXMLObject[]
-    signatures?: SignaturesXMLObject[]
+    signatures?: AccountSignaturesXMLObject[]
 }
 
 export interface AccountsResponse {
@@ -305,4 +305,18 @@ export interface EditUserAccountType {
 export interface DeleteUserAccountType {
     accountId: string
     deleteAllEmail?: boolean
+}
+
+export interface SignatureType {
+    accountId: string
+    name: string
+    content: string
+}
+
+export interface SignatureXMLObject {
+    $: any
+}
+
+export interface SignaturesResponse {
+    signature?: SignatureXMLObject[]
 }

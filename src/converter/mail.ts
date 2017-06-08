@@ -168,7 +168,7 @@ export class Account {
             });
         }
 
-        const signatures: mail.SignatureType[] = [];
+        const signatures: mail.AccountSignatureType[] = [];
         if (xmlObj.signatures !== undefined) {
             const signaturesObj = xmlObj.signatures[0];
             if (signaturesObj.signature !== undefined) {
@@ -330,6 +330,17 @@ export class UserAccount {
             accountName: mailSettingAttr.account_name,
             leaveServerMail: mailSettingAttr.leave_server_mail,
             deactivateUserAccount: mailSettingAttr.deactivate_user_account
+        };
+    }
+}
+
+export class Signature {
+    static toObject(xmlObj: mail.SignatureXMLObject): mail.SignatureType {
+        const attr = xmlObj.$;
+        return {
+            accountId: attr.account_id,
+            name: attr.name,
+            content: attr.content
         };
     }
 }
