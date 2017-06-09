@@ -225,7 +225,7 @@ export default class Mail {
             const accountVersions: base.ItemVersionResultType[] = [];
             if (res.account_item !== undefined) {
                 res.account_item.forEach(obj => {
-                   accountVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                    accountVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
                 });
             }
             return accountVersions;
@@ -383,6 +383,23 @@ export default class Mail {
                 });
             }
             return signatures;
+        });
+    }
+
+    public getFilters(accountId: string): Promise<mail.FilterType[]> {
+        const parameters = [{
+            _attr: {
+                account_id: accountId
+            }
+        }];
+        return this.client.post(this.path, 'MailGetFilters', parameters).then((res: mail.FiltersResponse) => {
+            const filters: mail.FilterType[] = [];
+            if (res.filter !== undefined) {
+                res.filter.forEach(obj => {
+                    filters.push(MailConverter.Filter.toObject(obj));
+                });
+            }
+            return filters;
         });
     }
 }

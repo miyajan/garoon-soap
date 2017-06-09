@@ -320,3 +320,7 @@ export interface SignatureXMLObject {
 export interface SignaturesResponse {
     signature?: SignatureXMLObject[]
 }
+
+export interface FiltersResponse {
+    filter?: FilterXMLObject[]
+}
