@@ -1,5 +1,7 @@
 import * as mail from "../type/mail";
 import * as datetime from "../util/datetime";
+import * as time from "../util/time";
+import * as duration from "../util/duration";
 import * as Util from "../util";
 
 export class Mail {
@@ -341,6 +343,107 @@ export class Signature {
             accountId: attr.account_id,
             name: attr.name,
             content: attr.content
+        };
+    }
+}
+
+export class PersonalProfile {
+    static toObject(xmlObj: mail.PersonalProfileXMLObject): mail.PersonalProfileType {
+        const fromNames: mail.FromNameType[] = [];
+        if (xmlObj.from_name !== undefined) {
+            xmlObj.from_name.forEach(obj => {
+                fromNames.push({
+                    accountId: obj.$.account_id,
+                    name: obj.$.name
+                });
+            });
+        }
+
+        const attr = xmlObj.$;
+        const profile: mail.PersonalProfileType = {
+            showPreview: attr.show_preview,
+            sendCharset: attr.send_charset,
+            useTrash: attr.use_trash,
+            useMessageDispositionNotification: attr.use_message_disposition_notification,
+            replyMessageDispositionNotification: attr.reply_message_disposition_notification,
+            fromNames: fromNames
+        };
+
+        if (attr.use_status !== undefined) {
+            profile.useStatus = attr.use_status;
+        }
+
+        return profile;
+    }
+}
+
+export class SystemProfile {
+    static toObject(xmlObj: mail.SystemProfileXMLObject): mail.SystemProfileType {
+        const limit = MailSizeLimits.toObject(xmlObj.limit[0]);
+
+
+        const attr = xmlObj.$;
+        const profile: mail.SystemProfileType = {
+            disableClient: attr.disable_client,
+            checkNewMailAtLogin: attr.check_new_mail_at_login,
+            limit: limit,
+            authority: UserAuthorities.toObject(xmlObj.authority[0])
+        };
+
+        if (xmlObj.auto_receive !== undefined) {
+            const autoReceiveObj = xmlObj.auto_receive[0];
+            const receiveTimes: Date[] = [];
+            if (autoReceiveObj.receive_time !== undefined) {
+                autoReceiveObj.receive_time.forEach(obj => {
+                    receiveTimes.push(time.toDate(obj));
+                });
+            }
+            const autoReceive: mail.AutoReceiveType = {
+                receiveTimes: receiveTimes
+            };
+
+            if (autoReceiveObj.$.interval !== undefined) {
+                autoReceive.interval = duration.toDate(autoReceiveObj.$.interval);
+            }
+
+            profile.autoReceive = autoReceive;
+        }
+
+        return profile;
+    }
+}
+
+export class MailSizeLimits {
+    static toObject(xmlObj: mail.MailSizeLimitsXMLObject): mail.MailSizeLimitsType {
+        const attr = xmlObj.$;
+        const limits: mail.MailSizeLimitsType = {};
+        if (attr.total_kb !== undefined) {
+            limits.totalKb = attr.total_kb;
+        }
+        if (attr.receive_kb !== undefined) {
+            limits.receiveKb = attr.receive_kb;
+        }
+        if (attr.send_kb !== undefined) {
+            limits.sendKb = attr.send_kb;
+        }
+        return limits;
+    }
+}
+
+export class UserAuthorities {
+    static toObject(xmlObj: mail.UserAuthoritiesXMLObject): mail.UserAuthoritiesType {
+        const attr = xmlObj.$;
+        return {
+            allowAccountAllPermission: attr.allow_account_all_permission,
+            allowAccountModification: attr.allow_account_modification,
+            allowStoreOnServer: attr.allow_store_on_server,
+            allowNewMailCheck: attr.allow_new_mail_check,
+            allowCollectiveReception: attr.allow_collective_reception,
+            allowSendMarkupBody: attr.allow_send_markup_body,
+            allowDisplayMarkupImage: attr.allow_display_markup_image,
+            allowMessageDispositionNotification: attr.allow_message_disposition_notification,
+            allowStatus: attr.allow_status,
+            allowHistory: attr.allow_history
         };
     }
 }

@@ -324,3 +324,89 @@ export interface SignaturesResponse {
 export interface FiltersResponse {
     filter?: FilterXMLObject[]
 }
+
+export interface FromNameType {
+    accountId: string
+    name: string
+}
+
+export interface PersonalProfileType {
+    showPreview: boolean
+    sendCharset: string
+    useTrash: boolean
+    useMessageDispositionNotification: boolean
+    useStatus?: boolean
+    replyMessageDispositionNotification: string
+    fromNames: FromNameType[]
+}
+
+export interface MailSizeLimitsType {
+    totalKb?: number
+    receiveKb?: number
+    sendKb?: number
+}
+
+export interface UserAuthoritiesType {
+    allowAccountAllPermission: boolean
+    allowAccountModification: boolean
+    allowStoreOnServer: boolean
+    allowNewMailCheck: boolean
+    allowCollectiveReception: boolean
+    allowSendMarkupBody: boolean
+    allowDisplayMarkupImage: boolean
+    allowMessageDispositionNotification: boolean
+    allowStatus: boolean
+    allowHistory: boolean
+}
+
+export interface AutoReceiveType {
+    interval?: Date
+    receiveTimes: Date[]
+}
+
+export interface SystemProfileType {
+    disableClient: boolean
+    checkNewMailAtLogin: boolean
+    limit: MailSizeLimitsType
+    authority: UserAuthoritiesType
+    autoReceive?: AutoReceiveType
+}
+
+export interface ProfilesType {
+    personalProfile: PersonalProfileType
+    systemProfile?: SystemProfileType
+}
+
+export interface FromNameXMLObject {
+    $: any
+}
+
+export interface PersonalProfileXMLObject {
+    $: any
+    from_name?: FromNameXMLObject[]
+}
+
+export interface MailSizeLimitsXMLObject {
+    $: any
+}
+
+export interface UserAuthoritiesXMLObject {
+    $: any
+}
+
+export interface AutoReceiveXMLObject {
+    $: any
+    receive_time?: string[]
+}
+
+export interface SystemProfileXMLObject {
+    $: any
+    limit: MailSizeLimitsXMLObject[]
+    authority: UserAuthoritiesXMLObject[]
+    auto_receive?: AutoReceiveXMLObject[]
+}
+
+export interface ProfilesResponse {
+    personal_profile: PersonalProfileXMLObject[]
+    system_profile?: SystemProfileXMLObject[]
+}

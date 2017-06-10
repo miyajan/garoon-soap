@@ -402,4 +402,21 @@ export default class Mail {
             return filters;
         });
     }
+
+    public getProfiles(includeSystemProfile: boolean): Promise<mail.ProfilesType> {
+        const parameters = [{
+            _attr: {
+                include_system_profile: includeSystemProfile
+            }
+        }];
+        return this.client.post(this.path, 'MailGetProfiles', parameters).then((res: mail.ProfilesResponse) => {
+            const profiles: mail.ProfilesType = {
+                personalProfile: MailConverter.PersonalProfile.toObject(res.personal_profile[0])
+            };
+            if (res.system_profile !== undefined) {
+                profiles.systemProfile = MailConverter.SystemProfile.toObject(res.system_profile[0]);
+            }
+            return profiles;
+        });
+    }
 }
