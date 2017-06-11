@@ -410,3 +410,7 @@ export interface ProfilesResponse {
     personal_profile: PersonalProfileXMLObject[]
     system_profile?: SystemProfileXMLObject[]
 }
+
+export interface PersonalProfileResponse {
+    personal_profile: PersonalProfileXMLObject[]
+}

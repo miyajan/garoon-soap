@@ -419,4 +419,40 @@ export default class Mail {
             return profiles;
         });
     }
+
+    public setProfiles(profile: mail.PersonalProfileType): Promise<mail.PersonalProfileType> {
+        const parameters: Object[] = [];
+        const personalProfile: Object[] = [];
+        const attr: any = {
+            show_preview: profile.showPreview,
+            send_charset: profile.sendCharset,
+            use_trash: profile.useTrash,
+            use_message_disposition_notification: profile.useMessageDispositionNotification,
+            reply_message_disposition_notification: profile.replyMessageDispositionNotification
+        };
+        if (profile.useStatus !== undefined) {
+            attr.use_status = profile.useStatus;
+        }
+        personalProfile.push({
+            _attr: attr
+        });
+        if (profile.fromNames.length > 0) {
+            profile.fromNames.forEach(fromName => {
+                personalProfile.push({
+                    from_name: {
+                        _attr: {
+                            account_id: fromName.accountId,
+                            name: fromName.name
+                        }
+                    }
+                });
+            });
+        }
+        parameters.push({
+            personal_profile: personalProfile
+        });
+        return this.client.post(this.path, 'MailSetProfiles', parameters).then((res: mail.PersonalProfileResponse) => {
+            return MailConverter.PersonalProfile.toObject(res.personal_profile[0]);
+        });
+    }
 }
