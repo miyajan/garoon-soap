@@ -414,3 +414,25 @@ export interface ProfilesResponse {
 export interface PersonalProfileResponse {
     personal_profile: PersonalProfileXMLObject[]
 }
+
+export interface SendFileType {
+    content: Buffer
+    name: string
+}
+
+export interface SendMailType {
+    accountId: string
+    from?: string
+    sender?: string
+    to?: string
+    cc?: string
+    bcc?: string
+    replyTo?: string
+    draftId?: string
+    subject: string
+    body: string
+    htmlBody?: string
+    folderId: string
+    files?: SendFileType[]
+    removeFileIds?: string[]
+}
