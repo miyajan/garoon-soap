@@ -432,7 +432,23 @@ export interface SendMailType {
     subject: string
     body: string
     htmlBody?: string
-    folderId: string
+    files?: SendFileType[]
+    removeFileIds?: string[]
+}
+
+export interface ReplyMailType {
+    accountId: string
+    from?: string
+    sender?: string
+    to?: string
+    cc?: string
+    bcc?: string
+    replyTo?: string
+    draftId?: string
+    id: string
+    subject: string
+    body: string
+    htmlBody?: string
     files?: SendFileType[]
     removeFileIds?: string[]
 }
