@@ -558,7 +558,11 @@ export default class Mail {
     }
 
     public replyMails(replyAll: boolean, mails: mail.ReplyMailType[]): Promise<mail.MailType[]> {
-        const parameters: Object[] = [];
+        const parameters: Object[] = [{
+            _attr: {
+                reply_all: replyAll
+            }
+        }];
         mails.forEach(mail => {
             const sendMail: Object[] = [];
             const attr: any = {
@@ -644,10 +648,112 @@ export default class Mail {
             }
 
             parameters.push({
-                send_mail: sendMail
+                reply_mail: sendMail
             });
         });
-        return this.client.post(this.path, 'MailSendMails', parameters).then((res: mail.MailsResponse) => {
+        return this.client.post(this.path, 'MailReplyMails', parameters).then((res: mail.MailsResponse) => {
+            const mails: mail.MailType[] = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(obj => {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    }
+
+    public forwardMails(mails: mail.ForwardMailType[]): Promise<mail.MailType[]> {
+        const parameters: Object[] = [];
+        mails.forEach(mail => {
+            const sendMail: Object[] = [];
+            const attr: any = {
+                account_id: mail.accountId,
+                mail_id: mail.mailId
+            };
+            if (mail.from !== undefined) {
+                attr.from_string = mail.from;
+            }
+            if (mail.sender !== undefined) {
+                attr.sender_string = mail.sender;
+            }
+            if (mail.to !== undefined) {
+                attr.to_string = mail.to;
+            }
+            if (mail.cc !== undefined) {
+                attr.cc_string = mail.cc;
+            }
+            if (mail.bcc !== undefined) {
+                attr.bcc_string = mail.bcc;
+            }
+            if (mail.replyTo !== undefined) {
+                attr.reply_to_string = mail.replyTo;
+            }
+            if (mail.draftId !== undefined) {
+                attr.draft_id = mail.draftId;
+            }
+            sendMail.push({
+                _attr: attr
+            });
+
+            const mailAttr: any = {
+                key: mail.mailId,
+                version: 'dummy',
+                subject: mail.subject,
+                body: mail.body,
+                folder_key: 'dummy'
+            };
+            if (mail.htmlBody !== undefined) {
+                mailAttr.html_body = mail.htmlBody;
+            }
+
+            const mailObj: Object[] = [];
+            mailObj.push({
+                _attr: mailAttr
+            });
+
+            if (mail.files !== undefined) {
+                mail.files.forEach((file, index) => {
+                    const fileId = index;
+                    mailObj.push({
+                        file: {
+                            _attr: {
+                                id: fileId,
+                                name: file.name
+                            }
+                        }
+                    });
+                    sendMail.push({
+                        file: [
+                            {
+                                _attr: {
+                                    id: fileId
+                                }
+                            },
+                            {
+                                content: file.content.toString('base64')
+                            }
+                        ]
+                    });
+                });
+            }
+
+            sendMail.push({
+                mail: mailObj
+            });
+
+            if (mail.removeFileIds !== undefined) {
+                mail.removeFileIds.forEach(removeFileId => {
+                    sendMail.push({
+                        remove_file_id: removeFileId
+                    });
+                });
+            }
+
+            parameters.push({
+                forward_mail: sendMail
+            });
+        });
+        return this.client.post(this.path, 'MailForwardMails', parameters).then((res: mail.MailsResponse) => {
             const mails: mail.MailType[] = [];
             if (res.mail !== undefined) {
                 res.mail.forEach(obj => {

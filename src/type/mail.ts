@@ -452,3 +452,20 @@ export interface ReplyMailType {
     files?: SendFileType[]
     removeFileIds?: string[]
 }
+
+export interface ForwardMailType {
+    accountId: string
+    mailId: string
+    from?: string
+    sender?: string
+    to?: string
+    cc?: string
+    bcc?: string
+    replyTo?: string
+    draftId?: string
+    subject: string
+    body: string
+    htmlBody?: string
+    files?: SendFileType[]
+    removeFileIds?: string[]
+}
