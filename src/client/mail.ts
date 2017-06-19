@@ -564,7 +564,7 @@ export default class Mail {
             }
         }];
         mails.forEach(mail => {
-            const sendMail: Object[] = [];
+            const replyMail: Object[] = [];
             const attr: any = {
                 account_id: mail.accountId
             };
@@ -589,7 +589,7 @@ export default class Mail {
             if (mail.draftId !== undefined) {
                 attr.draft_id = mail.draftId;
             }
-            sendMail.push({
+            replyMail.push({
                 _attr: attr
             });
 
@@ -620,7 +620,7 @@ export default class Mail {
                             }
                         }
                     });
-                    sendMail.push({
+                    replyMail.push({
                         file: [
                             {
                                 _attr: {
@@ -635,20 +635,20 @@ export default class Mail {
                 });
             }
 
-            sendMail.push({
+            replyMail.push({
                 mail: mailObj
             });
 
             if (mail.removeFileIds !== undefined) {
                 mail.removeFileIds.forEach(removeFileId => {
-                    sendMail.push({
+                    replyMail.push({
                         remove_file_id: removeFileId
                     });
                 });
             }
 
             parameters.push({
-                reply_mail: sendMail
+                reply_mail: replyMail
             });
         });
         return this.client.post(this.path, 'MailReplyMails', parameters).then((res: mail.MailsResponse) => {
@@ -665,7 +665,7 @@ export default class Mail {
     public forwardMails(mails: mail.ForwardMailType[]): Promise<mail.MailType[]> {
         const parameters: Object[] = [];
         mails.forEach(mail => {
-            const sendMail: Object[] = [];
+            const forwardMail: Object[] = [];
             const attr: any = {
                 account_id: mail.accountId,
                 mail_id: mail.mailId
@@ -691,7 +691,7 @@ export default class Mail {
             if (mail.draftId !== undefined) {
                 attr.draft_id = mail.draftId;
             }
-            sendMail.push({
+            forwardMail.push({
                 _attr: attr
             });
 
@@ -722,7 +722,7 @@ export default class Mail {
                             }
                         }
                     });
-                    sendMail.push({
+                    forwardMail.push({
                         file: [
                             {
                                 _attr: {
@@ -737,23 +737,125 @@ export default class Mail {
                 });
             }
 
-            sendMail.push({
+            forwardMail.push({
                 mail: mailObj
             });
 
             if (mail.removeFileIds !== undefined) {
                 mail.removeFileIds.forEach(removeFileId => {
-                    sendMail.push({
+                    forwardMail.push({
                         remove_file_id: removeFileId
                     });
                 });
             }
 
             parameters.push({
-                forward_mail: sendMail
+                forward_mail: forwardMail
             });
         });
         return this.client.post(this.path, 'MailForwardMails', parameters).then((res: mail.MailsResponse) => {
+            const mails: mail.MailType[] = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(obj => {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    }
+
+    public saveDraftMails(mails: mail.DraftMailType[]): Promise<mail.MailType[]> {
+        const parameters: Object[] = [];
+        mails.forEach(mail => {
+            const draftMail: Object[] = [];
+            const attr: any = {
+                account_id: mail.accountId,
+                operation: mail.operation
+            };
+            if (mail.from !== undefined) {
+                attr.from_string = mail.from;
+            }
+            if (mail.sender !== undefined) {
+                attr.sender_string = mail.sender;
+            }
+            if (mail.to !== undefined) {
+                attr.to_string = mail.to;
+            }
+            if (mail.cc !== undefined) {
+                attr.cc_string = mail.cc;
+            }
+            if (mail.bcc !== undefined) {
+                attr.bcc_string = mail.bcc;
+            }
+            if (mail.replyTo !== undefined) {
+                attr.reply_to_string = mail.replyTo;
+            }
+            if (mail.draftId !== undefined) {
+                attr.draft_id = mail.draftId;
+            }
+            draftMail.push({
+                _attr: attr
+            });
+
+            const mailAttr: any = {
+                key: 'dummy',
+                version: 'dummy',
+                subject: mail.subject,
+                body: mail.body,
+                folder_key: 'dummy'
+            };
+            if (mail.htmlBody !== undefined) {
+                mailAttr.html_body = mail.htmlBody;
+            }
+
+            const mailObj: Object[] = [];
+            mailObj.push({
+                _attr: mailAttr
+            });
+
+            if (mail.files !== undefined) {
+                mail.files.forEach((file, index) => {
+                    const fileId = index;
+                    mailObj.push({
+                        file: {
+                            _attr: {
+                                id: fileId,
+                                name: file.name
+                            }
+                        }
+                    });
+                    draftMail.push({
+                        file: [
+                            {
+                                _attr: {
+                                    id: fileId
+                                }
+                            },
+                            {
+                                content: file.content.toString('base64')
+                            }
+                        ]
+                    });
+                });
+            }
+
+            draftMail.push({
+                mail: mailObj
+            });
+
+            if (mail.removeFileIds !== undefined) {
+                mail.removeFileIds.forEach(removeFileId => {
+                    draftMail.push({
+                        remove_file_id: removeFileId
+                    });
+                });
+            }
+
+            parameters.push({
+                save_mail: draftMail
+            });
+        });
+        return this.client.post(this.path, 'MailSaveDraftMails', parameters).then((res: mail.MailsResponse) => {
             const mails: mail.MailType[] = [];
             if (res.mail !== undefined) {
                 res.mail.forEach(obj => {

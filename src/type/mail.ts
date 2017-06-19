@@ -469,3 +469,20 @@ export interface ForwardMailType {
     files?: SendFileType[]
     removeFileIds?: string[]
 }
+
+export interface DraftMailType {
+    accountId: string
+    operation: string
+    from?: string
+    sender?: string
+    to?: string
+    cc?: string
+    bcc?: string
+    replyTo?: string
+    draftId?: string
+    subject: string
+    body: string
+    htmlBody?: string
+    files?: SendFileType[]
+    removeFileIds?: string[]
+}
