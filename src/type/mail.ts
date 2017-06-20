@@ -428,6 +428,7 @@ export interface SendMailType {
     cc?: string
     bcc?: string
     replyTo?: string
+    dispositionNotificationTo?: MailAddressType
     draftId?: string
     subject: string
     body: string
@@ -485,4 +486,10 @@ export interface DraftMailType {
     htmlBody?: string
     files?: SendFileType[]
     removeFileIds?: string[]
+}
+
+export interface OpenDispositionNotificationOperationType {
+    accountId: string
+    mailId: string
+    type: string
 }

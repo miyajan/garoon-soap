@@ -504,6 +504,20 @@ export default class Mail {
                 _attr: mailAttr
             });
 
+            if (mail.dispositionNotificationTo !== undefined) {
+                const attr: mail.MailAddressType = {
+                    address: mail.dispositionNotificationTo.address
+                };
+                if (mail.dispositionNotificationTo.name !== undefined) {
+                    attr.name = mail.dispositionNotificationTo.name;
+                }
+                mailObj.push({
+                    disposition_notification_to: {
+                        _attr: attr
+                    }
+                });
+            }
+
             if (mail.files !== undefined) {
                 mail.files.forEach((file, index) => {
                     const fileId = index;
@@ -856,6 +870,30 @@ export default class Mail {
             });
         });
         return this.client.post(this.path, 'MailSaveDraftMails', parameters).then((res: mail.MailsResponse) => {
+            const mails: mail.MailType[] = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(obj => {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    }
+
+    public openDispositionNotifications(operations: mail.OpenDispositionNotificationOperationType[]): Promise<mail.MailType[]> {
+        const parameters: Object[] = [];
+        operations.forEach(operation => {
+            parameters.push({
+                operation: {
+                    _attr: {
+                        account_id: operation.accountId,
+                        mail_id: operation.mailId,
+                        type: operation.type
+                    }
+                }
+            })
+        });
+        return this.client.post(this.path, 'MailOpenDispositionNotifications', parameters).then((res: mail.MailsResponse) => {
             const mails: mail.MailType[] = [];
             if (res.mail !== undefined) {
                 res.mail.forEach(obj => {
