@@ -903,4 +903,13 @@ export default class Mail {
             return mails;
         });
     }
+
+    public removeMails(mailIds: string[]): Promise<void> {
+        const parameters: Object[] = [];
+        mailIds.forEach(mailId => {
+            parameters.push({mail_id: mailId});
+        });
+        return this.client.post(this.path, 'MailRemoveMails', parameters).then(() => {
+        });
+    }
 }
