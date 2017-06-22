@@ -912,4 +912,63 @@ export default class Mail {
         return this.client.post(this.path, 'MailRemoveMails', parameters).then(() => {
         });
     }
+
+    public searchMails(option: mail.SearchOption): Promise<mail.MailType[]> {
+        const parameters: Object[] = [];
+        const attr: any = {
+            text: option.text
+        };
+        if (option.start !== undefined) {
+            attr.start = datetime.toString(option.start);
+        }
+        if (option.end !== undefined) {
+            attr.end = datetime.toString(option.end);
+        }
+        if (option.searchAllAccounts !== undefined) {
+            attr.search_all_accounts = option.searchAllAccounts;
+        }
+        if (option.accountId !== undefined) {
+            attr.account_id = option.accountId;
+        }
+        if (option.folderId !== undefined) {
+            attr.folder_id = option.folderId;
+        }
+        if (option.searchSubFolders !== undefined) {
+            attr.search_sub_folders = option.searchSubFolders;
+        }
+        attr.title_search = true;
+        if (option.titleSearch !== undefined) {
+            attr.title_search = option.titleSearch;
+        }
+        attr.body_search = true;
+        if (option.bodySearch !== undefined) {
+            attr.body_search = option.bodySearch;
+        }
+        attr.from_search = true;
+        if (option.fromSearch !== undefined) {
+            attr.from_search = option.fromSearch;
+        }
+        attr.to_search = true;
+        if (option.toSearch !== undefined) {
+            attr.to_search = option.toSearch;
+        }
+        attr.cc_search = true;
+        if (option.ccSearch !== undefined) {
+            attr.cc_search = option.ccSearch;
+        }
+        attr.bcc_search = true;
+        if (option.bccSearch !== undefined) {
+            attr.bcc_search = option.bccSearch;
+        }
+        parameters.push({_attr: attr});
+        return this.client.post(this.path, 'MailSearchMails', parameters).then((res: mail.MailsResponse) => {
+            const mails: mail.MailType[] = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(obj => {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    }
 }

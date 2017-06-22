@@ -493,3 +493,19 @@ export interface OpenDispositionNotificationOperationType {
     mailId: string
     type: string
 }
+
+export interface SearchOption {
+    text: string
+    start?: Date
+    end?: Date
+    searchAllAccounts?: boolean
+    accountId?: string
+    folderId?: string
+    searchSubFolders?: boolean
+    titleSearch?: boolean
+    bodySearch?: boolean
+    fromSearch?: boolean
+    toSearch?: boolean
+    ccSearch?: boolean
+    bccSearch?: boolean
+}
