@@ -509,3 +509,57 @@ export interface SearchOption {
     ccSearch?: boolean
     bccSearch?: boolean
 }
+
+export interface MailServerOutgoing {
+    serverName: string
+    portNumber: number
+    useSsl?: boolean
+    encryptedConnection?: string
+    smtpAuth?: string
+    accountForSend?: boolean
+    popBeforeSmtp?: boolean
+    popBeforeSmtpWaitTime?: number
+    timeout?: number
+}
+
+export interface MailServerIncoming {
+    serverName: string
+    receiveProtocol: string
+    portNumber: number
+    useSsl?: boolean
+    apopAuthForPop3?: boolean
+    timeout?: number
+}
+
+export interface AddMailServerInfoType {
+    serverCode: string
+    serverName: string
+    outgoing: MailServerOutgoing
+    incoming: MailServerIncoming
+}
+
+export interface MailServerInfoType {
+    id: string
+    serverCode: string
+    serverName: string
+    outgoing: MailServerOutgoing
+    incoming: MailServerIncoming
+}
+
+export interface MailServerOutgoingXMLObject {
+    $: any
+}
+
+export interface MailServerIncomingXMLObject {
+    $: any
+}
+
+export interface MailServerInfoXMLObject {
+    $: any
+    outgoing: MailServerOutgoingXMLObject[]
+    incoming: MailServerIncomingXMLObject[]
+}
+
+export interface ServersResponse {
+    server: MailServerInfoXMLObject[]
+}

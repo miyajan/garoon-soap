@@ -447,3 +447,69 @@ export class UserAuthorities {
         };
     }
 }
+
+export class MailServerInfo {
+    static toObject(xmlObj: mail.MailServerInfoXMLObject): mail.MailServerInfoType {
+        const attr = xmlObj.$;
+        return {
+            id: attr.id,
+            serverCode: attr.server_code,
+            serverName: attr.server_name,
+            outgoing: MailServerOutgoing.toObject(xmlObj.outgoing[0]),
+            incoming: MailServerIncoming.toObject(xmlObj.incoming[0])
+        };
+    }
+}
+
+export class MailServerOutgoing {
+    static toObject(xmlObj: mail.MailServerOutgoingXMLObject): mail.MailServerOutgoing {
+        const attr = xmlObj.$;
+        const outgoing: mail.MailServerOutgoing = {
+            serverName: attr.server_name,
+            portNumber: Number(attr.port_number)
+        };
+        if (attr.use_ssl !== undefined) {
+            outgoing.useSsl = Util.toBoolean(attr.use_ssl);
+        }
+        if (attr.encrypted_connection !== undefined) {
+            outgoing.encryptedConnection = attr.encrypted_connection;
+        }
+        if (attr.smtp_auth !== undefined) {
+            outgoing.smtpAuth = attr.smtp_auth;
+        }
+        if (attr.account_for_send !== undefined) {
+            outgoing.accountForSend = Util.toBoolean(attr.account_for_send);
+        }
+        if (attr.pop_before_smtp !== undefined) {
+            outgoing.popBeforeSmtp = Util.toBoolean(attr.pop_before_smtp);
+        }
+        if (attr.pop_before_smtp_wait_time !== undefined) {
+            outgoing.popBeforeSmtpWaitTime = Number(attr.pop_before_smtp_wait_time);
+        }
+        if (attr.timeout !== undefined) {
+            outgoing.timeout = Number(attr.timeout);
+        }
+        return outgoing;
+    }
+}
+
+export class MailServerIncoming {
+    static toObject(xmlObj: mail.MailServerIncomingXMLObject): mail.MailServerIncoming {
+        const attr = xmlObj.$;
+        const incoming: mail.MailServerIncoming = {
+            serverName: attr.server_name,
+            receiveProtocol: attr.receive_protocol,
+            portNumber: Number(attr.port_number)
+        };
+        if (attr.use_ssl !== undefined) {
+            incoming.useSsl = Util.toBoolean(attr.use_ssl);
+        }
+        if (attr.apop_auth_for_pop3 !== undefined) {
+            incoming.apopAuthForPop3 = Util.toBoolean(attr.apop_auth_for_pop3);
+        }
+        if (attr.timeout !== undefined) {
+            incoming.timeout = Number(attr.timeout);
+        }
+        return incoming;
+    }
+}
