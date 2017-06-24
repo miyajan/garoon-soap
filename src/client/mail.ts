@@ -1047,4 +1047,80 @@ export default class Mail {
             return servers;
         });
     }
+
+    public modifyMailServers(servers: mail.MailServerInfoType[]): Promise<mail.MailServerInfoType[]> {
+        const parameters: Object[] = [];
+        servers.forEach(server => {
+            const serverObj: Object[] = [];
+            serverObj.push({
+                _attr: {
+                    id: server.id,
+                    server_code: server.serverCode,
+                    server_name: server.serverName
+                }
+            });
+
+            const outgoingAttr: any = {
+                server_name: server.outgoing.serverName,
+                port_number: server.outgoing.portNumber
+            };
+            if (server.outgoing.useSsl !== undefined) {
+                outgoingAttr.use_ssl = server.outgoing.useSsl;
+            }
+            if (server.outgoing.encryptedConnection !== undefined) {
+                outgoingAttr.encrypted_connection = server.outgoing.encryptedConnection;
+            }
+            if (server.outgoing.smtpAuth !== undefined) {
+                outgoingAttr.smtp_auth = server.outgoing.smtpAuth;
+            }
+            if (server.outgoing.accountForSend !== undefined) {
+                outgoingAttr.account_for_send = server.outgoing.accountForSend;
+            }
+            if (server.outgoing.popBeforeSmtp !== undefined) {
+                outgoingAttr.pop_before_smtp = server.outgoing.popBeforeSmtp;
+            }
+            if (server.outgoing.popBeforeSmtpWaitTime !== undefined) {
+                outgoingAttr.pop_before_smtp_wait_time = server.outgoing.popBeforeSmtpWaitTime;
+            }
+            if (server.outgoing.timeout !== undefined) {
+                outgoingAttr.timeout = server.outgoing.timeout;
+            }
+            serverObj.push({
+                outgoing: {
+                    _attr: outgoingAttr
+                }
+            });
+
+            const incomingAttr: any = {
+                server_name: server.incoming.serverName,
+                receive_protocol: server.incoming.receiveProtocol,
+                port_number: server.incoming.portNumber
+            };
+            if (server.incoming.useSsl !== undefined) {
+                incomingAttr.use_ssl = server.incoming.useSsl;
+            }
+            if (server.incoming.apopAuthForPop3 !== undefined) {
+                incomingAttr.apop_auth_for_pop3 = server.incoming.apopAuthForPop3;
+            }
+            if (server.incoming.timeout !== undefined) {
+                incomingAttr.timeout = server.incoming.timeout;
+            }
+            serverObj.push({
+                incoming: {
+                    _attr: incomingAttr
+                }
+            });
+
+            parameters.push({
+                server: serverObj
+            });
+        });
+        return this.client.post(this.path, 'MailModifyMailServers', parameters).then((res: mail.ServersResponse) => {
+            const servers: mail.MailServerInfoType[] = [];
+            res.server.forEach(obj => {
+                servers.push(MailConverter.MailServerInfo.toObject(obj));
+            });
+            return servers;
+        });
+    }
 }
