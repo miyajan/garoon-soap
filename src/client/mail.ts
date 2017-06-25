@@ -1123,4 +1123,13 @@ export default class Mail {
             return servers;
         });
     }
+
+    public removeMailServers(serverIds: string[]): Promise<void> {
+        const parameters: Object[] = [];
+        serverIds.forEach(serverId => {
+            parameters.push({server_id: serverId});
+        });
+        return this.client.post(this.path, 'MailRemoveMailServers', parameters).then(() => {
+        });
+    }
 }
