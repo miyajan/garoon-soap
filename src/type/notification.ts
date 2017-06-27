@@ -26,3 +26,31 @@ export interface NotificationItemVersionResultXMLObject {
 export interface NotificationItemsResponse {
     notification_item?: NotificationItemVersionResultXMLObject[]
 }
+
+export interface NotificationType {
+    moduleId: string
+    item: string
+    status: string
+    isHistory: boolean
+    readDatetime?: Date
+    receiveDatetime?: Date
+    subject?: string
+    subjectUrl?: string
+    subjectIcon?: string
+    abstract?: string
+    abstractUrl?: string
+    abstractIcon?: string
+    senderName?: string
+    senderId?: string
+    senderUrl?: string
+    attached?: boolean
+    version?: string
+}
+
+export interface NotificationXMLObject {
+    $: any
+}
+
+export interface NotificationsResponse {
+    notification?: NotificationXMLObject[]
+}
