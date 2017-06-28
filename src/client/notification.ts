@@ -77,4 +77,46 @@ export default class Mail {
             return notifications;
         });
     }
+
+    public getNotificationHistoryVersions(historyItems: notification.NotificationItemVersionType[], start: Date, end?: Date, moduleId?: string): Promise<notification.NotificationItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        historyItems.forEach(historyItem => {
+            parameters.push({
+                notification_history_item: [
+                    {
+                        notification_id: {
+                            _attr: {
+                                module_id: historyItem.notificationId.moduleId,
+                                item: historyItem.notificationId.item
+                            }
+                        }
+                    },
+                    {
+                        _attr: {
+                            version: historyItem.version
+                        }
+                    }
+                ]
+            });
+        });
+        const attr: any = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        if (moduleId !== undefined) {
+            attr.module_id = moduleId;
+        }
+        parameters.push({_attr: attr});
+        return this.client.post(this.path, 'NotificationGetNotificationHistoryVersions', parameters).then((res: notification.NotificationHistoryItemsResponse) => {
+            const versions: notification.NotificationItemVersionResultType[] = [];
+            if (res.notification_history_item !== undefined) {
+                res.notification_history_item.forEach(obj => {
+                    versions.push(NotificationConverter.NotificationItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
+        });
+    }
 }
