@@ -58,3 +58,7 @@ export interface NotificationsResponse {
 export interface NotificationHistoryItemsResponse {
     notification_history_item?: NotificationItemVersionResultXMLObject[]
 }
+
+export interface NotificationHistoriesResponse {
+    notification_history?: NotificationXMLObject[]
+}

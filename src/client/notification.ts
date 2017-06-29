@@ -119,4 +119,27 @@ export default class Mail {
             return versions;
         });
     }
+
+    public getNotificationHistoriesById(historyIds: notification.NotificationIdType[]): Promise<notification.NotificationType[]> {
+        const parameters: Object[] = [];
+        historyIds.forEach(historyId => {
+            parameters.push({
+                notification_history_id: {
+                    _attr: {
+                        module_id: historyId.moduleId,
+                        item: historyId.item
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'NotificationGetNotificationHistoriesById', parameters).then((res: notification.NotificationHistoriesResponse) => {
+            const notifications: notification.NotificationType[] = [];
+            if (res.notification_history !== undefined) {
+                res.notification_history.forEach(obj => {
+                    notifications.push(NotificationConverter.Notification.toObject(obj));
+                });
+            }
+            return notifications;
+        });
+    }
 }
