@@ -165,4 +165,10 @@ export default class Mail {
             return notifications;
         });
     }
+
+    public getProfiles(): Promise<notification.PersonalProfileType> {
+        return this.client.post(this.path, 'NotificationGetProfiles', []).then((res: notification.PersonalProfileResponse) => {
+            return NotificationConverter.PersonalProfile.toObject(res.personal_profile[0]);
+        });
+    }
 }

@@ -62,3 +62,16 @@ export interface NotificationHistoryItemsResponse {
 export interface NotificationHistoriesResponse {
     notification_history?: NotificationXMLObject[]
 }
+
+export interface PersonalProfileType {
+    saveNotificationDuration?: number
+    saveNotificationHistoryDuration?: number
+}
+
+export interface PersonalProfileXMLObject {
+    $: any
+}
+
+export interface PersonalProfileResponse {
+    personal_profile: PersonalProfileXMLObject[]
+}

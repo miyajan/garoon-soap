@@ -76,3 +76,17 @@ export class Notification {
         return notification;
     }
 }
+
+export class PersonalProfile {
+    static toObject(xmlObj: notification.PersonalProfileXMLObject): notification.PersonalProfileType {
+        const attr = xmlObj.$;
+        const profile: notification.PersonalProfileType = {};
+        if (attr.save_notification_duration !== undefined) {
+            profile.saveNotificationDuration = Number(attr.save_notification_duration);
+        }
+        if (attr.save_notification_history_duration !== undefined) {
+            profile.saveNotificationHistoryDuration = Number(attr.save_notification_history_duration);
+        }
+        return profile;
+    }
+}
