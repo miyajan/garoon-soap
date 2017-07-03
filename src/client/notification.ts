@@ -171,4 +171,22 @@ export default class Mail {
             return NotificationConverter.PersonalProfile.toObject(res.personal_profile[0]);
         });
     }
+
+    public setProfiles(profile: notification.PersonalProfileType): Promise<notification.PersonalProfileType> {
+        const attr: any = {};
+        if (profile.saveNotificationDuration !== undefined) {
+            attr.save_notification_duration = profile.saveNotificationDuration;
+        }
+        if (profile.saveNotificationHistoryDuration !== undefined) {
+            attr.save_notification_history_duration = profile.saveNotificationHistoryDuration;
+        }
+        const parameters: Object[] = [{
+            personal_profile: {
+                _attr: attr
+            }
+        }];
+        return this.client.post(this.path, 'NotificationSetProfiles', parameters).then((res: notification.PersonalProfileResponse) => {
+            return NotificationConverter.PersonalProfile.toObject(res.personal_profile[0]);
+        });
+    }
 }
