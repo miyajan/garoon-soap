@@ -7,6 +7,7 @@ import Schedule from "./client/schedule";
 import Bulletin from "./client/bulletin";
 import Mail from "./client/mail";
 import Notification from "./client/notification";
+import Workflow from "./client/workflow";
 
 export default class GaroonSoap {
     public readonly base: Base;
@@ -17,6 +18,7 @@ export default class GaroonSoap {
     public readonly bulletin: Bulletin;
     public readonly mail: Mail;
     public readonly notification: Notification;
+    public readonly workflow: Workflow;
 
     public constructor(baseUri: string, username: string, password: string, locale: string, needCsp: boolean) {
         const setting = new Setting(baseUri, username, password, locale, needCsp);
@@ -28,5 +30,6 @@ export default class GaroonSoap {
         this.bulletin = new Bulletin(setting);
         this.mail = new Mail(setting);
         this.notification = new Notification(setting);
+        this.workflow = new Workflow(setting);
     }
 }
