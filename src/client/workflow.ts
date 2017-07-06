@@ -37,6 +37,20 @@ export default class Workflow {
         });
     }
 
+    public getUnprocessedApplicationsById(applicationIds: string[]): Promise<workflow.ApplicationType[]> {
+        const parameters: Object[] = [];
+        applicationIds.forEach(applicationId => {
+            parameters.push({
+                application_id: applicationId
+            });
+        });
+        return this.client.post(this.path, 'WorkflowGetUnprocessedApplicationsById', parameters, true).then((res: Object) => {
+            const applications: workflow.ApplicationType[] = [];
+            console.log(JSON.stringify(res, null, 2));
+            return applications;
+        });
+    }
+
     public getSentApplicationVersions(start: Date, end?: Date, items?: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
         const parameters: Object[] = [];
         const attr: any = {
