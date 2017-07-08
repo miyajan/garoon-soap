@@ -38,7 +38,7 @@ export interface FileType {
     mimeType?: string
 }
 
-export class FileItemType extends ItemType {
+export class FilesItemType extends ItemType {
     readonly name: string;
     readonly inline: boolean;
     readonly files: FileType[];
@@ -109,10 +109,19 @@ export interface ApplicationType {
     name?: string
     number?: string
     urgent?: boolean
-    statusType: string
+    statusType?: string
     applicant: ApplicantType
     items: ItemType[]
     steps: StepType[]
     operations: OperationType[]
     folders: FolderType[]
+}
+
+export interface ApplicationXMLObject {
+    $: any
+    $$: base.XMLObject[]
+}
+
+export interface ApplicationsResponse {
+    $$?: ApplicationXMLObject[]
 }

@@ -3,6 +3,7 @@ import Setting from "./setting";
 import * as base from "../type/base";
 import * as workflow from "../type/workflow";
 import * as BaseConverter from "../converter/base";
+import * as WorkflowConverter from "../converter/workflow";
 import * as datetime from "../util/datetime";
 
 export default class Workflow {
@@ -44,9 +45,13 @@ export default class Workflow {
                 application_id: applicationId
             });
         });
-        return this.client.post(this.path, 'WorkflowGetUnprocessedApplicationsById', parameters, true).then((res: Object) => {
+        return this.client.post(this.path, 'WorkflowGetUnprocessedApplicationsById', parameters, true).then((res: workflow.ApplicationsResponse) => {
             const applications: workflow.ApplicationType[] = [];
-            console.log(JSON.stringify(res, null, 2));
+            if (res.$$ !== undefined) {
+                res.$$.forEach(obj => {
+                    applications.push(WorkflowConverter.Application.toObject(obj));
+                });
+            }
             return applications;
         });
     }

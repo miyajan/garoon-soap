@@ -219,3 +219,10 @@ export interface ChangeLogType {
 export interface ChangeLogXMLObject {
     $: any
 }
+
+export interface XMLObject {
+    $: any
+    $$?: XMLObject[]
+    _: string
+    '#name': string
+}
