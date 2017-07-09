@@ -87,4 +87,22 @@ export default class Workflow {
             return items;
         });
     }
+
+    public getSentApplicationsById(applicationIds: string[]): Promise<workflow.ApplicationType[]> {
+        const parameters: Object[] = [];
+        applicationIds.forEach(applicationId => {
+            parameters.push({
+                application_id: applicationId
+            });
+        });
+        return this.client.post(this.path, 'WorkflowGetSentApplicationsById', parameters, true).then((res: workflow.ApplicationsResponse) => {
+            const applications: workflow.ApplicationType[] = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(obj => {
+                    applications.push(WorkflowConverter.Application.toObject(obj));
+                });
+            }
+            return applications;
+        });
+    }
 }
