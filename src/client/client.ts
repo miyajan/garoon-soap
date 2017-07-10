@@ -30,7 +30,7 @@ export default class Client {
         this.setting = setting;
     }
 
-    public post(path: string, action: string, parameters: any, preserveChildrenOrder?: boolean): Promise<Object | void> {
+    public post(path: string, action: string, parameters: any, preserveChildrenOrder: boolean = false): Promise<Object | void> {
         const actionObject: Action = {};
         actionObject[action] = [{'parameters': parameters}];
         const xmlObject = {
@@ -86,7 +86,7 @@ export default class Client {
                 xml2js.parseString(text, {
                     trim: true,
                     tagNameProcessors: [processors.stripPrefix],
-                    explicitChildren: true,
+                    explicitChildren: preserveChildrenOrder,
                     preserveChildrenOrder: preserveChildrenOrder
                 }, (err, data) => {
                     if (err) {

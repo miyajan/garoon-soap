@@ -105,4 +105,36 @@ export default class Workflow {
             return applications;
         });
     }
+
+    public getReceivedApplicationVersions(start: Date, end?: Date, items?: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        const attr: any = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        parameters.push({_attr: attr});
+        if (items !== undefined) {
+            items.forEach(item => {
+                parameters.push({
+                    application_item: {
+                        _attr: {
+                            id: item.id,
+                            version: item.version
+                        }
+                    }
+                });
+            });
+        }
+        return this.client.post(this.path, 'WorkflowGetReceivedApplicationVersions', parameters).then((res: workflow.ApplicationItemsResponse) => {
+            const items: base.ItemVersionResultType[] = [];
+            if (res.application_item !== undefined) {
+                res.application_item.forEach(obj => {
+                    items.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return items;
+        });
+    }
 }
