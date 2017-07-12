@@ -155,4 +155,25 @@ export default class Workflow {
             return applications;
         });
     }
+
+    public getProxyApprovalsByDelegatorId(delegatorId: string, start: Date, end?: Date): Promise<workflow.ApplicationType[]> {
+        const parameters: Object[] = [];
+        const attr: any = {
+            delegator_id: delegatorId,
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        parameters.push({_attr: attr});
+        return this.client.post(this.path, 'WorkflowGetProxyApprovalsByDelegatorId', parameters, true).then((res: workflow.ApplicationsResponse) => {
+            const applications: workflow.ApplicationType[] = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(obj => {
+                    applications.push(WorkflowConverter.Application.toObject(obj));
+                });
+            }
+            return applications;
+        });
+    }
 }
