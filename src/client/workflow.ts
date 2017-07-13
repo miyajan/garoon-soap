@@ -176,4 +176,23 @@ export default class Workflow {
             return applications;
         });
     }
+
+    public getPendingApprovals(start: Date, end?: Date): Promise<workflow.ApplicationType[]> {
+        const attr: any = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        const parameters: Object[] = [{_attr: attr}];
+        return this.client.post(this.path, 'WorkflowGetPendingApprovals', parameters, true).then((res: workflow.ApplicationsResponse) => {
+            const applications: workflow.ApplicationType[] = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(obj => {
+                    applications.push(WorkflowConverter.Application.toObject(obj));
+                });
+            }
+            return applications;
+        });
+    }
 }
