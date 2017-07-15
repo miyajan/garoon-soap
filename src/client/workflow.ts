@@ -196,6 +196,56 @@ export default class Workflow {
         });
     }
 
+    public getRequests(manageRequestParameter: workflow.GetRequestType): Promise<workflow.RequestManageFormType[]> {
+        const parameters: Object[] = [];
+        if (manageRequestParameter !== undefined) {
+            const attr: any = {
+                request_form_id: manageRequestParameter.requestFormId
+            };
+            if (manageRequestParameter.filter !== undefined) {
+                attr.filter = manageRequestParameter.filter;
+            }
+            if (manageRequestParameter.startRequestDate !== undefined) {
+                attr.start_request_date = datetime.toString(manageRequestParameter.startRequestDate);
+            }
+            if (manageRequestParameter.endRequestDate !== undefined) {
+                attr.end_request_date = datetime.toString(manageRequestParameter.endRequestDate);
+            }
+            if (manageRequestParameter.startApprovalDate !== undefined) {
+                attr.start_approval_date = datetime.toString(manageRequestParameter.startApprovalDate);
+            }
+            if (manageRequestParameter.endApprovalDate !== undefined) {
+                attr.end_approval_date = datetime.toString(manageRequestParameter.endApprovalDate);
+            }
+            if (manageRequestParameter.applicant !== undefined) {
+                attr.applicant = manageRequestParameter.applicant;
+            }
+            if (manageRequestParameter.lastApproval !== undefined) {
+                attr.last_approval = manageRequestParameter.lastApproval;
+            }
+            if (manageRequestParameter.startToGetInformationFrom !== undefined) {
+                attr.start_to_get_information_from = manageRequestParameter.startToGetInformationFrom;
+            }
+            if (manageRequestParameter.maximumRequestAmountToGet !== undefined) {
+                attr.maximum_request_amount_to_get = manageRequestParameter.maximumRequestAmountToGet;
+            }
+            parameters.push({
+                manage_request_parameter: {
+                    _attr: attr
+                }
+            });
+        }
+        return this.client.post(this.path, 'WorkflowGetRequests', parameters).then((res: workflow.CategoriesResponse) => {
+            const categories: workflow.RequestManageFormType[] = [];
+            if (res.category !== undefined) {
+                res.category.forEach(obj => {
+                    categories.push(WorkflowConverter.RequestManageForm.toObject(obj));
+                });
+            }
+            return categories;
+        });
+    }
+
     public getRequestById(requestIds: string[]): Promise<workflow.ApplicationType[]> {
         const parameters: Object[] = [];
         requestIds.forEach(requestId => {

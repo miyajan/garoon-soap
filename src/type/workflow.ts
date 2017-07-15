@@ -125,3 +125,57 @@ export interface ApplicationXMLObject {
 export interface ApplicationsResponse {
     $$?: ApplicationXMLObject[]
 }
+
+export interface GetRequestType {
+    requestFormId: string
+    filter?: string
+    startRequestDate?: Date
+    endRequestDate?: Date
+    startApprovalDate?: Date
+    endApprovalDate?: Date
+    applicant?: string
+    lastApproval?: string
+    startToGetInformationFrom?: string
+    maximumRequestAmountToGet?: string
+}
+
+export interface ManageItemDetailType {
+    pid: string
+    number: string
+    priority: string
+    subject: string
+    status: string
+    applicant: string
+    lastApprover: string
+    requestDate: Date
+}
+
+export interface ManageFormType {
+    manageItemDetail?: ManageItemDetailType
+    idRequestForm?: string
+    nameRequestForm?: string
+}
+
+export interface RequestManageFormType {
+    manageRequestForm?: ManageFormType
+    idCategory?: string
+    nameCategory?: string
+}
+
+export interface ManageItemDetailXMLObject {
+    $: any
+}
+
+export interface ManageFormXMLObject {
+    $: any
+    manage_item_detail?: ManageItemDetailXMLObject[]
+}
+
+export interface RequestManageFormXMLObject {
+    $: any
+    manage_request_form?: ManageFormXMLObject[]
+}
+
+export interface CategoriesResponse {
+    category?: RequestManageFormXMLObject[]
+}

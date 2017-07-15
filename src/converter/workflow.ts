@@ -259,3 +259,59 @@ export class Folder {
         };
     }
 }
+
+export class RequestManageForm {
+    static toObject(obj: workflow.RequestManageFormXMLObject): workflow.RequestManageFormType {
+        const form: workflow.RequestManageFormType = {};
+
+        if (obj.manage_request_form !== undefined) {
+            form.manageRequestForm = ManageForm.toObject(obj.manage_request_form[0]);
+        }
+
+        const attr = obj.$;
+        if (attr.id_category !== undefined) {
+            form.idCategory = attr.id_category;
+        }
+        if (attr.name_request_form !== undefined) {
+            form.nameCategory = attr.name_category;
+        }
+
+        return form;
+    }
+}
+
+export class ManageForm {
+    static toObject(obj: workflow.ManageFormXMLObject): workflow.ManageFormType {
+        const form: workflow.ManageFormType = {};
+
+        if (obj.manage_item_detail !== undefined) {
+            form.manageItemDetail = ManageItemDetail.toObject(obj.manage_item_detail[0]);
+        }
+
+        const attr = obj.$;
+        if (attr.id_request_form !== undefined) {
+            form.idRequestForm = attr.id_request_form;
+        }
+        if (attr.name_request_form !== undefined) {
+            form.nameRequestForm = attr.name_request_form;
+        }
+
+        return form;
+    }
+}
+
+export class ManageItemDetail {
+    static toObject(obj: workflow.ManageItemDetailXMLObject): workflow.ManageItemDetailType {
+        const attr = obj.$;
+        return {
+            pid: attr.pid,
+            number: attr.number,
+            priority: attr.priority,
+            subject: attr.subject,
+            status: attr.status,
+            applicant: attr.applicant,
+            lastApprover: attr.last_approver,
+            requestDate: datetime.toDate(attr.request_date)
+        };
+    }
+}
