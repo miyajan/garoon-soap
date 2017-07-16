@@ -71,28 +71,63 @@ export interface StepType {
     processors: ProcessorType[]
 }
 
-export class OperationType {
+export abstract class OperationType {
+    protected tag: string;
+
+    public getXMLObj(): Object {
+        const obj: any = {};
+        obj[this.tag] = '';
+        return obj;
+    }
 }
 
 export class SentBackType extends OperationType {
+    constructor() {
+        super();
+        this.tag = 'send_back';
+    }
 }
 
 export class ApproveType extends OperationType {
+    constructor() {
+        super();
+        this.tag = 'approve';
+    }
 }
 
 export class RejectType extends OperationType {
+    constructor() {
+        super();
+        this.tag = 'reject';
+    }
 }
 
 export class WithdrawType extends OperationType {
+    constructor() {
+        super();
+        this.tag = 'withdraw';
+    }
 }
 
 export class CancelType extends OperationType {
+    constructor() {
+        super();
+        this.tag = 'cancel';
+    }
 }
 
 export class ConfirmType extends OperationType {
+    constructor() {
+        super();
+        this.tag = 'confirm';
+    }
 }
 
 export class AcknowledgeType extends OperationType {
+    constructor() {
+        super();
+        this.tag = 'acknowledge';
+    }
 }
 
 export interface FolderType {
@@ -178,4 +213,11 @@ export interface RequestManageFormXMLObject {
 
 export interface CategoriesResponse {
     category?: RequestManageFormXMLObject[]
+}
+
+export interface HandleApplicationOperationType {
+    applicationId: string
+    delegatorId?: string
+    comment?: string
+    operation: OperationType
 }

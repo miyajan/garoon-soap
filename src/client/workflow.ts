@@ -261,4 +261,40 @@ export default class Workflow {
             return applications;
         });
     }
+
+    public handleApplications(handles: workflow.HandleApplicationOperationType[]): Promise<workflow.ApplicationType[]> {
+        const parameters: Object[] = [];
+        handles.forEach(handle => {
+            const attr: any = {
+                application_id: handle.applicationId
+            };
+            if (handle.delegatorId !== undefined) {
+                attr.delegator_id = handle.delegatorId;
+            }
+            if (handle.comment !== undefined) {
+                attr.comment = handle.comment;
+            }
+            parameters.push({
+                handle: [
+                    {
+                        _attr: attr
+                    },
+                    {
+                        operation: [
+                            handle.operation.getXMLObj()
+                        ]
+                    }
+                ]
+            });
+        });
+        return this.client.post(this.path, 'WorkflowHandleApplications', parameters, true).then((res: workflow.ApplicationsResponse) => {
+            const applications: workflow.ApplicationType[] = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(obj => {
+                    applications.push(WorkflowConverter.Application.toObject(obj));
+                });
+            }
+            return applications;
+        });
+    }
 }
