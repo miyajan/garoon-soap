@@ -315,3 +315,37 @@ export class ManageItemDetail {
         };
     }
 }
+
+export class Category {
+    static toObject(obj: workflow.CategoryXMLObject): workflow.CategoryType {
+        const children: workflow.CategoryType[] = [];
+        if (obj.child_category !== undefined) {
+            obj.child_category.forEach(obj => {
+                children.push(Category.toObject(obj));
+            });
+        }
+
+        const attr = obj.$;
+        const category: workflow.CategoryType = {
+            id: attr.id,
+            code: attr.code,
+            name: attr.name,
+            children: children
+        };
+
+        if (attr.parent_category !== undefined) {
+            category.parentCategory = attr.parent_category;
+        }
+        if (attr.memo !== undefined) {
+            category.memo = attr.memo;
+        }
+        if (attr.created !== undefined) {
+            category.created = new Date(Number(attr.created) * 1000);
+        }
+        if (attr.last_update !== undefined) {
+            category.lastUpdate = new Date(Number(attr.last_update) * 1000);
+        }
+
+        return category;
+    }
+}

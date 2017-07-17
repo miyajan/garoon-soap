@@ -297,4 +297,10 @@ export default class Workflow {
             return applications;
         });
     }
+
+    public getCategories(): Promise<workflow.CategoryType> {
+        return this.client.post(this.path, 'WorkflowGetCategories', []).then((res: workflow.RootResponse) => {
+            return WorkflowConverter.Category.toObject(res.root[0]);
+        });
+    }
 }

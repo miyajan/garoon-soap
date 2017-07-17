@@ -221,3 +221,23 @@ export interface HandleApplicationOperationType {
     comment?: string
     operation: OperationType
 }
+
+export interface CategoryType {
+    id: string
+    code: string
+    name: string
+    parentCategory?: string
+    memo?: string
+    created?: Date
+    lastUpdate?: Date
+    children: CategoryType[]
+}
+
+export interface CategoryXMLObject {
+    $: any
+    child_category?: CategoryXMLObject[]
+}
+
+export interface RootResponse {
+    root: CategoryXMLObject[]
+}
