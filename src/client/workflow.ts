@@ -303,4 +303,23 @@ export default class Workflow {
             return WorkflowConverter.Category.toObject(res.root[0]);
         });
     }
+
+    public getRequestFormByCategoryIds(categoryIds: string[]): Promise<workflow.RequestFormType[]> {
+        const parameters: Object[] = [];
+        categoryIds.forEach(categoryId => {
+            parameters.push({
+                category_id: categoryId
+            });
+        });
+        return this.client.post(this.path, 'WorkflowGetRequestFormByCategoryIds', parameters).then((res: workflow.CategoryRequestFormsResponse) => {
+            const forms: workflow.RequestFormType[] = [];
+            res.category.forEach(obj => {
+                const categoryId = obj.$.category_id;
+                obj.requestForm.forEach(obj => {
+                    forms.push(WorkflowConverter.RequestForm.toObject(categoryId, obj));
+                });
+            });
+            return forms;
+        });
+    }
 }

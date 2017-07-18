@@ -349,3 +349,26 @@ export class Category {
         return category;
     }
 }
+
+export class RequestForm {
+    static toObject(categoryId: string, obj: workflow.RequestFormXMLObject): workflow.RequestFormType {
+        const attr = obj.$;
+        const form: workflow.RequestFormType = {
+            fid: attr.fid,
+            type: attr.type,
+            name: attr.name,
+            active: attr.active === '1',
+            iconType: attr.icon_type,
+            categoryId: categoryId
+        };
+
+        if (attr.icon_id !== undefined) {
+            form.iconId = attr.icon_id;
+        }
+        if (attr.icon_url !== undefined) {
+            form.iconUrl = attr.icon_url;
+        }
+
+        return form;
+    }
+}

@@ -241,3 +241,27 @@ export interface CategoryXMLObject {
 export interface RootResponse {
     root: CategoryXMLObject[]
 }
+
+export interface RequestFormType {
+    fid: string
+    type: string
+    name: string
+    active: boolean
+    iconType: string
+    iconId?: string
+    iconUrl?: string
+    categoryId: string
+}
+
+export interface RequestFormXMLObject {
+    $: any
+}
+
+export interface CategoryRequestFormXMLObject {
+    $: any
+    requestForm: RequestFormXMLObject[]
+}
+
+export interface CategoryRequestFormsResponse {
+    category: CategoryRequestFormXMLObject[]
+}
