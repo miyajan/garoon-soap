@@ -322,4 +322,16 @@ export default class Workflow {
             return forms;
         });
     }
+
+    public getApprovalDelegators(): Promise<string[]> {
+        return this.client.post(this.path, 'WorkflowGetApprovalDelegators', []).then((res: workflow.DelegatorIdsResponse) => {
+            const delegatorIds: string[] = [];
+            if (res.delegator_id !== undefined) {
+                res.delegator_id.forEach(delegatorId => {
+                    delegatorIds.push(delegatorId);
+                });
+            }
+            return delegatorIds;
+        });
+    }
 }

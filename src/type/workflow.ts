@@ -265,3 +265,7 @@ export interface CategoryRequestFormXMLObject {
 export interface CategoryRequestFormsResponse {
     category: CategoryRequestFormXMLObject[]
 }
+
+export interface DelegatorIdsResponse {
+    delegator_id?: string[]
+}
