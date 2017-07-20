@@ -334,4 +334,17 @@ export default class Workflow {
             return delegatorIds;
         });
     }
+
+    public getProxies(): Promise<workflow.UserProxyType[]> {
+        return this.client.post(this.path, 'WorkflowGetProxies', []).then((res: workflow.ProxiesResponse) => {
+            const proxies: workflow.UserProxyType[] = [];
+            const proxiesObj = res.proxies[0];
+            if (proxiesObj.user_proxy !== undefined) {
+                proxiesObj.user_proxy.forEach(obj => {
+                    proxies.push(WorkflowConverter.UserProxy.toObject(obj));
+                });
+            }
+            return proxies;
+        });
+    }
 }

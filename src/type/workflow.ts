@@ -269,3 +269,31 @@ export interface CategoryRequestFormsResponse {
 export interface DelegatorIdsResponse {
     delegator_id?: string[]
 }
+
+export interface UserProxyType {
+    userId: string
+    approverIds: string[]
+    applicantIds: string[]
+}
+
+export interface ProxyApproverXMLObject {
+    $: any
+}
+
+export interface ProxyApplicantXMLObject {
+    $: any
+}
+
+export interface UserProxyXMLObject {
+    $: any
+    proxy_approver?: ProxyApproverXMLObject[]
+    proxy_applicant?: ProxyApplicantXMLObject[]
+}
+
+export interface ProxiesXMLObject {
+    user_proxy?: UserProxyXMLObject[]
+}
+
+export interface ProxiesResponse {
+    proxies: ProxiesXMLObject[]
+}

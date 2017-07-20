@@ -372,3 +372,28 @@ export class RequestForm {
         return form;
     }
 }
+
+export class UserProxy {
+    static toObject(obj: workflow.UserProxyXMLObject): workflow.UserProxyType {
+        const approverIds: string[] = [];
+        if (obj.proxy_approver !== undefined) {
+            obj.proxy_approver.forEach(obj => {
+                approverIds.push(obj.$.approver_id);
+            });
+        }
+
+        const applicantIds: string[] = [];
+        if (obj.proxy_applicant !== undefined) {
+            obj.proxy_applicant.forEach(obj => {
+                applicantIds.push(obj.$.applicant_id);
+            });
+        }
+
+        const attr = obj.$;
+        return {
+            userId: attr.user_id,
+            approverIds: approverIds,
+            applicantIds: applicantIds
+        };
+    }
+}
