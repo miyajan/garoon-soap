@@ -347,4 +347,52 @@ export default class Workflow {
             return proxies;
         });
     }
+
+    public setProxies(proxies: workflow.UserProxyType[]): Promise<workflow.UserProxyType[]> {
+        const parameters: Object[] = [];
+        const proxiesParam: Object[] = [];
+        proxies.forEach(proxy => {
+            const userProxy: any = [
+                {
+                    _attr: {
+                        user_id: proxy.userId
+                    }
+                }
+            ];
+            proxy.approverIds.forEach(approverId => {
+                userProxy.push({
+                    proxy_approver: [{
+                        _attr: {
+                            approver_id: approverId
+                        }
+                    }]
+                });
+            });
+            proxy.applicantIds.forEach(applicantId => {
+                userProxy.push({
+                    proxy_applicant: [{
+                        _attr: {
+                            applicant_id: applicantId
+                        }
+                    }]
+                })
+            });
+            proxiesParam.push({
+                user_proxy: userProxy
+            });
+        });
+        parameters.push({
+            proxies: proxiesParam
+        });
+        return this.client.post(this.path, 'WorkflowSetProxies', parameters).then((res: workflow.ProxiesResponse) => {
+            const proxies: workflow.UserProxyType[] = [];
+            const proxiesObj = res.proxies[0];
+            if (proxiesObj.user_proxy !== undefined) {
+                proxiesObj.user_proxy.forEach(obj => {
+                    proxies.push(WorkflowConverter.UserProxy.toObject(obj));
+                });
+            }
+            return proxies;
+        });
+    }
 }
