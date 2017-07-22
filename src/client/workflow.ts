@@ -395,4 +395,11 @@ export default class Workflow {
             return proxies;
         });
     }
+
+    public downloadFile(fileId: string): Promise<Buffer> {
+        const parameters = [{_attr: {file_id: fileId}}];
+        return this.client.post(this.path, 'WorkflowFileDownload', parameters).then((res: base.FileResponse) => {
+            return BaseConverter.File.toBuffer(res['file'][0]);
+        });
+    }
 }
