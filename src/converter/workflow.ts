@@ -340,10 +340,10 @@ export class Category {
             category.memo = attr.memo;
         }
         if (attr.created !== undefined) {
-            category.created = new Date(Number(attr.created) * 1000);
+            category.created = datetime.fromTimestamp(attr.created);
         }
         if (attr.last_update !== undefined) {
-            category.lastUpdate = new Date(Number(attr.last_update) * 1000);
+            category.lastUpdate = datetime.fromTimestamp(attr.last_update);
         }
 
         return category;
@@ -395,5 +395,44 @@ export class UserProxy {
             approverIds: approverIds,
             applicantIds: applicantIds
         };
+    }
+}
+
+export class FileAttachedDetail {
+    static toObject(obj: workflow.FileAttachedDetailXMLObject): workflow.FileAttachedDetailType {
+        return {
+            fileHeader: FileHeader.toObject(obj.file_header[0]),
+            fileInformation: FileInformation.toObject(obj.file_information[0])
+        };
+    }
+}
+
+export class FileHeader {
+    static toObject(obj: workflow.FileHeaderXMLObject): workflow.FileHeaderType {
+        const attr = obj.$;
+        return {
+            fileId: attr.file_id,
+            requestFormId: attr.request_form_id,
+            name: attr.name,
+            size: attr.size
+        };
+    }
+}
+
+export class FileInformation {
+    static toObject(obj: workflow.FileInformationXMLObject): workflow.FileInformationType {
+        const attr = obj.$;
+        const information: workflow.FileInformationType = {
+            subject: attr.subject,
+            versioning: attr.versioning,
+            createTime: datetime.fromTimestamp(attr.create_time),
+            modifyTime: datetime.fromTimestamp(attr.modify_time)
+        };
+
+        if (attr.description !== undefined) {
+            information.description = attr.description;
+        }
+
+        return information;
     }
 }

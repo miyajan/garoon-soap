@@ -402,4 +402,25 @@ export default class Workflow {
             return BaseConverter.File.toBuffer(res['file'][0]);
         });
     }
+
+    public getAttachedFileBody(params: workflow.GetAttachedFileBodyType[]): Promise<workflow.FileAttachedDetailType[]> {
+        const parameters: Object[] = [];
+        params.forEach(param => {
+            parameters.push({
+                parameter: {
+                    _attr: {
+                        request_form_id: param.requestFormId,
+                        file_id: param.fileId
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'WorkflowGetAttachedFileBody', parameters).then((res: workflow.AttachmentDetailsResponse) => {
+            const details: workflow.FileAttachedDetailType[] = [];
+            res.attachment_details.forEach(obj => {
+                details.push(WorkflowConverter.FileAttachedDetail.toObject(obj));
+            });
+            return details;
+        });
+    }
 }

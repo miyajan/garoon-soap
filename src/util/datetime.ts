@@ -16,3 +16,7 @@ export function toString(datetime: Date): string {
     const ss = second < 10 ? '0' + second : '' + second;
     return `${YY}-${MM}-${DD}T${hh}:${mm}:${ss}Z`;
 }
+
+export function fromTimestamp(timestamp: string): Date {
+    return new Date(Number(timestamp) * 1000);
+}

@@ -297,3 +297,45 @@ export interface ProxiesXMLObject {
 export interface ProxiesResponse {
     proxies: ProxiesXMLObject[]
 }
+
+export interface GetAttachedFileBodyType {
+    requestFormId: string
+    fileId: string
+}
+
+export interface FileHeaderType {
+    fileId: string
+    requestFormId: string
+    name: string
+    size: string
+}
+
+export interface FileInformationType {
+    subject: string
+    versioning: string
+    createTime: Date
+    modifyTime: Date
+    description?: string
+}
+
+export interface FileAttachedDetailType {
+    fileHeader: FileHeaderType
+    fileInformation: FileInformationType
+}
+
+export interface FileHeaderXMLObject {
+    $: any
+}
+
+export interface FileInformationXMLObject {
+    $: any
+}
+
+export interface FileAttachedDetailXMLObject {
+    file_header: FileHeaderXMLObject[]
+    file_information: FileInformationXMLObject[]
+}
+
+export interface AttachmentDetailsResponse {
+    attachment_details: FileAttachedDetailXMLObject[]
+}
