@@ -436,3 +436,14 @@ export class FileInformation {
         return information;
     }
 }
+
+export class AvailabilityUser {
+    static toObject(obj: workflow.AvailabilityUserXMLObject): workflow.AvailabilityUserType {
+        const attr = obj.$;
+        return {
+            id: attr.id,
+            workflow: Util.toBoolean(attr.workflow),
+            keitai: Util.toBoolean(attr.keitai)
+        };
+    }
+}

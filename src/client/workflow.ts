@@ -423,4 +423,20 @@ export default class Workflow {
             return details;
         });
     }
+
+    public getAvailabilityUsers(userIds: string[]): Promise<workflow.AvailabilityUserType[]> {
+        const parameters: Object[] = [];
+        userIds.forEach(userId => {
+            parameters.push({
+                user_id: userId
+            });
+        });
+        return this.client.post(this.path, 'WorkflowGetAvailabilityUsers', parameters).then((res: workflow.UsersResponse) => {
+            const users: workflow.AvailabilityUserType[] = [];
+            res.user.forEach(obj => {
+                users.push(WorkflowConverter.AvailabilityUser.toObject(obj));
+            });
+            return users;
+        });
+    }
 }

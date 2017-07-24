@@ -339,3 +339,17 @@ export interface FileAttachedDetailXMLObject {
 export interface AttachmentDetailsResponse {
     attachment_details: FileAttachedDetailXMLObject[]
 }
+
+export interface AvailabilityUserType {
+    id: string
+    workflow: boolean
+    keitai: boolean
+}
+
+export interface AvailabilityUserXMLObject {
+    $: any
+}
+
+export interface UsersResponse {
+    user: AvailabilityUserXMLObject[]
+}
