@@ -353,3 +353,13 @@ export interface AvailabilityUserXMLObject {
 export interface UsersResponse {
     user: AvailabilityUserXMLObject[]
 }
+
+export interface ProfilesType {
+    usePendingApprovals: boolean
+    useProxyApprovals: boolean
+    modifyProxies: boolean
+}
+
+export interface ProfilesXMLObject {
+    $: any
+}

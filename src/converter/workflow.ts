@@ -447,3 +447,14 @@ export class AvailabilityUser {
         };
     }
 }
+
+export class Profiles {
+    static toObject(obj: workflow.ProfilesXMLObject): workflow.ProfilesType {
+        const attr = obj.$;
+        return {
+            usePendingApprovals: Util.toBoolean(attr.use_pending_approvals),
+            useProxyApprovals: Util.toBoolean(attr.use_proxy_approvals),
+            modifyProxies: Util.toBoolean(attr.modify_proxies)
+        };
+    }
+}

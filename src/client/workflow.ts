@@ -439,4 +439,10 @@ export default class Workflow {
             return users;
         });
     }
+
+    public getProfiles(): Promise<workflow.ProfilesType> {
+        return this.client.post(this.path, 'WorkflowGetProfiles', []).then((res: workflow.ProfilesXMLObject) => {
+            return WorkflowConverter.Profiles.toObject(res);
+        });
+    }
 }
