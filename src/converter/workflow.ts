@@ -1,5 +1,4 @@
 import * as workflow from "../type/workflow";
-import {BlankItemType} from "../type/workflow";
 import * as datetime from "../util/datetime";
 import * as base from "../type/base";
 import * as Util from "../util";
@@ -142,7 +141,7 @@ export class Item {
         } else if (tagName === 'files_item') {
             return FilesItem.toObject(obj);
         } else if (tagName === 'blank_item') {
-            return new BlankItemType();
+            return new workflow.BlankItemType();
         }
         throw new Error(`Unknown item: ${tagName}`);
     }
