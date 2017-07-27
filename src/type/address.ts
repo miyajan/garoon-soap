@@ -85,3 +85,29 @@ export interface CardXMLObject {
 export interface CardsResponse {
     card: CardXMLObject[]
 }
+
+export interface BookType {
+    cardIds: string[]
+    key: string
+    bookId: string
+    name: string
+    type: string
+    version: string
+}
+
+export interface CardXMLObject {
+    $: any
+}
+
+export interface CardsXMLObject {
+    card?: CardXMLObject[]
+}
+
+export interface BookXMLObject {
+    $: any
+    cards: CardsXMLObject[]
+}
+
+export interface BooksResponse {
+    book?: BookXMLObject[]
+}

@@ -128,3 +128,25 @@ export class FileFieldValue {
         };
     }
 }
+
+export class Book {
+    static toObject(obj: address.BookXMLObject): address.BookType {
+        const cardIds: string[] = [];
+        const cards = obj.cards[0];
+        if (cards.card !== undefined) {
+            cards.card.forEach(obj => {
+                cardIds.push(obj.$.id);
+            });
+        }
+
+        const attr = obj.$;
+        return {
+            cardIds: cardIds,
+            key: attr.key,
+            bookId: attr.book_id,
+            name: attr.name,
+            type: attr.type,
+            version: attr.version
+        };
+    }
+}
