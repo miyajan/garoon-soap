@@ -49,4 +49,20 @@ export default class Address {
             return books;
         });
     }
+
+    public getPersonalCardsById(cardIds: string[]): Promise<address.CardType[]> {
+        const parameters: Object[] = [];
+        cardIds.forEach(cardId => {
+            parameters.push({
+                card_id: cardId
+            })
+        });
+        return this.client.post(this.path, 'AddressGetPersonalCardsById', parameters).then((res: address.CardsResponse) => {
+            const cards: address.CardType[] = [];
+            res.card.forEach(obj => {
+                cards.push(AddressConverter.Card.toObject(obj));
+            });
+            return cards;
+        });
+    }
 }
