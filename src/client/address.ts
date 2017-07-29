@@ -65,4 +65,22 @@ export default class Address {
             return cards;
         });
     }
+
+    public getPersonalBooksById(bookIds: string[]): Promise<address.BookType[]> {
+        const parameters: Object[] = [];
+        bookIds.forEach(bookId => {
+            parameters.push({
+                book_id: bookId
+            });
+        });
+        return this.client.post(this.path, 'AddressGetPersonalBooksById', parameters).then((res: address.BooksResponse) => {
+            const books: address.BookType[] = [];
+            if (res.book !== undefined) {
+                res.book.forEach(obj => {
+                    books.push(AddressConverter.Book.toObject(obj));
+                });
+            }
+            return books;
+        });
+    }
 }
