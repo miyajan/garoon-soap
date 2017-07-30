@@ -1,7 +1,9 @@
 import Client from "./client";
 import Setting from "./setting";
 import * as address from "../type/address";
+import * as base from "../type/base";
 import * as AddressConverter from "../converter/address";
+import * as BaseConverter from "../converter/base";
 
 export default class Address {
     private client: Client;
@@ -81,6 +83,29 @@ export default class Address {
                 });
             }
             return books;
+        });
+    }
+
+    public getSharedBookVersions(bookItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        bookItems.forEach(item => {
+            parameters.push({
+                book_item: {
+                    _attr: {
+                        id: item.id,
+                        version: item.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'AddressGetSharedBookVersions', parameters).then((res: address.BookItemsResponse) => {
+            const versions: base.ItemVersionResultType[] = [];
+            if (res.book_item !== undefined) {
+                res.book_item.forEach(obj => {
+                    versions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
         });
     }
 }

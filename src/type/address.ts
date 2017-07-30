@@ -111,3 +111,7 @@ export interface BookXMLObject {
 export interface BooksResponse {
     book?: BookXMLObject[]
 }
+
+export interface BookItemsResponse {
+    book_item?: base.ItemVersionResultXMLObject[]
+}
