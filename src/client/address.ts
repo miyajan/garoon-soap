@@ -108,4 +108,27 @@ export default class Address {
             return versions;
         });
     }
+
+    public getPersonalBookVersions(bookItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        bookItems.forEach(item => {
+            parameters.push({
+                book_item: {
+                    _attr: {
+                        id: item.id,
+                        version: item.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'AddressGetPersonalBookVersions', parameters).then((res: address.BookItemsResponse) => {
+            const versions: base.ItemVersionResultType[] = [];
+            if (res.book_item !== undefined) {
+                res.book_item.forEach(obj => {
+                    versions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
+        });
+    }
 }
