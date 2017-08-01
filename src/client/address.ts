@@ -131,4 +131,31 @@ export default class Address {
             return versions;
         });
     }
+
+    public getSharedCardVersions(bookId: string, cardItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [{
+            _attr: {
+                book_id: bookId
+            }
+        }];
+        cardItems.forEach(item => {
+            parameters.push({
+                card_item: {
+                    _attr: {
+                        id: item.id,
+                        version: item.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'AddressGetSharedCardVersions', parameters).then((res: address.CardItemsResponse) => {
+            const versions: base.ItemVersionResultType[] = [];
+            if (res.card_item !== undefined) {
+                res.card_item.forEach(obj => {
+                    versions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
+        });
+    }
 }
