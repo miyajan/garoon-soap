@@ -119,3 +119,7 @@ export interface BookItemsResponse {
 export interface CardItemsResponse {
     card_item?: base.ItemVersionResultXMLObject[]
 }
+
+export interface BookIdsResponse {
+    book_id?: string[]
+}
