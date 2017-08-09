@@ -193,4 +193,16 @@ export default class Address {
             return bookIds;
         });
     }
+
+    public getModifyAllowBooks(): Promise<string[]> {
+        return this.client.post(this.path, 'AddressGetModifyAllowBooks', []).then((res: address.BookIdsResponse) => {
+            const bookIds: string[] = [];
+            if (res.book_id !== undefined) {
+                res.book_id.forEach(bookId => {
+                    bookIds.push(bookId);
+                });
+            }
+            return bookIds;
+        });
+    }
 }
