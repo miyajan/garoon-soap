@@ -205,4 +205,27 @@ export default class Address {
             return bookIds;
         });
     }
+
+    public getMyAddressGroupVersions(groupItems: base.ItemVersionType[]): Promise<base.ItemVersionResultType[]> {
+        const parameters: Object[] = [];
+        groupItems.forEach(item => {
+            parameters.push({
+                my_address_group_item: {
+                    _attr: {
+                        id: item.id,
+                        version: item.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'AddressGetMyAddressGroupVersions', parameters).then((res: address.MyAddressGroupItemsResponse) => {
+            const versions: base.ItemVersionResultType[] = [];
+            if (res.my_address_group_item !== undefined) {
+                res.my_address_group_item.forEach(obj => {
+                    versions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
+        });
+    }
 }

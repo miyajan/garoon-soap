@@ -123,3 +123,7 @@ export interface CardItemsResponse {
 export interface BookIdsResponse {
     book_id?: string[]
 }
+
+export interface MyAddressGroupItemsResponse {
+    my_address_group_item?: base.ItemVersionResultXMLObject[]
+}
