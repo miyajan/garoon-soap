@@ -127,3 +127,35 @@ export interface BookIdsResponse {
 export interface MyAddressGroupItemsResponse {
     my_address_group_item?: base.ItemVersionResultXMLObject[]
 }
+
+export interface MyAddressGroupCardType {
+    id: string
+    type: string
+}
+
+export interface MyAddressGroupType {
+    id: string
+    version: string
+    name: string
+    description?: string
+    userIds: string[]
+    cards: MyAddressGroupCardType[]
+}
+
+export interface MyAddressGroupUserXMLObject {
+    $: any
+}
+
+export interface MyAddressGroupCardXMLObject {
+    $: any
+}
+
+export interface MyAddressGroupXMLObject {
+    $: any
+    user?: MyAddressGroupUserXMLObject[]
+    card?: MyAddressGroupCardXMLObject[]
+}
+
+export interface MyAddressGroupsResponse {
+    my_address_group?: MyAddressGroupXMLObject[]
+}

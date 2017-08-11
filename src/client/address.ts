@@ -228,4 +228,22 @@ export default class Address {
             return versions;
         });
     }
+
+    public getMyAddressGroupsById(groupIds: string[]): Promise<address.MyAddressGroupType[]> {
+        const parameters: Object[] = [];
+        groupIds.forEach(groupId => {
+            parameters.push({
+                my_address_group_id: groupId
+            });
+        });
+        return this.client.post(this.path, 'AddressGetMyAddressGroupsById', parameters).then((res: address.MyAddressGroupsResponse) => {
+            const groups: address.MyAddressGroupType[] = [];
+            if (res.my_address_group !== undefined) {
+                res.my_address_group.forEach(obj => {
+                    groups.push(AddressConverter.MyAddressGroup.toObject(obj));
+                });
+            }
+            return groups;
+        });
+    }
 }

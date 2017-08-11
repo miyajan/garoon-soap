@@ -150,3 +150,39 @@ export class Book {
         };
     }
 }
+
+export class MyAddressGroup {
+    static toObject(obj: address.MyAddressGroupXMLObject): address.MyAddressGroupType {
+        const userIds: string[] = [];
+        if (obj.user !== undefined) {
+            obj.user.forEach(obj => {
+                userIds.push(obj.$.key);
+            });
+        }
+
+        const cards: address.MyAddressGroupCardType[] = [];
+        if (obj.card !== undefined) {
+            obj.card.forEach(obj => {
+                cards.push({
+                    id: obj.$.key,
+                    type: obj.$.type
+                });
+            });
+        }
+
+        const attr = obj.$;
+        const group: address.MyAddressGroupType = {
+            id: attr.id,
+            version: attr.version,
+            name: attr.name,
+            userIds: userIds,
+            cards: cards
+        };
+
+        if (attr.description !== undefined) {
+            group.description = attr.description;
+        }
+
+        return group;
+    }
+}
