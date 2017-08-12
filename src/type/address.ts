@@ -159,3 +159,8 @@ export interface MyAddressGroupXMLObject {
 export interface MyAddressGroupsResponse {
     my_address_group?: MyAddressGroupXMLObject[]
 }
+
+export interface AddMyAddressGroupType {
+    name: string
+    description?: string
+}
