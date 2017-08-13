@@ -276,4 +276,34 @@ export default class Address {
             return groups;
         });
     }
+
+    public modifyMyAddressGroups(groups: address.ModifyMyAddressGroupType[]): Promise<address.MyAddressGroupType[]> {
+        const parameters: Object[] = [];
+        groups.forEach(group => {
+            const attr: any = {
+                id: group.id,
+                version: 'dummy',
+                name: group.name
+            };
+            if (group.description !== undefined) {
+                attr.description = group.description;
+            }
+            parameters.push({
+                my_address_group: [
+                    {
+                        _attr: attr
+                    },
+                ]
+            });
+        });
+        return this.client.post(this.path, 'AddressModifyMyAddressGroups', parameters).then((res: address.MyAddressGroupsResponse) => {
+            const groups: address.MyAddressGroupType[] = [];
+            if (res.my_address_group !== undefined) {
+                res.my_address_group.forEach(obj => {
+                    groups.push(AddressConverter.MyAddressGroup.toObject(obj));
+                });
+            }
+            return groups;
+        });
+    }
 }

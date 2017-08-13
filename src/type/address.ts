@@ -164,3 +164,9 @@ export interface AddMyAddressGroupType {
     name: string
     description?: string
 }
+
+export interface ModifyMyAddressGroupType {
+    id: string
+    name: string
+    description?: string
+}
