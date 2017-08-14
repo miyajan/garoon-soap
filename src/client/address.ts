@@ -306,4 +306,15 @@ export default class Address {
             return groups;
         });
     }
+
+    public removeMyAddressGroups(groupIds: string[]): Promise<void> {
+        const parameters: Object[] = [];
+        groupIds.forEach(groupId => {
+            parameters.push({
+                my_address_group_id: groupId
+            });
+        });
+        return this.client.post(this.path, 'AddressRemoveMyAddressGroups', parameters).then(() => {
+        });
+    }
 }
