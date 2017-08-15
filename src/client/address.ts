@@ -317,4 +317,50 @@ export default class Address {
         return this.client.post(this.path, 'AddressRemoveMyAddressGroups', parameters).then(() => {
         });
     }
+
+    public modifyCardsInMyAddressGroup(groups: address.ModifyCardsInMyAddressGroupType[]): Promise<address.MyAddressGroupType[]> {
+        const parameters: Object[] = [];
+        groups.forEach(group => {
+            const myAddressGroup: any = [{
+                _attr: {
+                    id: group.id
+                }
+            }];
+            if (group.userIds !== undefined) {
+                group.userIds.forEach(userId => {
+                    myAddressGroup.push({
+                        user: {
+                            _attr: {
+                                key: userId
+                            }
+                        }
+                    });
+                });
+            }
+            if (group.cards !== undefined) {
+                group.cards.forEach(card => {
+                    myAddressGroup.push({
+                        card: {
+                            _attr: {
+                                key: card.id,
+                                type: card.type
+                            }
+                        }
+                    });
+                });
+            }
+            parameters.push({
+                my_address_group: myAddressGroup
+            });
+        });
+        return this.client.post(this.path, 'AddressModifyCardsInMyAddressGroup', parameters).then((res: address.MyAddressGroupsResponse) => {
+            const groups: address.MyAddressGroupType[] = [];
+            if (res.my_address_group !== undefined) {
+                res.my_address_group.forEach(obj => {
+                    groups.push(AddressConverter.MyAddressGroup.toObject(obj));
+                });
+            }
+            return groups;
+        });
+    }
 }

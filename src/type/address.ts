@@ -170,3 +170,9 @@ export interface ModifyMyAddressGroupType {
     name: string
     description?: string
 }
+
+export interface ModifyCardsInMyAddressGroupType {
+    id: string
+    userIds?: string[]
+    cards?: MyAddressGroupCardType[]
+}
