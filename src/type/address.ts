@@ -176,3 +176,35 @@ export interface ModifyCardsInMyAddressGroupType {
     userIds?: string[]
     cards?: MyAddressGroupCardType[]
 }
+
+export interface AddCardType {
+    bookId: string
+    subject: string
+    personalName?: NameFieldValueType
+    personalReading?: NameFieldValueType
+    companyName?: string
+    companyReading?: string
+    section?: string
+    zipCode?: string
+    physicalAddress?: string
+    map?: string
+    route?: RouteFieldValueType
+    companyTel?: string
+    companyFax?: string
+    url?: string
+    post?: string
+    personalTel?: string
+    email?: string
+    image?: FileFieldValueType
+    description?: string
+}
+
+export interface FileType {
+    id: string
+    content: Buffer
+}
+
+export interface CardContainsFileType {
+    card: AddCardType
+    files?: FileType[]
+}
