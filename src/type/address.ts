@@ -208,3 +208,31 @@ export interface CardContainsFileType {
     card: AddCardType
     files?: FileType[]
 }
+
+export interface ModifyCardType {
+    bookId: string
+    id: string
+    subject: string
+    personalName?: NameFieldValueType
+    personalReading?: NameFieldValueType
+    companyName?: string
+    companyReading?: string
+    section?: string
+    zipCode?: string
+    physicalAddress?: string
+    map?: string
+    route?: RouteFieldValueType
+    companyTel?: string
+    companyFax?: string
+    url?: string
+    post?: string
+    personalTel?: string
+    email?: string
+    image?: FileFieldValueType
+    description?: string
+}
+
+export interface ModifyCardContainsFileType {
+    card: ModifyCardType
+    files?: FileType[]
+}

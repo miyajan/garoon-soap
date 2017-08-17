@@ -533,4 +533,174 @@ export default class Address {
             return cards;
         });
     }
+
+    public modifyCards(cards: address.ModifyCardContainsFileType[]): Promise<address.CardType[]> {
+        const parameters: Object[] = [];
+        cards.forEach(card => {
+            const modifyCard: any = [];
+
+            const cardParam: any = [];
+            cardParam.push({
+                _attr: {
+                    book_id: card.card.bookId,
+                    id: card.card.id,
+                    version: 'dummy'
+                }
+            });
+            cardParam.push({
+                subject: card.card.subject
+            });
+            if (card.card.personalName !== undefined) {
+                cardParam.push({
+                    personal_name: {
+                        part: card.card.personalName
+                    }
+                });
+            }
+            if (card.card.personalReading !== undefined) {
+                cardParam.push({
+                    personal_reading: {
+                        part: card.card.personalReading
+                    }
+                });
+            }
+            if (card.card.companyName !== undefined) {
+                cardParam.push({
+                    company_name: card.card.companyName
+                })
+            }
+            if (card.card.companyReading !== undefined) {
+                cardParam.push({
+                    company_reading: card.card.companyReading
+                })
+            }
+            if (card.card.section !== undefined) {
+                cardParam.push({
+                    section: card.card.section
+                });
+            }
+            if (card.card.zipCode !== undefined) {
+                cardParam.push({
+                    zipCode: card.card.zipCode
+                });
+            }
+            if (card.card.physicalAddress !== undefined) {
+                cardParam.push({
+                    physical_address: card.card.physicalAddress
+                });
+            }
+            if (card.card.map !== undefined) {
+                cardParam.push({
+                    map: card.card.map
+                });
+            }
+            if (card.card.route !== undefined) {
+                const route: any = [];
+                if (card.card.route.path !== undefined) {
+                    route.push({
+                        path: card.card.route.path
+                    });
+                }
+                if (card.card.route.time !== undefined) {
+                    route.push({
+                        time: card.card.route.time
+                    });
+                }
+                if (card.card.route.fare !== undefined) {
+                    route.push({
+                        fare: card.card.route.fare
+                    });
+                }
+                cardParam.push({
+                    route: route
+                });
+            }
+            if (card.card.companyTel !== undefined) {
+                cardParam.push({
+                    company_tel: card.card.companyTel
+                });
+            }
+            if (card.card.companyFax !== undefined) {
+                cardParam.push({
+                    company_fax: card.card.companyFax
+                });
+            }
+            if (card.card.url !== undefined) {
+                cardParam.push({
+                    url: card.card.url
+                });
+            }
+            if (card.card.post !== undefined) {
+                cardParam.push({
+                    post: card.card.post
+                });
+            }
+            if (card.card.personalTel !== undefined) {
+                cardParam.push({
+                    personal_tel: card.card.personalTel
+                });
+            }
+            if (card.card.email !== undefined) {
+                cardParam.push({
+                    email: card.card.email
+                });
+            }
+            if (card.card.image !== undefined) {
+                cardParam.push({
+                    image: [
+                        {
+                            _attr: {
+                                mime_type: card.card.image.mimeType
+                            }
+                        },
+                        {
+                            file: {
+                                _attr: {
+                                    name: card.card.image.name,
+                                    file_id: card.card.image.fileId,
+                                    size: card.card.image.size
+                                }
+                            }
+                        }
+                    ]
+                })
+            }
+            if (card.card.description !== undefined) {
+                cardParam.push({
+                    description: card.card.description
+                });
+            }
+            modifyCard.push({
+                card: cardParam
+            });
+
+            if (card.files !== undefined) {
+                card.files.forEach(file => {
+                    modifyCard.push({
+                        file: [
+                            {
+                                _attr: {
+                                    id: file.id
+                                }
+                            },
+                            {
+                                content: file.content.toString('base64')
+                            }
+                        ]
+                    });
+                });
+            }
+
+            parameters.push({
+                modify_card: modifyCard
+            });
+        });
+        return this.client.post(this.path, 'AddressModifyCards', parameters).then((res: address.CardsResponse) => {
+            const cards: address.CardType[] = [];
+            res.card.forEach(obj => {
+                cards.push(AddressConverter.Card.toObject(obj));
+            });
+            return cards;
+        });
+    }
 }
