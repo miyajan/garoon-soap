@@ -703,4 +703,20 @@ export default class Address {
             return cards;
         });
     }
+
+    public removeShaerdCards(bookId: string, cardIds: string[]): Promise<void> {
+        const parameters: Object[] = [];
+        parameters.push({
+            _attr: {
+                book_id: bookId
+            }
+        });
+        cardIds.forEach(cardId => {
+            parameters.push({
+                card_id: cardId
+            });
+        });
+        return this.client.post(this.path, 'AddressRemoveSharedCards', parameters).then(() => {
+        });
+    }
 }
