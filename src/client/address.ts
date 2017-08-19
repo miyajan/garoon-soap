@@ -704,7 +704,7 @@ export default class Address {
         });
     }
 
-    public removeShaerdCards(bookId: string, cardIds: string[]): Promise<void> {
+    public removeSharedCards(bookId: string, cardIds: string[]): Promise<void> {
         const parameters: Object[] = [];
         parameters.push({
             _attr: {
@@ -717,6 +717,17 @@ export default class Address {
             });
         });
         return this.client.post(this.path, 'AddressRemoveSharedCards', parameters).then(() => {
+        });
+    }
+
+    public removePersonalCards(cardIds: string[]): Promise<void> {
+        const parameters: Object[] = [];
+        cardIds.forEach(cardId => {
+            parameters.push({
+                card_id: cardId
+            });
+        });
+        return this.client.post(this.path, 'AddressRemovePersonalCards', parameters).then(() => {
         });
     }
 }
