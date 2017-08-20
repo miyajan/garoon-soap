@@ -236,3 +236,8 @@ export interface ModifyCardContainsFileType {
     card: ModifyCardType
     files?: FileType[]
 }
+
+export interface CopyItemType {
+    bookId: string
+    cardId: string
+}

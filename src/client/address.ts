@@ -730,4 +730,25 @@ export default class Address {
         return this.client.post(this.path, 'AddressRemovePersonalCards', parameters).then(() => {
         });
     }
+
+    public copyPersonalCardsToOtherBook(items: address.CopyItemType[]): Promise<address.CardType[]> {
+        const parameters: Object[] = [];
+        items.forEach(item => {
+            parameters.push({
+                copy_item: {
+                    _attr: {
+                        copied_book_id: item.bookId,
+                        card_id: item.cardId
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'AddressCopyPersonalCardsToOtherBook', parameters).then((res: address.CardsResponse) => {
+            const cards: address.CardType[] = [];
+            res.card.forEach(obj => {
+                cards.push(AddressConverter.Card.toObject(obj));
+            });
+            return cards;
+        });
+    }
 }
