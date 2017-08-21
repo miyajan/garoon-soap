@@ -751,4 +751,21 @@ export default class Address {
             return cards;
         });
     }
+
+    public searchCards(bookId: string, text: string, caseSensitive: boolean = false): Promise<address.CardType[]> {
+        const parameters: Object[] = [{
+            _attr: {
+                book_id: bookId,
+                text: text,
+                case_sensitive: caseSensitive
+            }
+        }];
+        return this.client.post(this.path, 'AddressSearchCards', parameters).then((res: address.CardsResponse) => {
+            const cards: address.CardType[] = [];
+            res.card.forEach(obj => {
+                cards.push(AddressConverter.Card.toObject(obj));
+            });
+            return cards;
+        });
+    }
 }
