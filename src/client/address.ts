@@ -768,4 +768,15 @@ export default class Address {
             return cards;
         });
     }
+
+    public downloadFile(fileId: string): Promise<Buffer> {
+        const parameters: Object[] = [{
+            _attr: {
+                file_id: fileId
+            }
+        }];
+        return this.client.post(this.path, 'AddressFileDownload', parameters).then((res: base.FileResponse) => {
+            return BaseConverter.File.toBuffer(res['file'][0]);
+        });
+    }
 }
