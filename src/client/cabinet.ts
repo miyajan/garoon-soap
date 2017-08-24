@@ -1,6 +1,8 @@
 import Client from "./client";
 import Setting from "./setting";
+import * as base from "../type/base";
 import * as cabinet from "../type/cabinet";
+import * as BaseConverter from "../converter/base";
 import * as CabinetConverter from "../converter/cabinet";
 
 export default class Cabinet {
@@ -20,6 +22,17 @@ export default class Cabinet {
         }];
         return this.client.post(this.path, 'CabinetGetFileInfo', parameters).then((res: cabinet.FileInformationResponse) => {
             return CabinetConverter.FileInformation.toObject(res.file_information[0]);
+        });
+    }
+
+    public downloadFile(fileId: string): Promise<Buffer> {
+        const parameters: Object[] = [{
+            _attr: {
+                file_id: fileId
+            }
+        }];
+        return this.client.post(this.path, 'CabinetFileDownload', parameters).then((res: base.FileResponse) => {
+            return BaseConverter.File.toBuffer(res['file'][0]);
         });
     }
 }
