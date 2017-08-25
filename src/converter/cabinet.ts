@@ -83,3 +83,44 @@ export class History {
         };
     }
 }
+
+export class SimpleFile {
+    static toObject(obj: cabinet.SimpleFileXMLObject): cabinet.SimpleFileType {
+        const attr = obj.$;
+        const file: cabinet.SimpleFileType = {
+            id: attr.id,
+            folderId: attr.folder_id,
+            title: obj.title[0],
+            maxVersion: Number(obj.max_version[0]),
+            name: obj.name[0],
+            size: obj.size[0],
+            mimeType: obj.mime_type[0],
+            creatorId: obj.creator_id[0],
+            creatorLoginName: obj.creator_login_name[0],
+            creatorDisplayName: obj.creator_display_name[0],
+            createTime: datetime.toDate(obj.create_time[0])
+        };
+
+        if (obj.description !== undefined) {
+            file.description = obj.description[0];
+        }
+
+        if (obj.modifier_id !== undefined) {
+            file.modifierId = obj.modifier_id[0];
+        }
+
+        if (obj.modifier_login_name !== undefined) {
+            file.modifierLoginName = obj.modifier_login_name[0];
+        }
+
+        if (obj.modifier_display_name !== undefined) {
+            file.modifierDisplayName = obj.modifier_display_name[0];
+        }
+
+        if (obj.modify_time !== undefined) {
+            file.modifyTime = datetime.toDate(obj.modify_time[0]);
+        }
+
+        return file;
+    }
+}

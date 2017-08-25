@@ -35,4 +35,31 @@ export default class Cabinet {
             return BaseConverter.File.toBuffer(res['file'][0]);
         });
     }
+
+    public addFile(content: Buffer, folderId: string, name: string, title?: string, version?: string, description?: string): Promise<cabinet.SimpleFileType> {
+        const attr: any = {
+            hid: folderId,
+            name: name,
+        };
+        if (title !== undefined) {
+            attr.title = title;
+        }
+        if (version !== undefined) {
+            attr.version = version;
+        }
+        if (description !== undefined) {
+            attr.description = description;
+        }
+        const parameters: Object[] = [
+            {
+                _attr: attr
+            },
+            {
+                content: content.toString('base64')
+            }
+        ];
+        return this.client.post(this.path, 'CabinetAddFile', parameters).then((res: cabinet.SimpleFileResponse) => {
+            return CabinetConverter.SimpleFile.toObject(res.file[0]);
+        });
+    }
 }

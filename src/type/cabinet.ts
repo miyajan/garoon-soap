@@ -83,3 +83,44 @@ export interface FileInformationXMLObject {
 export interface FileInformationResponse {
     file_information: FileInformationXMLObject[]
 }
+
+export interface SimpleFileType {
+    id: string
+    folderId: string
+    title: string
+    maxVersion: number
+    name: string
+    size: string
+    mimeType: string
+    description?: string
+    creatorId: string
+    creatorLoginName: string
+    creatorDisplayName: string
+    createTime: Date
+    modifierId?: string
+    modifierLoginName?: string
+    modifierDisplayName?: string
+    modifyTime?: Date
+}
+
+export interface SimpleFileXMLObject {
+    $: any
+    title: string[]
+    max_version: string[]
+    name: string[]
+    size: string[]
+    mime_type: string[]
+    description?: string[]
+    creator_id: string[]
+    creator_login_name: string[]
+    creator_display_name: string[]
+    create_time: string[]
+    modifier_id?: string[]
+    modifier_login_name?: string[]
+    modifier_display_name?: string[]
+    modify_time?: string[]
+}
+
+export interface SimpleFileResponse {
+    file: SimpleFileXMLObject[]
+}
