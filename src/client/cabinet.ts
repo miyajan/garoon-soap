@@ -62,4 +62,25 @@ export default class Cabinet {
             return CabinetConverter.SimpleFile.toObject(res.file[0]);
         });
     }
+
+    public updateFile(content: Buffer, fileId: string, name: string, comment?: string): Promise<cabinet.SimpleFileType> {
+        const attr: any = {
+            file_id: fileId,
+            name: name
+        };
+        if (comment !== undefined) {
+            attr.comment = comment;
+        }
+        const parameters: Object[] = [
+            {
+                _attr: attr
+            },
+            {
+                content: content.toString('base64')
+            }
+        ];
+        return this.client.post(this.path, 'CabinetUpdateFile', parameters).then((res: cabinet.SimpleFileResponse) => {
+            return CabinetConverter.SimpleFile.toObject(res.file[0]);
+        });
+    }
 }
