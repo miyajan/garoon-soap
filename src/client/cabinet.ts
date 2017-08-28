@@ -104,4 +104,12 @@ export default class Cabinet {
             return CabinetConverter.SimpleFile.toObject(res.file[0]);
         });
     }
+
+    public deleteFile(fileId: string): Promise<void> {
+        const parameters: Object[] = [{
+            file_id: fileId
+        }];
+        return this.client.post(this.path, 'CabinetDeleteFiles', parameters).then(() => {
+        });
+    }
 }
