@@ -124,3 +124,58 @@ export interface SimpleFileXMLObject {
 export interface SimpleFileResponse {
     file: SimpleFileXMLObject[]
 }
+
+export interface FolderType {
+    id: string
+    code: string
+    listIndex: string
+    title: string
+    description: string
+    creatorId: string
+    creatorLoginName: string
+    creatorDisplayName: string
+    createTime: Date
+    modifierId: string
+    modifierLoginName: string
+    modifierDisplayName: string
+    modifyTime: Date
+    folders: FolderType[]
+    parentId?: string
+    parentCode?: string
+}
+
+export interface FolderInformationType {
+    root: FolderType
+}
+
+export interface FoldersXMLObject {
+    $: any
+    folder?: FolderXMLObject[]
+}
+
+export interface FolderXMLObject {
+    $: any
+    title: string[]
+    max_version: string[]
+    name: string[]
+    size: string[]
+    mime_type: string[]
+    description: string[]
+    creator_id: string[]
+    creator_login_name: string[]
+    creator_display_name: string[]
+    create_time: string[]
+    modifier_id: string[]
+    modifier_login_name: string[]
+    modifier_display_name: string[]
+    modify_time: string[]
+    folders?: FoldersXMLObject[]
+}
+
+export interface FolderInformationXMLObject {
+    root: FolderXMLObject[]
+}
+
+export interface FolderInformationResponse {
+    folder_information: FolderInformationXMLObject[]
+}

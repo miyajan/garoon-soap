@@ -112,4 +112,10 @@ export default class Cabinet {
         return this.client.post(this.path, 'CabinetDeleteFiles', parameters).then(() => {
         });
     }
+
+    public getFolderInfo(): Promise<cabinet.FolderInformationType> {
+        return this.client.post(this.path, 'CabinetGetFolderInfo', []).then((res: cabinet.FolderInformationResponse) => {
+            return CabinetConverter.FolderInformation.toObject(res.folder_information[0]);
+        });
+    }
 }
