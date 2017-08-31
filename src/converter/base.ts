@@ -179,4 +179,13 @@ export class ChangeLog {
             date: datetime.toDate(attrs.date)
         }
     }
+
+    static toObjectFromXMLObject(xmlObj: base.XMLObject): base.ChangeLogType {
+        const attr = xmlObj.$;
+        return {
+            userId: attr.user_id,
+            name: attr.name,
+            date: datetime.toDate(attr.date)
+        }
+    }
 }

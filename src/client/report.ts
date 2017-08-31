@@ -3,6 +3,7 @@ import Setting from "./setting";
 import * as base from "../type/base";
 import * as report from "../type/report";
 import * as BaseConverter from "../converter/base";
+import * as ReportConverter from "../converter/report";
 import * as datetime from "../util/datetime";
 
 export default class Report {
@@ -46,6 +47,24 @@ export default class Report {
                 });
             }
             return items;
+        });
+    }
+
+    public getReportById(reportIds: string[]): Promise<report.ReportType[]> {
+        const parameters: Object[] = [];
+        reportIds.forEach(reportId => {
+            parameters.push({
+                report_id: reportId
+            });
+        });
+        return this.client.post(this.path, 'ReportGetReportById', parameters, true).then((res: report.ReportsResponse) => {
+            const reports: report.ReportType[] = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(obj => {
+                    reports.push(ReportConverter.Report.toObject(obj));
+                });
+            }
+            return reports;
         });
     }
 }
