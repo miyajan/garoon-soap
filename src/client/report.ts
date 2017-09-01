@@ -67,4 +67,15 @@ export default class Report {
             return reports;
         });
     }
+
+    public removeReports(reportIds: string[]): Promise<void> {
+        const parameters: Object[] = [];
+        reportIds.forEach(reportId => {
+            parameters.push({
+                report_id: reportId
+            });
+        });
+        return this.client.post(this.path, 'ReportRemoveReports', parameters).then(() => {
+        });
+    }
 }
