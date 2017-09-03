@@ -78,4 +78,22 @@ export default class Report {
         return this.client.post(this.path, 'ReportRemoveReports', parameters).then(() => {
         });
     }
+
+    public searchReports(target: string, keyword: string): Promise<report.ReportType[]> {
+        const parameters: Object[] = [{
+            _attr: {
+                target: target,
+                keyword: keyword
+            }
+        }];
+        return this.client.post(this.path, 'ReportSearchReports', parameters, true).then((res: report.ReportsResponse) => {
+            const reports: report.ReportType[] = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(obj => {
+                    reports.push(ReportConverter.Report.toObject(obj));
+                });
+            }
+            return reports;
+        });
+    }
 }
