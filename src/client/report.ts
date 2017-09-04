@@ -96,4 +96,15 @@ export default class Report {
             return reports;
         });
     }
+
+    public downloadFile(fileId: string): Promise<Buffer> {
+        const parameters: Object[] = [{
+            _attr: {
+                file_id: fileId
+            }
+        }];
+        return this.client.post(this.path, 'ReportFileDownload', parameters).then((res: base.FileResponse) => {
+            return BaseConverter.File.toBuffer(res.file[0]);
+        });
+    }
 }
