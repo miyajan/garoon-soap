@@ -107,4 +107,23 @@ export default class Report {
             return BaseConverter.File.toBuffer(res.file[0]);
         });
     }
+
+    public getFollows(reportId: string, limit: number, offset: number): Promise<report.FollowType[]> {
+        const parameters: Object[] = [{
+            _attr: {
+                report_id: reportId,
+                limit: limit,
+                offset: offset
+            }
+        }];
+        return this.client.post(this.path, 'ReportGetFollows', parameters).then((res: report.FollowsResponse) => {
+            const follows: report.FollowType[] = [];
+            if (res.follow !== undefined) {
+                res.follow.forEach(obj => {
+                    follows.push(ReportConverter.Follow.toObject(obj));
+                });
+            }
+            return follows;
+        });
+    }
 }

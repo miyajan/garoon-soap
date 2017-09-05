@@ -126,3 +126,48 @@ export class User {
         };
     }
 }
+
+export class Follow {
+    static toObject(obj: report.FollowXMLObject): report.FollowType {
+        const files: report.FileType[] = [];
+        if (obj.file !== undefined) {
+            obj.file.forEach(obj => {
+                files.push(File.toObject(obj));
+            });
+        }
+
+        const attr = obj.$;
+        const follow: report.FollowType = {
+            id: attr.id,
+            number: attr.number,
+            text: attr.text,
+            creator: BaseConverter.ChangeLog.toObject(obj.creator[0]),
+            files: files
+        };
+
+        if (attr.html_text !== undefined) {
+            follow.htmlText = attr.html_text;
+        }
+
+        return follow;
+    }
+}
+
+export class File {
+    static toObject(obj: report.FileXMLObject): report.FileType {
+        const attr = obj.$;
+        const file: report.FileType = {
+            name: attr.name,
+            fileId: attr.file_id
+        };
+
+        if (attr.size !== undefined) {
+            file.size = attr.size;
+        }
+        if (attr.mime_type !== undefined) {
+            file.mimeType = attr.mime_type;
+        }
+
+        return file;
+    }
+}

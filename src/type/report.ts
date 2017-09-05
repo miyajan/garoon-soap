@@ -70,3 +70,26 @@ export interface ReportXMLObject {
 export interface ReportsResponse {
     $$?: ReportXMLObject[]
 }
+
+export interface FollowType {
+    id: string
+    number: string
+    text: string
+    htmlText?: string
+    creator: base.ChangeLogType
+    files: FileType[]
+}
+
+export interface FileXMLObject {
+    $: any
+}
+
+export interface FollowXMLObject {
+    $: any
+    creator: base.ChangeLogXMLObject[]
+    file?: FileXMLObject[]
+}
+
+export interface FollowsResponse {
+    follow: FollowXMLObject[]
+}
