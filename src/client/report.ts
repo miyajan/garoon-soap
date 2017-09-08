@@ -126,4 +126,69 @@ export default class Report {
             return follows;
         });
     }
+
+    public addFollows(follows: report.AddFollowType[]): Promise<report.ReportType[]> {
+        const parameters: Object[] = [];
+        follows.forEach(follow => {
+            const followAttr: any = {
+                id: 'dummy',
+                number: 'dummy',
+                text: follow.text
+            };
+            if (follow.htmlText !== undefined) {
+                followAttr.html_text = follow.htmlText;
+            }
+            const followObj: any = [
+                {
+                    _attr: followAttr
+                }
+            ];
+            const addFollow: any = [{
+                _attr: {
+                    report_id: follow.reportId
+                }
+            }];
+
+            addFollow.push({
+                follow: followObj
+            });
+
+            if (follow.files !== undefined) {
+                follow.files.forEach((file, index) => {
+                    const fileId = index + 1;
+                    followObj.push({
+                        file: [{
+                            _attr: {
+                                name: file.name,
+                                file_id: fileId
+                            }
+                        }]
+                    });
+                    addFollow.push({
+                        file: [
+                            {
+                                _attr: {
+                                    id: fileId
+                                },
+                            },
+                            file.content.toString('base64')
+                        ]
+                    });
+                });
+            }
+
+            parameters.push({
+                add_follow: addFollow
+            });
+        });
+        return this.client.post(this.path, 'ReportAddFollows', parameters, true).then((res: report.ReportsResponse) => {
+            const reports: report.ReportType[] = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(obj => {
+                    reports.push(ReportConverter.Report.toObject(obj));
+                });
+            }
+            return reports;
+        });
+    }
 }

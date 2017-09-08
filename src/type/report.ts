@@ -93,3 +93,15 @@ export interface FollowXMLObject {
 export interface FollowsResponse {
     follow: FollowXMLObject[]
 }
+
+export interface AddFileType {
+    name: string
+    content: Buffer
+}
+
+export interface AddFollowType {
+    reportId: string
+    text: string
+    htmlText?: string
+    files?: AddFileType[]
+}
