@@ -191,4 +191,15 @@ export default class Report {
             return reports;
         });
     }
+
+    public removeFollows(followIds: string[]): Promise<void> {
+        const parameters: Object[] = [];
+        followIds.forEach(followId => {
+            parameters.push({
+                follow_id: followId
+            });
+        });
+        return this.client.post(this.path, 'ReportRemoveFollows', parameters).then(() => {
+        });
+    }
 }
