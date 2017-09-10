@@ -11,6 +11,7 @@ import Workflow from "./client/workflow";
 import Address from "./client/address";
 import Cabinet from "./client/cabinet";
 import Report from "./client/report";
+import Util from "./client/util";
 
 export default class GaroonSoap {
     public readonly base: Base;
@@ -25,8 +26,9 @@ export default class GaroonSoap {
     public readonly address: Address;
     public readonly cabinet: Cabinet;
     public readonly report: Report;
+    public readonly util: Util;
 
-    public constructor(baseUri: string, username: string, password: string, locale: string, needCsp: boolean) {
+    public constructor(baseUri: string, username?: string, password?: string, locale?: string, needCsp?: boolean) {
         const setting = new Setting(baseUri, username, password, locale, needCsp);
         this.base = new Base(setting);
         this.admin = new Admin(setting);
@@ -40,5 +42,6 @@ export default class GaroonSoap {
         this.address = new Address(setting);
         this.cabinet = new Cabinet(setting);
         this.report = new Report(setting);
+        this.util = new Util(setting);
     }
 }

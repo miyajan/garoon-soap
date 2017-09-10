@@ -33,32 +33,37 @@ export default class Client {
     public post(path: string, action: string, parameters: any, preserveChildrenOrder: boolean = false): Promise<Object | void> {
         const actionObject: Action = {};
         actionObject[action] = [{'parameters': parameters}];
+        const soapHeaders: Object[] = [
+            {'Action': action},
+            {
+                'Timestamp': [
+                    {'Created': this.toISOString(new Date())},
+                    {'Expires': this.toISOString(this.expires)}
+                ]
+            }
+        ];
+        if (this.doUseWSSecurityAuth()) {
+            soapHeaders.push({
+                'Security': [{
+                    'UsernameToken': [
+                        {'Username': this.setting.username},
+                        {'Password': this.setting.password}
+                    ]
+                }]
+            });
+        }
+        if (this.setting.locale !== undefined) {
+            soapHeaders.push({
+                'Locale': this.setting.locale
+            });
+        }
         const xmlObject = {
             'soap:Envelope': [
                 {
                     '_attr': {'xmlns:soap': 'http://www.w3.org/2003/05/soap-envelope'}
                 },
                 {
-                    'soap:Header': [
-                        {'Action': action},
-                        {
-                            'Security': [{
-                                'UsernameToken': [
-                                    {'Username': this.setting.username},
-                                    {'Password': this.setting.password}
-                                ]
-                            }]
-                        },
-                        {
-                            'Timestamp': [
-                                {'Created': this.toISOString(new Date())},
-                                {'Expires': this.toISOString(this.expires)}
-                            ]
-                        },
-                        {
-                            'Locale': this.setting.locale
-                        }
-                    ]
+                    'soap:Header': soapHeaders
                 },
                 {
                     'soap:Body': [actionObject]
@@ -145,9 +150,16 @@ export default class Client {
         if (action.substr(0, 5) === 'Admin') {
             return `${action.substr(5)}Response`
         }
+        if (action.substr(0, 4) === 'Util') {
+            return `${action.substr(4)}Response`
+        }
         if (this.noResponseTags.indexOf(action) >= 0) {
             return action;
         }
         return `${action}Response`;
+    }
+
+    private doUseWSSecurityAuth(): boolean {
+        return this.setting.username !== undefined && this.setting.password !== undefined;
     }
 }
