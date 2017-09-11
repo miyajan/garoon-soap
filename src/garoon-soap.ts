@@ -14,6 +14,7 @@ import Report from "./client/report";
 import Util from "./client/util";
 
 export default class GaroonSoap {
+    private readonly setting: Setting;
     public readonly base: Base;
     public readonly admin: Admin;
     public readonly star: Star;
@@ -29,19 +30,23 @@ export default class GaroonSoap {
     public readonly util: Util;
 
     public constructor(baseUri: string, username?: string, password?: string, locale?: string, needCsp?: boolean) {
-        const setting = new Setting(baseUri, username, password, locale, needCsp);
-        this.base = new Base(setting);
-        this.admin = new Admin(setting);
-        this.star = new Star(setting);
-        this.message = new Message(setting);
-        this.schedule = new Schedule(setting);
-        this.bulletin = new Bulletin(setting);
-        this.mail = new Mail(setting);
-        this.notification = new Notification(setting);
-        this.workflow = new Workflow(setting);
-        this.address = new Address(setting);
-        this.cabinet = new Cabinet(setting);
-        this.report = new Report(setting);
-        this.util = new Util(setting);
+        this.setting = new Setting(baseUri, username, password, locale, needCsp);
+        this.base = new Base(this.setting);
+        this.admin = new Admin(this.setting);
+        this.star = new Star(this.setting);
+        this.message = new Message(this.setting);
+        this.schedule = new Schedule(this.setting);
+        this.bulletin = new Bulletin(this.setting);
+        this.mail = new Mail(this.setting);
+        this.notification = new Notification(this.setting);
+        this.workflow = new Workflow(this.setting);
+        this.address = new Address(this.setting);
+        this.cabinet = new Cabinet(this.setting);
+        this.report = new Report(this.setting);
+        this.util = new Util(this.setting);
+    }
+
+    public setCookie(cookie?: string): void {
+        this.setting.cookie = cookie;
     }
 }

@@ -20,4 +20,10 @@ export default class Util {
             return res.cookie[0];
         });
     }
+
+    public logout(): Promise<string> {
+        return this.client.post(this.path, 'UtilLogout', []).then((res: util.LogoutResponse) => {
+            return res.login_name[0];
+        });
+    }
 }

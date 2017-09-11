@@ -71,12 +71,16 @@ export default class Client {
             ]
         };
         const xmlString = xml(xmlObject, {declaration: true});
+        const headers: any = {
+            'Content-Type': 'text/xml; charset=UTF-8'
+        };
+        if (this.setting.cookie !== undefined) {
+            headers['Cookie'] = this.setting.cookie;
+        }
         return fetch(this.setting.baseUrl + path, {
             method: 'POST',
             body: xmlString,
-            headers: {
-                'Content-Type': 'text/xml; charset=UTF-8'
-            },
+            headers: headers,
             // compress: true causes "incorrect header check" error on cybozu.com
             // https://github.com/bitinn/node-fetch/issues/45
             compress: false
