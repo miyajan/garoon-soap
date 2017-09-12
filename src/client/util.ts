@@ -26,4 +26,10 @@ export default class Util {
             return res.login_name[0];
         });
     }
+
+    public getRequestToken(): Promise<string> {
+        return this.client.post(this.path, 'UtilGetRequestToken', []).then((res: util.RequestTokenResponse) => {
+            return res.request_token[0];
+        });
+    }
 }

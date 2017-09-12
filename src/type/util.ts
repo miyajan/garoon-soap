@@ -5,3 +5,7 @@ export interface CookieResponse {
 export interface LogoutResponse {
     login_name: string[]
 }
+
+export interface RequestTokenResponse {
+    request_token: string[]
+}

@@ -5,6 +5,7 @@ export default class Setting {
     public readonly locale?: string;
     public readonly needCsp: boolean;
     public cookie?: string;
+    public requestToken?: string;
 
     constructor(baseUrl: string, username?: string, password?: string, locale?: string, needCsp?: boolean) {
         this.baseUrl = baseUrl;
