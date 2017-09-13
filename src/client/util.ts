@@ -32,4 +32,10 @@ export default class Util {
             return res.request_token[0];
         });
     }
+
+    public getLoginUserId(): Promise<string> {
+        return this.client.post(this.path, 'UtilGetLoginUserId', []).then((res: util.UserIdResponse) => {
+            return res.user_id[0];
+        });
+    }
 }

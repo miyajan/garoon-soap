@@ -239,6 +239,9 @@ export default class Client {
     ];
 
     private getResponseTag(action: string): string {
+        if (action === 'UtilGetLoginUserId') {
+            return 'GetRequestTokenResponse';
+        }
         if (action.substr(0, 5) === 'Admin') {
             return `${action.substr(5)}Response`
         }

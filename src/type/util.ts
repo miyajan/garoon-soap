@@ -9,3 +9,7 @@ export interface LogoutResponse {
 export interface RequestTokenResponse {
     request_token: string[]
 }
+
+export interface UserIdResponse {
+    user_id: string[]
+}
