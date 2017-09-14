@@ -7,7 +7,7 @@
     "node": ">=4"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "webpack && webpack --optimize-minimize",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
