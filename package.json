@@ -1,8 +1,8 @@
 {
   "name": "garoon-soap",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Garoon soap api client for Node and Browser",
-  "main": "index.js",
+  "main": "./src/main.js",
   "engines": {
     "node": ">=6"
   },
