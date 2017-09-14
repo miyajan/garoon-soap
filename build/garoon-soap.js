@@ -27946,7 +27946,957 @@ module.exports = toString;
 },{"./_baseToString":160}],253:[function(require,module,exports){
 "use strict";
 var client_1 = require("./client");
+var AddressConverter = require("../converter/address");
 var BaseConverter = require("../converter/base");
+var Address = (function () {
+    function Address(setting) {
+        this.client = new client_1.default(setting);
+        this.path = setting.needCsp ? '/cbpapi/address/api.csp' : '/cbpapi/address/api';
+    }
+    Address.prototype.getSharedCardsById = function (bookId, cardIds) {
+        var parameters = [{
+                _attr: {
+                    book_id: bookId
+                }
+            }];
+        cardIds.forEach(function (cardId) {
+            parameters.push({
+                card_id: cardId
+            });
+        });
+        return this.client.post(this.path, 'AddressGetSharedCardsById', parameters).then(function (res) {
+            var cards = [];
+            res.card.forEach(function (obj) {
+                cards.push(AddressConverter.Card.toObject(obj));
+            });
+            return cards;
+        });
+    };
+    Address.prototype.getSharedBooksById = function (bookIds) {
+        var parameters = [];
+        bookIds.forEach(function (bookId) {
+            parameters.push({
+                book_id: bookId
+            });
+        });
+        return this.client.post(this.path, 'AddressGetSharedBooksById', parameters).then(function (res) {
+            var books = [];
+            if (res.book !== undefined) {
+                res.book.forEach(function (obj) {
+                    books.push(AddressConverter.Book.toObject(obj));
+                });
+            }
+            return books;
+        });
+    };
+    Address.prototype.getPersonalCardsById = function (cardIds) {
+        var parameters = [];
+        cardIds.forEach(function (cardId) {
+            parameters.push({
+                card_id: cardId
+            });
+        });
+        return this.client.post(this.path, 'AddressGetPersonalCardsById', parameters).then(function (res) {
+            var cards = [];
+            res.card.forEach(function (obj) {
+                cards.push(AddressConverter.Card.toObject(obj));
+            });
+            return cards;
+        });
+    };
+    Address.prototype.getPersonalBooksById = function (bookIds) {
+        var parameters = [];
+        bookIds.forEach(function (bookId) {
+            parameters.push({
+                book_id: bookId
+            });
+        });
+        return this.client.post(this.path, 'AddressGetPersonalBooksById', parameters).then(function (res) {
+            var books = [];
+            if (res.book !== undefined) {
+                res.book.forEach(function (obj) {
+                    books.push(AddressConverter.Book.toObject(obj));
+                });
+            }
+            return books;
+        });
+    };
+    Address.prototype.getSharedBookVersions = function (bookItems) {
+        var parameters = [];
+        bookItems.forEach(function (item) {
+            parameters.push({
+                book_item: {
+                    _attr: {
+                        id: item.id,
+                        version: item.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'AddressGetSharedBookVersions', parameters).then(function (res) {
+            var versions = [];
+            if (res.book_item !== undefined) {
+                res.book_item.forEach(function (obj) {
+                    versions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
+        });
+    };
+    Address.prototype.getPersonalBookVersions = function (bookItems) {
+        var parameters = [];
+        bookItems.forEach(function (item) {
+            parameters.push({
+                book_item: {
+                    _attr: {
+                        id: item.id,
+                        version: item.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'AddressGetPersonalBookVersions', parameters).then(function (res) {
+            var versions = [];
+            if (res.book_item !== undefined) {
+                res.book_item.forEach(function (obj) {
+                    versions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
+        });
+    };
+    Address.prototype.getSharedCardVersions = function (bookId, cardItems) {
+        var parameters = [{
+                _attr: {
+                    book_id: bookId
+                }
+            }];
+        cardItems.forEach(function (item) {
+            parameters.push({
+                card_item: {
+                    _attr: {
+                        id: item.id,
+                        version: item.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'AddressGetSharedCardVersions', parameters).then(function (res) {
+            var versions = [];
+            if (res.card_item !== undefined) {
+                res.card_item.forEach(function (obj) {
+                    versions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
+        });
+    };
+    Address.prototype.getPersonalCardVersions = function (cardItems) {
+        var parameters = [];
+        cardItems.forEach(function (item) {
+            parameters.push({
+                card_item: {
+                    _attr: {
+                        id: item.id,
+                        version: item.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'AddressGetPersonalCardVersions', parameters).then(function (res) {
+            var versions = [];
+            if (res.card_item !== undefined) {
+                res.card_item.forEach(function (obj) {
+                    versions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
+        });
+    };
+    Address.prototype.getReadAllowBooks = function () {
+        return this.client.post(this.path, 'AddressGetReadAllowBooks', []).then(function (res) {
+            var bookIds = [];
+            if (res.book_id !== undefined) {
+                res.book_id.forEach(function (bookId) {
+                    bookIds.push(bookId);
+                });
+            }
+            return bookIds;
+        });
+    };
+    Address.prototype.getModifyAllowBooks = function () {
+        return this.client.post(this.path, 'AddressGetModifyAllowBooks', []).then(function (res) {
+            var bookIds = [];
+            if (res.book_id !== undefined) {
+                res.book_id.forEach(function (bookId) {
+                    bookIds.push(bookId);
+                });
+            }
+            return bookIds;
+        });
+    };
+    Address.prototype.getMyAddressGroupVersions = function (groupItems) {
+        var parameters = [];
+        groupItems.forEach(function (item) {
+            parameters.push({
+                my_address_group_item: {
+                    _attr: {
+                        id: item.id,
+                        version: item.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'AddressGetMyAddressGroupVersions', parameters).then(function (res) {
+            var versions = [];
+            if (res.my_address_group_item !== undefined) {
+                res.my_address_group_item.forEach(function (obj) {
+                    versions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
+        });
+    };
+    Address.prototype.getMyAddressGroupsById = function (groupIds) {
+        var parameters = [];
+        groupIds.forEach(function (groupId) {
+            parameters.push({
+                my_address_group_id: groupId
+            });
+        });
+        return this.client.post(this.path, 'AddressGetMyAddressGroupsById', parameters).then(function (res) {
+            var groups = [];
+            if (res.my_address_group !== undefined) {
+                res.my_address_group.forEach(function (obj) {
+                    groups.push(AddressConverter.MyAddressGroup.toObject(obj));
+                });
+            }
+            return groups;
+        });
+    };
+    Address.prototype.addMyAddressGroups = function (groups) {
+        var parameters = [];
+        groups.forEach(function (group) {
+            var attr = {
+                id: 'dummy',
+                version: 'dummy',
+                name: group.name
+            };
+            if (group.description !== undefined) {
+                attr.description = group.description;
+            }
+            parameters.push({
+                my_address_group: [
+                    {
+                        _attr: attr
+                    },
+                ]
+            });
+        });
+        return this.client.post(this.path, 'AddressAddMyAddressGroups', parameters).then(function (res) {
+            var groups = [];
+            if (res.my_address_group !== undefined) {
+                res.my_address_group.forEach(function (obj) {
+                    groups.push(AddressConverter.MyAddressGroup.toObject(obj));
+                });
+            }
+            return groups;
+        });
+    };
+    Address.prototype.modifyMyAddressGroups = function (groups) {
+        var parameters = [];
+        groups.forEach(function (group) {
+            var attr = {
+                id: group.id,
+                version: 'dummy',
+                name: group.name
+            };
+            if (group.description !== undefined) {
+                attr.description = group.description;
+            }
+            parameters.push({
+                my_address_group: [
+                    {
+                        _attr: attr
+                    },
+                ]
+            });
+        });
+        return this.client.post(this.path, 'AddressModifyMyAddressGroups', parameters).then(function (res) {
+            var groups = [];
+            if (res.my_address_group !== undefined) {
+                res.my_address_group.forEach(function (obj) {
+                    groups.push(AddressConverter.MyAddressGroup.toObject(obj));
+                });
+            }
+            return groups;
+        });
+    };
+    Address.prototype.removeMyAddressGroups = function (groupIds) {
+        var parameters = [];
+        groupIds.forEach(function (groupId) {
+            parameters.push({
+                my_address_group_id: groupId
+            });
+        });
+        return this.client.post(this.path, 'AddressRemoveMyAddressGroups', parameters).then(function () {
+        });
+    };
+    Address.prototype.modifyCardsInMyAddressGroup = function (groups) {
+        var parameters = [];
+        groups.forEach(function (group) {
+            var myAddressGroup = [{
+                    _attr: {
+                        id: group.id
+                    }
+                }];
+            if (group.userIds !== undefined) {
+                group.userIds.forEach(function (userId) {
+                    myAddressGroup.push({
+                        user: {
+                            _attr: {
+                                key: userId
+                            }
+                        }
+                    });
+                });
+            }
+            if (group.cards !== undefined) {
+                group.cards.forEach(function (card) {
+                    myAddressGroup.push({
+                        card: {
+                            _attr: {
+                                key: card.id,
+                                type: card.type
+                            }
+                        }
+                    });
+                });
+            }
+            parameters.push({
+                my_address_group: myAddressGroup
+            });
+        });
+        return this.client.post(this.path, 'AddressModifyCardsInMyAddressGroup', parameters).then(function (res) {
+            var groups = [];
+            if (res.my_address_group !== undefined) {
+                res.my_address_group.forEach(function (obj) {
+                    groups.push(AddressConverter.MyAddressGroup.toObject(obj));
+                });
+            }
+            return groups;
+        });
+    };
+    Address.prototype.addCards = function (cards) {
+        var parameters = [];
+        cards.forEach(function (card) {
+            var addCard = [];
+            var cardParam = [];
+            cardParam.push({
+                _attr: {
+                    book_id: card.card.bookId,
+                    id: 'dummy',
+                    version: 'dummy'
+                }
+            });
+            cardParam.push({
+                subject: card.card.subject
+            });
+            if (card.card.personalName !== undefined) {
+                cardParam.push({
+                    personal_name: {
+                        part: card.card.personalName
+                    }
+                });
+            }
+            if (card.card.personalReading !== undefined) {
+                cardParam.push({
+                    personal_reading: {
+                        part: card.card.personalReading
+                    }
+                });
+            }
+            if (card.card.companyName !== undefined) {
+                cardParam.push({
+                    company_name: card.card.companyName
+                });
+            }
+            if (card.card.companyReading !== undefined) {
+                cardParam.push({
+                    company_reading: card.card.companyReading
+                });
+            }
+            if (card.card.section !== undefined) {
+                cardParam.push({
+                    section: card.card.section
+                });
+            }
+            if (card.card.zipCode !== undefined) {
+                cardParam.push({
+                    zipCode: card.card.zipCode
+                });
+            }
+            if (card.card.physicalAddress !== undefined) {
+                cardParam.push({
+                    physical_address: card.card.physicalAddress
+                });
+            }
+            if (card.card.map !== undefined) {
+                cardParam.push({
+                    map: card.card.map
+                });
+            }
+            if (card.card.route !== undefined) {
+                var route = [];
+                if (card.card.route.path !== undefined) {
+                    route.push({
+                        path: card.card.route.path
+                    });
+                }
+                if (card.card.route.time !== undefined) {
+                    route.push({
+                        time: card.card.route.time
+                    });
+                }
+                if (card.card.route.fare !== undefined) {
+                    route.push({
+                        fare: card.card.route.fare
+                    });
+                }
+                cardParam.push({
+                    route: route
+                });
+            }
+            if (card.card.companyTel !== undefined) {
+                cardParam.push({
+                    company_tel: card.card.companyTel
+                });
+            }
+            if (card.card.companyFax !== undefined) {
+                cardParam.push({
+                    company_fax: card.card.companyFax
+                });
+            }
+            if (card.card.url !== undefined) {
+                cardParam.push({
+                    url: card.card.url
+                });
+            }
+            if (card.card.post !== undefined) {
+                cardParam.push({
+                    post: card.card.post
+                });
+            }
+            if (card.card.personalTel !== undefined) {
+                cardParam.push({
+                    personal_tel: card.card.personalTel
+                });
+            }
+            if (card.card.email !== undefined) {
+                cardParam.push({
+                    email: card.card.email
+                });
+            }
+            if (card.card.image !== undefined) {
+                cardParam.push({
+                    image: [
+                        {
+                            _attr: {
+                                mime_type: card.card.image.mimeType
+                            }
+                        },
+                        {
+                            file: {
+                                _attr: {
+                                    name: card.card.image.name,
+                                    file_id: card.card.image.fileId,
+                                    size: card.card.image.size
+                                }
+                            }
+                        }
+                    ]
+                });
+            }
+            if (card.card.description !== undefined) {
+                cardParam.push({
+                    description: card.card.description
+                });
+            }
+            addCard.push({
+                card: cardParam
+            });
+            if (card.files !== undefined) {
+                card.files.forEach(function (file) {
+                    addCard.push({
+                        file: [
+                            {
+                                _attr: {
+                                    id: file.id
+                                }
+                            },
+                            {
+                                content: file.content.toString('base64')
+                            }
+                        ]
+                    });
+                });
+            }
+            parameters.push({
+                add_card: addCard
+            });
+        });
+        return this.client.post(this.path, 'AddressAddCards', parameters).then(function (res) {
+            var cards = [];
+            res.card.forEach(function (obj) {
+                cards.push(AddressConverter.Card.toObject(obj));
+            });
+            return cards;
+        });
+    };
+    Address.prototype.modifyCards = function (cards) {
+        var parameters = [];
+        cards.forEach(function (card) {
+            var modifyCard = [];
+            var cardParam = [];
+            cardParam.push({
+                _attr: {
+                    book_id: card.card.bookId,
+                    id: card.card.id,
+                    version: 'dummy'
+                }
+            });
+            cardParam.push({
+                subject: card.card.subject
+            });
+            if (card.card.personalName !== undefined) {
+                cardParam.push({
+                    personal_name: {
+                        part: card.card.personalName
+                    }
+                });
+            }
+            if (card.card.personalReading !== undefined) {
+                cardParam.push({
+                    personal_reading: {
+                        part: card.card.personalReading
+                    }
+                });
+            }
+            if (card.card.companyName !== undefined) {
+                cardParam.push({
+                    company_name: card.card.companyName
+                });
+            }
+            if (card.card.companyReading !== undefined) {
+                cardParam.push({
+                    company_reading: card.card.companyReading
+                });
+            }
+            if (card.card.section !== undefined) {
+                cardParam.push({
+                    section: card.card.section
+                });
+            }
+            if (card.card.zipCode !== undefined) {
+                cardParam.push({
+                    zipCode: card.card.zipCode
+                });
+            }
+            if (card.card.physicalAddress !== undefined) {
+                cardParam.push({
+                    physical_address: card.card.physicalAddress
+                });
+            }
+            if (card.card.map !== undefined) {
+                cardParam.push({
+                    map: card.card.map
+                });
+            }
+            if (card.card.route !== undefined) {
+                var route = [];
+                if (card.card.route.path !== undefined) {
+                    route.push({
+                        path: card.card.route.path
+                    });
+                }
+                if (card.card.route.time !== undefined) {
+                    route.push({
+                        time: card.card.route.time
+                    });
+                }
+                if (card.card.route.fare !== undefined) {
+                    route.push({
+                        fare: card.card.route.fare
+                    });
+                }
+                cardParam.push({
+                    route: route
+                });
+            }
+            if (card.card.companyTel !== undefined) {
+                cardParam.push({
+                    company_tel: card.card.companyTel
+                });
+            }
+            if (card.card.companyFax !== undefined) {
+                cardParam.push({
+                    company_fax: card.card.companyFax
+                });
+            }
+            if (card.card.url !== undefined) {
+                cardParam.push({
+                    url: card.card.url
+                });
+            }
+            if (card.card.post !== undefined) {
+                cardParam.push({
+                    post: card.card.post
+                });
+            }
+            if (card.card.personalTel !== undefined) {
+                cardParam.push({
+                    personal_tel: card.card.personalTel
+                });
+            }
+            if (card.card.email !== undefined) {
+                cardParam.push({
+                    email: card.card.email
+                });
+            }
+            if (card.card.image !== undefined) {
+                cardParam.push({
+                    image: [
+                        {
+                            _attr: {
+                                mime_type: card.card.image.mimeType
+                            }
+                        },
+                        {
+                            file: {
+                                _attr: {
+                                    name: card.card.image.name,
+                                    file_id: card.card.image.fileId,
+                                    size: card.card.image.size
+                                }
+                            }
+                        }
+                    ]
+                });
+            }
+            if (card.card.description !== undefined) {
+                cardParam.push({
+                    description: card.card.description
+                });
+            }
+            modifyCard.push({
+                card: cardParam
+            });
+            if (card.files !== undefined) {
+                card.files.forEach(function (file) {
+                    modifyCard.push({
+                        file: [
+                            {
+                                _attr: {
+                                    id: file.id
+                                }
+                            },
+                            {
+                                content: file.content.toString('base64')
+                            }
+                        ]
+                    });
+                });
+            }
+            parameters.push({
+                modify_card: modifyCard
+            });
+        });
+        return this.client.post(this.path, 'AddressModifyCards', parameters).then(function (res) {
+            var cards = [];
+            res.card.forEach(function (obj) {
+                cards.push(AddressConverter.Card.toObject(obj));
+            });
+            return cards;
+        });
+    };
+    Address.prototype.removeSharedCards = function (bookId, cardIds) {
+        var parameters = [];
+        parameters.push({
+            _attr: {
+                book_id: bookId
+            }
+        });
+        cardIds.forEach(function (cardId) {
+            parameters.push({
+                card_id: cardId
+            });
+        });
+        return this.client.post(this.path, 'AddressRemoveSharedCards', parameters).then(function () {
+        });
+    };
+    Address.prototype.removePersonalCards = function (cardIds) {
+        var parameters = [];
+        cardIds.forEach(function (cardId) {
+            parameters.push({
+                card_id: cardId
+            });
+        });
+        return this.client.post(this.path, 'AddressRemovePersonalCards', parameters).then(function () {
+        });
+    };
+    Address.prototype.copyPersonalCardsToOtherBook = function (items) {
+        var parameters = [];
+        items.forEach(function (item) {
+            parameters.push({
+                copy_item: {
+                    _attr: {
+                        copied_book_id: item.bookId,
+                        card_id: item.cardId
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'AddressCopyPersonalCardsToOtherBook', parameters).then(function (res) {
+            var cards = [];
+            res.card.forEach(function (obj) {
+                cards.push(AddressConverter.Card.toObject(obj));
+            });
+            return cards;
+        });
+    };
+    Address.prototype.searchCards = function (bookId, text, caseSensitive) {
+        if (caseSensitive === void 0) { caseSensitive = false; }
+        var parameters = [{
+                _attr: {
+                    book_id: bookId,
+                    text: text,
+                    case_sensitive: caseSensitive
+                }
+            }];
+        return this.client.post(this.path, 'AddressSearchCards', parameters).then(function (res) {
+            var cards = [];
+            res.card.forEach(function (obj) {
+                cards.push(AddressConverter.Card.toObject(obj));
+            });
+            return cards;
+        });
+    };
+    Address.prototype.downloadFile = function (fileId) {
+        var parameters = [{
+                _attr: {
+                    file_id: fileId
+                }
+            }];
+        return this.client.post(this.path, 'AddressFileDownload', parameters).then(function (res) {
+            return BaseConverter.File.toBuffer(res['file'][0]);
+        });
+    };
+    return Address;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Address;
+
+},{"../converter/address":269,"../converter/base":271,"./client":258}],254:[function(require,module,exports){
+"use strict";
+var client_1 = require("./client");
+var AdminConverter = require("../converter/admin");
+var Admin = (function () {
+    function Admin(setting) {
+        this.client = new client_1.default(setting);
+        this.path = setting.needCsp ? '/sysapi/admin/api.csp' : '/sysapi/admin/api';
+    }
+    Admin.prototype.getUserIds = function (offset, limit) {
+        var parameters = [];
+        if (offset) {
+            parameters.push({ 'offset': offset });
+        }
+        if (limit) {
+            parameters.push({ 'limit': limit });
+        }
+        return this.client.post(this.path, 'AdminGetUserIds', parameters).then(function (res) {
+            var userIds = [];
+            if (Array.isArray(res['userId'])) {
+                res['userId'].forEach(function (userId) {
+                    userIds.push(userId);
+                });
+            }
+            return userIds;
+        });
+    };
+    Admin.prototype.getUserDetailByIds = function (userIds) {
+        var parameters = [];
+        userIds.forEach(function (userId) {
+            parameters.push({ 'userId': userId });
+        });
+        return this.client.post(this.path, 'AdminGetUserDetailByIds', parameters).then(function (res) {
+            var userDetails = [];
+            res.userDetail.forEach(function (userDetail) {
+                userDetails.push(AdminConverter.UserDetail.toObject(userDetail));
+            });
+            return userDetails;
+        });
+    };
+    Admin.prototype.countUsers = function () {
+        return this.client.post(this.path, 'AdminCountUsers', []).then(function (res) {
+            return Number(res.number_users[0]);
+        });
+    };
+    Admin.prototype.countUsersInOrg = function (orgId) {
+        var parameters = [
+            { 'orgId': orgId }
+        ];
+        return this.client.post(this.path, 'AdminCountUsersInOrg', parameters).then(function (res) {
+            return Number(res.number_users[0]);
+        });
+    };
+    Admin.prototype.getUserIdsInOrg = function (orgId, offset, limit) {
+        var parameters = [{ 'orgId': orgId }];
+        if (offset) {
+            parameters.push({ 'offset': offset });
+        }
+        if (limit) {
+            parameters.push({ 'limit': limit });
+        }
+        return this.client.post(this.path, 'AdminGetUserIdsInOrg', parameters).then(function (res) {
+            var userIds = [];
+            if (Array.isArray(res['userId'])) {
+                res['userId'].forEach(function (userId) {
+                    userIds.push(userId);
+                });
+            }
+            return userIds;
+        });
+    };
+    Admin.prototype.countNoGroupUsers = function () {
+        return this.client.post(this.path, 'AdminCountNoGroupUsers', []).then(function (res) {
+            return Number(res.number_users[0]);
+        });
+    };
+    Admin.prototype.getNoGroupUserIds = function (offset, limit) {
+        var parameters = [];
+        if (offset) {
+            parameters.push({ 'offset': offset });
+        }
+        if (limit) {
+            parameters.push({ 'limit': limit });
+        }
+        return this.client.post(this.path, 'AdminGetNoGroupUserIds', parameters).then(function (res) {
+            var userIds = [];
+            if (Array.isArray(res['userId'])) {
+                res['userId'].forEach(function (userId) {
+                    userIds.push(userId);
+                });
+            }
+            return userIds;
+        });
+    };
+    Admin.prototype.countOrgsOfUser = function (userId) {
+        var parameters = [{ 'userId': userId }];
+        return this.client.post(this.path, 'AdminCountOrgsOfUser', parameters).then(function (res) {
+            return Number(res.number_orgs[0]);
+        });
+    };
+    Admin.prototype.getOrgIdsOfUser = function (userId) {
+        var parameters = [{ 'userId': userId }];
+        return this.client.post(this.path, 'AdminGetOrgIdsOfUser', parameters).then(function (res) {
+            var orgIds = [];
+            if (Array.isArray(res['orgId'])) {
+                res['orgId'].forEach(function (orgId) {
+                    orgIds.push(orgId);
+                });
+            }
+            return orgIds;
+        });
+    };
+    Admin.prototype.getUserIdByLoginName = function (loginName) {
+        var parameters = [{ 'login_name': loginName }];
+        return this.client.post(this.path, 'AdminGetUserIdByLoginName', parameters).then(function (res) {
+            return res['userId'][0];
+        });
+    };
+    Admin.prototype.countOrgs = function () {
+        return this.client.post(this.path, 'AdminCountOrgs', []).then(function (res) {
+            return Number(res['number_orgs'][0]);
+        });
+    };
+    Admin.prototype.getOrgIds = function (offset, limit) {
+        var parameters = [];
+        if (offset) {
+            parameters.push({ 'offset': offset });
+        }
+        if (limit) {
+            parameters.push({ 'limit': limit });
+        }
+        return this.client.post(this.path, 'AdminGetOrgIds', parameters).then(function (res) {
+            var orgIds = [];
+            if (Array.isArray(res['orgId'])) {
+                res['orgId'].forEach(function (orgId) {
+                    orgIds.push(orgId);
+                });
+            }
+            return orgIds;
+        });
+    };
+    Admin.prototype.getOrgDetailByIds = function (orgIds) {
+        var parameters = [];
+        orgIds.forEach(function (orgId) {
+            parameters.push({ 'orgId': orgId });
+        });
+        return this.client.post(this.path, 'AdminGetOrgDetailByIds', parameters).then(function (res) {
+            var orgDetails = [];
+            if (Array.isArray(res['OrgDetail'])) {
+                res['OrgDetail'].forEach(function (orgDetail) {
+                    orgDetails.push(AdminConverter.OrgDetail.toObject(orgDetail));
+                });
+            }
+            return orgDetails;
+        });
+    };
+    Admin.prototype.countChildOrgs = function (orgId) {
+        var parameters = [{ 'parent_orgId': orgId }];
+        return this.client.post(this.path, 'AdminCountChildOrgs', parameters).then(function (res) {
+            return Number(res['number_child_orgs'][0]);
+        });
+    };
+    Admin.prototype.getChildOrgs = function (orgId, offset, limit) {
+        var parameters = [{ 'parent_orgId': orgId }];
+        if (offset) {
+            parameters.push({ 'offset': offset });
+        }
+        if (limit) {
+            parameters.push({ 'limit': limit });
+        }
+        return this.client.post(this.path, 'AdminGetChildOrgs', parameters).then(function (res) {
+            var orgIds = [];
+            if (Array.isArray(res['orgId'])) {
+                res['orgId'].forEach(function (orgId) {
+                    orgIds.push(orgId);
+                });
+            }
+            return orgIds;
+        });
+    };
+    Admin.prototype.getParentOrgId = function (orgId) {
+        var parameters = [{ 'child_orgId': orgId }];
+        return this.client.post(this.path, 'AdminGetParentOrgId', parameters).then(function (res) {
+            return res['parent_orgId'][0];
+        });
+    };
+    Admin.prototype.getOrgIdByOrgCode = function (orgCode) {
+        var parameters = [{ 'org_code': orgCode }];
+        return this.client.post(this.path, 'AdminGetOrgIdByOrgCode', parameters).then(function (res) {
+            return res['orgId'][0];
+        });
+    };
+    return Admin;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Admin;
+
+},{"../converter/admin":270,"./client":258}],255:[function(require,module,exports){
+"use strict";
+var client_1 = require("./client");
+var Converter = require("../converter/base");
 var Base = (function () {
     function Base(setting) {
         this.client = new client_1.default(setting);
@@ -27959,8 +28909,8 @@ var Base = (function () {
         });
         return this.client.post(this.path, 'BaseGetUsersById', parameters).then(function (res) {
             var users = [];
-            res[0]['base:BaseGetUsersByIdResponse'][0]['returns'][0]['user'].forEach(function (obj) {
-                users.push(BaseConverter.User.toObject(obj));
+            res['user'].forEach(function (obj) {
+                users.push(Converter.User.toObject(obj));
             });
             return users;
         });
@@ -27972,8 +28922,8 @@ var Base = (function () {
         });
         return this.client.post(this.path, 'BaseGetUsersByLoginName', parameters).then(function (res) {
             var users = [];
-            res[0]['base:BaseGetUsersByLoginNameResponse'][0]['returns'][0]['user'].forEach(function (obj) {
-                users.push(BaseConverter.User.toObject(obj));
+            res['user'].forEach(function (obj) {
+                users.push(Converter.User.toObject(obj));
             });
             return users;
         });
@@ -27992,10 +28942,156 @@ var Base = (function () {
         });
         return this.client.post(this.path, 'BaseGetUserVersions', parameters).then(function (res) {
             var userVersions = [];
-            res[0]['base:BaseGetUserVersionsResponse'][0]['returns'][0]['user_item'].forEach(function (obj) {
-                userVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+            res['user_item'].forEach(function (obj) {
+                userVersions.push(Converter.ItemVersionResult.toObject(obj));
             });
             return userVersions;
+        });
+    };
+    Base.prototype.getCalendarEvents = function () {
+        return this.client.post(this.path, 'BaseGetCalendarEvents', []).then(function (res) {
+            var calendarEvents = [];
+            res['calendar_event'].forEach(function (obj) {
+                calendarEvents.push(Converter.BaseGetCalendarEvent.toObject(obj));
+            });
+            return calendarEvents;
+        });
+    };
+    Base.prototype.getRegionsList = function () {
+        return this.client.post(this.path, 'BaseGetRegionsList', []).then(function (res) {
+            var regions = [];
+            res['region'].forEach(function (obj) {
+                regions.push(Converter.Region.toObject(obj));
+            });
+            return regions;
+        });
+    };
+    Base.prototype.getTimezoneVersion = function () {
+        return this.client.post(this.path, 'BaseGetTimezoneVersion', []).then(function (res) {
+            return res['timezone_version'][0];
+        });
+    };
+    Base.prototype.getApplicationStatus = function () {
+        return this.client.post(this.path, 'BaseGetApplicationStatus', []).then(function (res) {
+            var applications = [];
+            res['application'].forEach(function (obj) {
+                applications.push(Converter.Application.toObject(obj));
+            });
+            return applications;
+        });
+    };
+    Base.prototype.getApplicationInformation = function () {
+        return this.client.post(this.path, 'BaseGetApplicationInformation', []).then(function (res) {
+            var applications = [];
+            res['application'].forEach(function (obj) {
+                applications.push(Converter.ApplicationInformation.toObject(obj));
+            });
+            return applications;
+        });
+    };
+    Base.prototype.manageApplication = function (applications) {
+        var parameters = [];
+        applications.forEach(function (application) {
+            parameters.push({
+                'application': {
+                    '_attr': {
+                        code: application.code,
+                        active: application.active
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'BaseManagerApplication', parameters).then(function (res) {
+            var applications = [];
+            res['application'].forEach(function (obj) {
+                applications.push(Converter.Application.toObject(obj));
+            });
+            return applications;
+        });
+    };
+    Base.prototype.getOrganizationVersions = function (orgItems) {
+        var parameters = [];
+        orgItems.forEach(function (orgItem) {
+            parameters.push({
+                'organization_item': {
+                    '_attr': {
+                        id: orgItem.id,
+                        version: orgItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'BaseGetOrganizationVersions', parameters).then(function (res) {
+            var orgVersions = [];
+            res['organization_item'].forEach(function (obj) {
+                orgVersions.push(Converter.ItemVersionResult.toObject(obj));
+            });
+            return orgVersions;
+        });
+    };
+    Base.prototype.getOrganizationsById = function (orgIds) {
+        var parameters = [];
+        orgIds.forEach(function (orgId) {
+            parameters.push({ 'organization_id': orgId });
+        });
+        return this.client.post(this.path, 'BaseGetOrganizationsById', parameters).then(function (res) {
+            var orgs = [];
+            res['organization'].forEach(function (org) {
+                orgs.push(Converter.Organization.toObject(org));
+            });
+            return orgs;
+        });
+    };
+    Base.prototype.getMyGroupVersions = function (myGroupItems) {
+        var parameters = [];
+        myGroupItems.forEach(function (myGroupItem) {
+            parameters.push({
+                'my_group_item': {
+                    '_attr': {
+                        id: myGroupItem.id,
+                        version: myGroupItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'BaseGetMyGroupVersions', parameters).then(function (res) {
+            var myGroupVersions = [];
+            res['my_group_item'].forEach(function (obj) {
+                myGroupVersions.push(Converter.ItemVersionResult.toObject(obj));
+            });
+            return myGroupVersions;
+        });
+    };
+    Base.prototype.getMyGroupsById = function (groupIds) {
+        var parameters = [];
+        groupIds.forEach(function (groupId) {
+            parameters.push({ 'my_group_id': groupId });
+        });
+        return this.client.post(this.path, 'BaseGetMyGroupsById', parameters).then(function (res) {
+            var myGroups = [];
+            res['my_group'].forEach(function (myGroup) {
+                myGroups.push(Converter.MyGroup.toObject(myGroup));
+            });
+            return myGroups;
+        });
+    };
+    Base.prototype.getFrequentUsers = function () {
+        return this.client.post(this.path, 'BaseGetFrequentUsers', []).then(function (res) {
+            var userIds = [];
+            res['user_id'].forEach(function (userId) {
+                userIds.push(userId);
+            });
+            return userIds;
+        });
+    };
+    Base.prototype.downloadFile = function (fileId) {
+        var parameters = {
+            '_attr': {
+                file_id: fileId
+            }
+        };
+        return this.client.post(this.path, 'BaseFileDownload', parameters).then(function (res) {
+            return Converter.File.toBuffer(res['file'][0]);
         });
     };
     return Base;
@@ -28003,46 +29099,776 @@ var Base = (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Base;
 
-},{"../converter/base":257,"./client":254}],254:[function(require,module,exports){
+},{"../converter/base":271,"./client":258}],256:[function(require,module,exports){
+"use strict";
+var client_1 = require("./client");
+var BaseConverter = require("../converter/base");
+var BulletinConverter = require("../converter/bulletin");
+var datetime = require("../util/datetime");
+var Bulletin = (function () {
+    function Bulletin(setting) {
+        this.client = new client_1.default(setting);
+        this.path = setting.needCsp ? '/cbpapi/bulletin/api.csp' : '/cbpapi/bulletin/api';
+    }
+    Bulletin.prototype.getCategoryVersions = function (categoryItems) {
+        var parameters = [];
+        categoryItems.forEach(function (categoryItem) {
+            parameters.push({
+                'category_item': {
+                    '_attr': {
+                        id: categoryItem.id,
+                        version: categoryItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'BulletinGetCategoryVersions', parameters).then(function (res) {
+            var categoryVersions = [];
+            if (res.category_item !== undefined) {
+                res.category_item.forEach(function (obj) {
+                    categoryVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return categoryVersions;
+        });
+    };
+    Bulletin.prototype.getCategories = function () {
+        return this.client.post(this.path, 'BulletinGetCategories', []).then(function (res) {
+            if (res.categories !== undefined) {
+                return BulletinConverter.Category.toObject(res.categories[0].root[0]);
+            }
+            return null;
+        });
+    };
+    Bulletin.prototype.searchTopics = function (options) {
+        var parameters = [];
+        var attr = {
+            text: options.text,
+            start: datetime.toString(options.start),
+            category_id: 0,
+            search_sub_categories: true,
+            title_search: true,
+            body_search: true,
+            from_search: true,
+            follow_search: true
+        };
+        if (options.sensitive !== undefined) {
+            attr.sensitive = options.sensitive;
+        }
+        if (options.end !== undefined) {
+            attr.end = datetime.toString(options.end);
+        }
+        if (options.categoryId !== undefined) {
+            attr.category_id = options.categoryId;
+        }
+        if (options.searchSubCategories !== undefined) {
+            attr.search_sub_categories = options.searchSubCategories;
+        }
+        if (options.titleSearch !== undefined) {
+            attr.title_search = options.titleSearch;
+        }
+        if (options.bodySearch !== undefined) {
+            attr.body_search = options.bodySearch;
+        }
+        if (options.fromSearch !== undefined) {
+            attr.from_search = options.fromSearch;
+        }
+        if (options.followSearch !== undefined) {
+            attr.follow_search = options.followSearch;
+        }
+        parameters.push({ _attr: attr });
+        return this.client.post(this.path, 'BulletinSearchTopics', parameters).then(function (res) {
+            var topics = [];
+            if (res.topic !== undefined) {
+                res.topic.forEach(function (obj) {
+                    topics.push(BulletinConverter.Topic.toObject(obj));
+                });
+            }
+            return topics;
+        });
+    };
+    Bulletin.prototype.getTopicVersions = function (start, end, topicItems, categoryIds) {
+        var parameters = [];
+        var attr = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        parameters.push({ _attr: attr });
+        if (topicItems !== undefined) {
+            topicItems.forEach(function (topicItem) {
+                parameters.push({
+                    topic_item: {
+                        _attr: {
+                            id: topicItem.id,
+                            version: topicItem.version
+                        }
+                    }
+                });
+            });
+        }
+        if (categoryIds !== undefined) {
+            categoryIds.forEach(function (categoryId) {
+                parameters.push({ category_id: categoryId });
+            });
+        }
+        return this.client.post(this.path, 'BulletinGetTopicVersions', parameters).then(function (res) {
+            var topicVersions = [];
+            if (res.topic_item !== undefined) {
+                res.topic_item.forEach(function (obj) {
+                    topicVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return topicVersions;
+        });
+    };
+    Bulletin.prototype.getDraftTopicVersions = function (start, end, topicItems) {
+        var parameters = [];
+        var attr = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        parameters.push({ _attr: attr });
+        if (topicItems !== undefined) {
+            topicItems.forEach(function (topicItem) {
+                parameters.push({
+                    topic_item: {
+                        _attr: {
+                            id: topicItem.id,
+                            version: topicItem.version
+                        }
+                    }
+                });
+            });
+        }
+        return this.client.post(this.path, 'BulletinGetDraftTopicVersions', parameters).then(function (res) {
+            var topicVersions = [];
+            if (res.topic_item !== undefined) {
+                res.topic_item.forEach(function (obj) {
+                    topicVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return topicVersions;
+        });
+    };
+    Bulletin.prototype.getTopics = function (categoryIds) {
+        var parameters = [];
+        categoryIds.forEach(function (categoryId) {
+            parameters.push({
+                category_id: categoryId
+            });
+        });
+        return this.client.post(this.path, 'BulletinGetTopics', parameters).then(function (res) {
+            return BulletinConverter.TopicList.toObject(res);
+        });
+    };
+    Bulletin.prototype.getTopicByIds = function (topics) {
+        var parameters = [];
+        topics.forEach(function (topic) {
+            parameters.push({
+                topics: {
+                    _attr: {
+                        topic_id: topic.topicId,
+                        is_draft: topic.isDraft
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'BulletinGetTopicByIds', parameters).then(function (res) {
+            var topics = [];
+            if (res.topic !== undefined) {
+                res.topic.forEach(function (obj) {
+                    topics.push(BulletinConverter.Topic.toObject(obj));
+                });
+            }
+            return topics;
+        });
+    };
+    Bulletin.prototype.createTopics = function (topics) {
+        var parameters = [];
+        topics.forEach(function (topic) {
+            var createTopic = [];
+            var topicAttr = {
+                id: 'dummy',
+                version: 'dummy',
+                subject: topic.subject,
+                can_follow: topic.canFollow,
+                category_id: topic.categoryId
+            };
+            var content = [];
+            if (topic.creatorGroupId !== undefined) {
+                topicAttr.creator_group_id = topic.creatorGroupId;
+            }
+            if (topic.manuallyEnterSender !== undefined) {
+                topicAttr.manually_enter_sender = topic.manuallyEnterSender;
+            }
+            if (topic.startDatetime !== undefined) {
+                topicAttr.start_datetime = datetime.toString(topic.startDatetime);
+            }
+            if (topic.endDatetime !== undefined) {
+                topicAttr.end_datetime = datetime.toString(topic.endDatetime);
+            }
+            var contentAttr = {
+                body: topic.body
+            };
+            if (topic.htmlBody !== undefined) {
+                contentAttr.html_body = topic.htmlBody;
+            }
+            content.push({ _attr: contentAttr });
+            if (topic.files !== undefined) {
+                content.file = [];
+                createTopic.file = [];
+                topic.files.forEach(function (file, i) {
+                    var fileId = i + 1;
+                    content.push({
+                        file: {
+                            _attr: {
+                                id: fileId,
+                                name: file.name
+                            }
+                        }
+                    });
+                    createTopic.push({
+                        file: [
+                            { _attr: { id: fileId } },
+                            { content: file.content.toString('base64') }
+                        ]
+                    });
+                });
+            }
+            createTopic.push({
+                topic: [
+                    { _attr: topicAttr },
+                    { content: content }
+                ]
+            });
+            parameters.push({
+                create_topic: createTopic
+            });
+        });
+        return this.client.post(this.path, 'BulletinCreateTopics', parameters).then(function (res) {
+            var topics = [];
+            if (res.topic !== undefined) {
+                res.topic.forEach(function (obj) {
+                    topics.push(BulletinConverter.Topic.toObject(obj));
+                });
+            }
+            return topics;
+        });
+    };
+    Bulletin.prototype.saveDraftTopics = function (topics) {
+        var parameters = [];
+        topics.forEach(function (topic) {
+            var draftTopic = [];
+            var topicAttr = {
+                id: 'dummy',
+                version: 'dummy',
+                subject: topic.subject,
+                can_follow: topic.canFollow,
+                category_id: topic.categoryId
+            };
+            var content = [];
+            if (topic.creatorGroupId !== undefined) {
+                topicAttr.creator_group_id = topic.creatorGroupId;
+            }
+            if (topic.manuallyEnterSender !== undefined) {
+                topicAttr.manually_enter_sender = topic.manuallyEnterSender;
+            }
+            if (topic.startDatetime !== undefined) {
+                topicAttr.start_datetime = datetime.toString(topic.startDatetime);
+            }
+            if (topic.endDatetime !== undefined) {
+                topicAttr.end_datetime = datetime.toString(topic.endDatetime);
+            }
+            var contentAttr = {
+                body: topic.body
+            };
+            if (topic.htmlBody !== undefined) {
+                contentAttr.html_body = topic.htmlBody;
+            }
+            content.push({ _attr: contentAttr });
+            if (topic.files !== undefined) {
+                content.file = [];
+                draftTopic.file = [];
+                topic.files.forEach(function (file, i) {
+                    var fileId = i + 1;
+                    content.push({
+                        file: {
+                            _attr: {
+                                id: fileId,
+                                name: file.name
+                            }
+                        }
+                    });
+                    draftTopic.push({
+                        file: [
+                            { _attr: { id: fileId } },
+                            { content: file.content.toString('base64') }
+                        ]
+                    });
+                });
+            }
+            draftTopic.push({
+                topic: [
+                    { _attr: topicAttr },
+                    { content: content }
+                ]
+            });
+            parameters.push({
+                save_draft_topic: draftTopic
+            });
+        });
+        return this.client.post(this.path, 'BulletinSaveDraftTopics', parameters).then(function (res) {
+            var topics = [];
+            if (res.topic !== undefined) {
+                res.topic.forEach(function (obj) {
+                    topics.push(BulletinConverter.Topic.toObject(obj));
+                });
+            }
+            return topics;
+        });
+    };
+    Bulletin.prototype.modifyTopics = function (topics) {
+        var parameters = [];
+        topics.forEach(function (topic) {
+            var modifyTopic = [];
+            var topicAttr = {
+                id: topic.id,
+                version: 'dummy',
+                subject: topic.subject,
+                can_follow: topic.canFollow,
+                category_id: topic.categoryId
+            };
+            var content = [];
+            if (topic.creatorGroupId !== undefined) {
+                topicAttr.creator_group_id = topic.creatorGroupId;
+            }
+            if (topic.manuallyEnterSender !== undefined) {
+                topicAttr.manually_enter_sender = topic.manuallyEnterSender;
+            }
+            if (topic.startDatetime !== undefined) {
+                topicAttr.start_datetime = datetime.toString(topic.startDatetime);
+            }
+            if (topic.endDatetime !== undefined) {
+                topicAttr.end_datetime = datetime.toString(topic.endDatetime);
+            }
+            var contentAttr = {
+                body: topic.body
+            };
+            if (topic.htmlBody !== undefined) {
+                contentAttr.html_body = topic.htmlBody;
+            }
+            content.push({ _attr: contentAttr });
+            if (topic.files !== undefined) {
+                content.file = [];
+                modifyTopic.file = [];
+                topic.files.forEach(function (file) {
+                    content.push({
+                        file: {
+                            _attr: {
+                                id: file.id,
+                                name: file.name
+                            }
+                        }
+                    });
+                    modifyTopic.push({
+                        file: [
+                            { _attr: { id: file.id } },
+                            { content: file.content.toString('base64') }
+                        ]
+                    });
+                });
+            }
+            modifyTopic.push({
+                topic: [
+                    { _attr: topicAttr },
+                    { content: content }
+                ]
+            });
+            parameters.push({
+                modify_topic: modifyTopic
+            });
+        });
+        return this.client.post(this.path, 'BulletinModifyTopics', parameters).then(function (res) {
+            var topics = [];
+            if (res.topic !== undefined) {
+                res.topic.forEach(function (obj) {
+                    topics.push(BulletinConverter.Topic.toObject(obj));
+                });
+            }
+            return topics;
+        });
+    };
+    Bulletin.prototype.removeTopics = function (removeTopics) {
+        var parameters = [];
+        removeTopics.forEach(function (removeTopic) {
+            parameters.push({
+                topics: {
+                    _attr: {
+                        topic_id: removeTopic.id,
+                        is_draft: removeTopic.isDraft
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'BulletinRemoveTopics', parameters).then(function () {
+        });
+    };
+    Bulletin.prototype.getFollows = function (topicId, offset, limit) {
+        var parameters = [];
+        parameters.push({
+            _attr: {
+                topic_id: topicId,
+                offset: offset,
+                limit: limit
+            }
+        });
+        return this.client.post(this.path, 'BulletinGetFollows', parameters).then(function (res) {
+            var follows = [];
+            if (res.follow !== undefined) {
+                res.follow.forEach(function (obj) {
+                    follows.push(BulletinConverter.Follow.toObject(obj));
+                });
+            }
+            return follows;
+        });
+    };
+    Bulletin.prototype.addFollows = function (follows) {
+        var parameters = [];
+        follows.forEach(function (follow) {
+            var addFollow = [];
+            addFollow.push({
+                _attr: {
+                    topic_id: follow.topicId
+                }
+            });
+            var followObj = [];
+            var followAttr = {
+                id: 'dummy',
+                number: 'dummy',
+                text: follow.text
+            };
+            if (follow.htmlText !== undefined) {
+                followAttr.html_text = follow.htmlText;
+            }
+            followObj.push({
+                _attr: followAttr
+            });
+            if (follow.files !== undefined) {
+                follow.files.forEach(function (file, index) {
+                    var fileId = index + 1;
+                    addFollow.push({
+                        file: [
+                            {
+                                _attr: {
+                                    id: fileId
+                                }
+                            },
+                            {
+                                content: file.content.toString('base64')
+                            }
+                        ]
+                    });
+                    followObj.push({
+                        file: {
+                            _attr: {
+                                id: fileId,
+                                name: file.name
+                            }
+                        }
+                    });
+                });
+            }
+            addFollow.push({
+                follow: followObj
+            });
+            parameters.push({
+                add_follow: addFollow
+            });
+        });
+        return this.client.post(this.path, 'BulletinAddFollows', parameters).then(function (res) {
+            var topics = [];
+            if (res.topic !== undefined) {
+                res.topic.forEach(function (obj) {
+                    topics.push(BulletinConverter.Topic.toObject(obj));
+                });
+            }
+            return topics;
+        });
+    };
+    Bulletin.prototype.removeFollows = function (followIds) {
+        var parameters = [];
+        followIds.forEach(function (followId) {
+            parameters.push({ follow_id: followId });
+        });
+        return this.client.post(this.path, 'BulletinRemoveFollows', parameters).then(function () {
+        });
+    };
+    Bulletin.prototype.downloadFile = function (fileId) {
+        var parameters = [{ _attr: { file_id: fileId } }];
+        return this.client.post(this.path, 'BulletinFileDownload', parameters).then(function (res) {
+            return BaseConverter.File.toBuffer(res['file'][0]);
+        });
+    };
+    return Bulletin;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Bulletin;
+
+},{"../converter/base":271,"../converter/bulletin":272,"../util/datetime":287,"./client":258}],257:[function(require,module,exports){
+"use strict";
+var client_1 = require("./client");
+var BaseConverter = require("../converter/base");
+var CabinetConverter = require("../converter/cabinet");
+var Cabinet = (function () {
+    function Cabinet(setting) {
+        this.client = new client_1.default(setting);
+        this.path = setting.needCsp ? '/cbpapi/cabinet/api.csp' : '/cbpapi/cabinet/api';
+    }
+    Cabinet.prototype.getFileInfo = function (hid) {
+        var parameters = [{
+                _attr: {
+                    hid: hid
+                }
+            }];
+        return this.client.post(this.path, 'CabinetGetFileInfo', parameters).then(function (res) {
+            return CabinetConverter.FileInformation.toObject(res.file_information[0]);
+        });
+    };
+    Cabinet.prototype.downloadFile = function (fileId) {
+        var parameters = [{
+                _attr: {
+                    file_id: fileId
+                }
+            }];
+        return this.client.post(this.path, 'CabinetFileDownload', parameters).then(function (res) {
+            return BaseConverter.File.toBuffer(res['file'][0]);
+        });
+    };
+    Cabinet.prototype.addFile = function (content, folderId, name, title, version, description) {
+        var attr = {
+            hid: folderId,
+            name: name,
+        };
+        if (title !== undefined) {
+            attr.title = title;
+        }
+        if (version !== undefined) {
+            attr.version = version;
+        }
+        if (description !== undefined) {
+            attr.description = description;
+        }
+        var parameters = [
+            {
+                _attr: attr
+            },
+            {
+                content: content.toString('base64')
+            }
+        ];
+        return this.client.post(this.path, 'CabinetAddFile', parameters).then(function (res) {
+            return CabinetConverter.SimpleFile.toObject(res.file[0]);
+        });
+    };
+    Cabinet.prototype.updateFile = function (content, fileId, name, comment) {
+        var attr = {
+            file_id: fileId,
+            name: name
+        };
+        if (comment !== undefined) {
+            attr.comment = comment;
+        }
+        var parameters = [
+            {
+                _attr: attr
+            },
+            {
+                content: content.toString('base64')
+            }
+        ];
+        return this.client.post(this.path, 'CabinetUpdateFile', parameters).then(function (res) {
+            return CabinetConverter.SimpleFile.toObject(res.file[0]);
+        });
+    };
+    Cabinet.prototype.updateFileInformation = function (fileId, title, version, description) {
+        var attr = {
+            file_id: fileId
+        };
+        if (title !== undefined) {
+            attr.title = title;
+        }
+        if (version !== undefined) {
+            attr.version = version;
+        }
+        if (description !== undefined) {
+            attr.description = description;
+        }
+        var parameters = [{
+                _attr: attr
+            }];
+        return this.client.post(this.path, 'CabinetUpdateFileInformation', parameters).then(function (res) {
+            return CabinetConverter.SimpleFile.toObject(res.file[0]);
+        });
+    };
+    Cabinet.prototype.deleteFile = function (fileId) {
+        var parameters = [{
+                file_id: fileId
+            }];
+        return this.client.post(this.path, 'CabinetDeleteFiles', parameters).then(function () {
+        });
+    };
+    Cabinet.prototype.getFolderInfo = function () {
+        return this.client.post(this.path, 'CabinetGetFolderInfo', []).then(function (res) {
+            return CabinetConverter.FolderInformation.toObject(res.folder_information[0]);
+        });
+    };
+    return Cabinet;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Cabinet;
+
+},{"../converter/base":271,"../converter/cabinet":273,"./client":258}],258:[function(require,module,exports){
 "use strict";
 var error_1 = require("./error");
 var xml = require("xml");
 var xml2js = require("xml2js");
+var processors = require("xml2js/lib/processors");
 var node_fetch_1 = require("node-fetch");
 var Client = (function () {
     function Client(setting) {
         this.expires = new Date(Date.UTC(2037, 7, 12, 14, 45, 0));
+        this.writeActions = [
+            'AdminAddUserAccount',
+            'AdminModifyUserAccount',
+            'AdminRemoveUsersByIds',
+            'AdminAddOrg',
+            'AdminModifyOrgInfo',
+            'AdminRemoveOrgsByIds',
+            'AdminAddUsersToOrg',
+            'AdminSetOrgsOfUser',
+            'AdminAddChildrenOfOrg',
+            'AdminRemoveUsersFromOrg',
+            'ScheduleAddEvents',
+            'ScheduleModifyEvents',
+            'ScheduleModifyRepeatEvents',
+            'ScheduleRemoveEvents',
+            'ScheduleRemoveEventsFromRepeatEvent',
+            'ScheduleAddFollows',
+            'ScheduleAddFollowsToRepeatEvent',
+            'ScheduleRemoveFollows',
+            'ScheduleDetermineTemporaryEvents',
+            'ScheduleRemoveTemporaryEventCandidates',
+            'ScheduleParticipateEvents',
+            'ScheduleParticipateEventsToRepeatEvent',
+            'ScheduleLeaveEvents',
+            'ScheduleLeaveEventsFromRepeatEvent',
+            'ScheduleSetProfiles',
+            'AddressAddCards',
+            'AddressModifyCards',
+            'AddressRemovePersonalCards',
+            'AddressRemoveSharedCards',
+            'AddressCopyPersonalCardsToOtherBook',
+            'AddressAddMyAddressGroups',
+            'AddressModifyMyAddressGroups',
+            'AddressRemoveMyAddressGroups',
+            'AddressModifyCardsInMyAddressGroup',
+            'AddressSetProfiles',
+            'WorkflowHandleApplications',
+            'WorkflowSetProxies',
+            'MailSendMails',
+            'MailReplyMails',
+            'MailForwardMails',
+            'MailSaveDraftMails',
+            'MailRemoveMails',
+            'MailOpenDispositionNotifications',
+            'MailAddFolders',
+            'MailModifyFolders',
+            'MailRemoveFolders',
+            'MailMoveMailsToOtherFolder',
+            'MailSetProfiles',
+            'MailCreateUserAccount',
+            'MailEditUserAccount',
+            'MailDeleteUserAccount',
+            'MailAddMailServers',
+            'MailModifyMailServers',
+            'MailRemoveMailServers',
+            'MessageCreateThreads',
+            'MessageModifyThreads',
+            'MessageSaveDraftThreads',
+            'MessageConfirmThreads',
+            'MessageRemoveThreads',
+            'MessageAddFollows',
+            'MessageRemoveFollows',
+            'MessageSetProfiles',
+            'NotificationConfirmNotification',
+            'NotificationSetProfiles',
+            'ReportAddFollows',
+            'ReportRemoveFollows',
+            'ReportRemoveReports',
+            'CabinetAddFile',
+            'CabinetUpdateFile',
+            'CabinetUpdateFileInformation',
+            'CabinetDeleteFiles',
+            'StarAddStars',
+            'StarRemoveStars',
+            'BulletinCreateTopics',
+            'BulletinModifyTopics',
+            'BulletinSaveDraftTopics',
+            'BulletinRemoveTopics',
+            'BulletinAddFollows',
+            'BulletinRemoveFollows'
+        ];
+        this.noResponseTags = [
+            'ScheduleGetFacilityProfileVersions',
+            'ScheduleGetFacilityProfilesById'
+        ];
         this.setting = setting;
     }
-    Client.prototype.post = function (path, action, parameters) {
+    Client.prototype.post = function (path, action, parameters, preserveChildrenOrder) {
+        var _this = this;
+        if (preserveChildrenOrder === void 0) { preserveChildrenOrder = false; }
+        if (this.setting.requestToken !== undefined && this.writeActions.indexOf(action) !== -1) {
+            parameters.push({
+                request_token: this.setting.requestToken
+            });
+        }
         var actionObject = {};
         actionObject[action] = [{ 'parameters': parameters }];
+        var soapHeaders = [
+            { 'Action': action },
+            {
+                'Timestamp': [
+                    { 'Created': this.toISOString(new Date()) },
+                    { 'Expires': this.toISOString(this.expires) }
+                ]
+            }
+        ];
+        if (this.doUseWSSecurityAuth()) {
+            soapHeaders.push({
+                'Security': [{
+                        'UsernameToken': [
+                            { 'Username': this.setting.username },
+                            { 'Password': this.setting.password }
+                        ]
+                    }]
+            });
+        }
+        if (this.setting.locale !== undefined) {
+            soapHeaders.push({
+                'Locale': this.setting.locale
+            });
+        }
         var xmlObject = {
             'soap:Envelope': [
                 {
                     '_attr': { 'xmlns:soap': 'http://www.w3.org/2003/05/soap-envelope' }
                 },
                 {
-                    'soap:Header': [
-                        { 'Action': action },
-                        {
-                            'Security': [{
-                                    'UsernameToken': [
-                                        { 'Username': this.setting.username },
-                                        { 'Password': this.setting.password }
-                                    ]
-                                }]
-                        },
-                        {
-                            'Timestamp': [
-                                { 'Created': this.toISOString(new Date()) },
-                                { 'Expires': this.toISOString(this.expires) }
-                            ]
-                        },
-                        {
-                            'Locale': this.setting.locale
-                        }
-                    ]
+                    'soap:Header': soapHeaders
                 },
                 {
                     'soap:Body': [actionObject]
@@ -28050,12 +29876,16 @@ var Client = (function () {
             ]
         };
         var xmlString = xml(xmlObject, { declaration: true });
+        var headers = {
+            'Content-Type': 'text/xml; charset=UTF-8'
+        };
+        if (this.setting.cookie !== undefined) {
+            headers['Cookie'] = this.setting.cookie;
+        }
         return node_fetch_1.default(this.setting.baseUrl + path, {
             method: 'POST',
             body: xmlString,
-            headers: {
-                'Content-Type': 'text/xml; charset=UTF-8'
-            },
+            headers: headers,
             // compress: true causes "incorrect header check" error on cybozu.com
             // https://github.com/bitinn/node-fetch/issues/45
             compress: false
@@ -28069,7 +29899,10 @@ var Client = (function () {
         }).then(function (text) {
             return new Promise(function (resolve, reject) {
                 xml2js.parseString(text, {
-                    trim: true
+                    trim: true,
+                    tagNameProcessors: [processors.stripPrefix],
+                    explicitChildren: preserveChildrenOrder,
+                    preserveChildrenOrder: preserveChildrenOrder
                 }, function (err, data) {
                     if (err) {
                         reject(err);
@@ -28078,8 +29911,8 @@ var Client = (function () {
                 });
             });
         }).then(function (data) {
-            if (data['soap:Envelope']['soap:Body'][0]['soap:Fault']) {
-                var detail = data['soap:Envelope']['soap:Body'][0]['soap:Fault'][0]['soap:Detail'][0];
+            if (data['Envelope']['Body'][0]['Fault']) {
+                var detail = data['Envelope']['Body'][0]['Fault'][0]['Detail'][0];
                 var code = detail['code'][0];
                 var diagnosis = detail['diagnosis'][0];
                 var cause = detail['cause'][0];
@@ -28092,7 +29925,11 @@ var Client = (function () {
                     counterMeasure: counterMeasure
                 }, message));
             }
-            return data['soap:Envelope']['soap:Body'];
+            var responseParam = _this.getResponseTag(action);
+            if (Array.isArray(data['Envelope']['Body'][0][responseParam])) {
+                return data['Envelope']['Body'][0][responseParam][0]['returns'][0];
+            }
+            // no response
         });
     };
     Client.prototype.pad = function (number) {
@@ -28111,12 +29948,30 @@ var Client = (function () {
         var second = this.pad(date.getUTCSeconds());
         return year + "-" + month + "-" + day + "T" + hour + ":" + minute + ":" + second + "Z";
     };
+    Client.prototype.getResponseTag = function (action) {
+        if (action === 'UtilGetLoginUserId') {
+            return 'GetRequestTokenResponse';
+        }
+        if (action.substr(0, 5) === 'Admin') {
+            return action.substr(5) + "Response";
+        }
+        if (action.substr(0, 4) === 'Util') {
+            return action.substr(4) + "Response";
+        }
+        if (this.noResponseTags.indexOf(action) >= 0) {
+            return action;
+        }
+        return action + "Response";
+    };
+    Client.prototype.doUseWSSecurityAuth = function () {
+        return this.setting.username !== undefined && this.setting.password !== undefined;
+    };
     return Client;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Client;
 
-},{"./error":255,"node-fetch":60,"xml":91,"xml2js":94}],255:[function(require,module,exports){
+},{"./error":259,"node-fetch":60,"xml":91,"xml2js":94,"xml2js/lib/processors":93}],259:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -28134,7 +29989,2976 @@ var GaroonError = (function (_super) {
 }(Error));
 exports.GaroonError = GaroonError;
 
-},{}],256:[function(require,module,exports){
+},{}],260:[function(require,module,exports){
+"use strict";
+var client_1 = require("./client");
+var BaseConverter = require("../converter/base");
+var MailConverter = require("../converter/mail");
+var datetime = require("../util/datetime");
+var Mail = (function () {
+    function Mail(setting) {
+        this.client = new client_1.default(setting);
+        this.path = setting.needCsp ? '/cbpapi/mail/api.csp' : '/cbpapi/mail/api';
+    }
+    Mail.prototype.getMailVersions = function (start, end, mailItems, folderIds) {
+        var parameters = [];
+        var attr = { start: datetime.toString(start) };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        parameters.push({ _attr: attr });
+        if (mailItems !== undefined) {
+            mailItems.forEach(function (mailItem) {
+                parameters.push({
+                    mail_item: {
+                        _attr: {
+                            id: mailItem.id,
+                            version: mailItem.version
+                        }
+                    }
+                });
+            });
+        }
+        if (folderIds !== undefined) {
+            folderIds.forEach(function (folderId) {
+                parameters.push({ folder_id: folderId });
+            });
+        }
+        return this.client.post(this.path, 'MailGetMailVersions', parameters).then(function (res) {
+            var mailItems = [];
+            if (res.mail_item !== undefined) {
+                res.mail_item.forEach(function (mailItem) {
+                    mailItems.push(BaseConverter.ItemVersionResult.toObject(mailItem));
+                });
+            }
+            return mailItems;
+        });
+    };
+    Mail.prototype.getMailsById = function (mailIds) {
+        var parameters = [];
+        mailIds.forEach(function (mailId) {
+            parameters.push({ mail_id: mailId });
+        });
+        return this.client.post(this.path, 'MailGetMailsById', parameters).then(function (res) {
+            var mails = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(function (obj) {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    };
+    Mail.prototype.downloadSource = function (mailId) {
+        var parameters = [{ _attr: { mail_id: mailId } }];
+        return this.client.post(this.path, 'MailSourceDownload', parameters).then(function (res) {
+            return BaseConverter.File.toBuffer(res.source[0]);
+        });
+    };
+    Mail.prototype.getNewArrivingEmail = function () {
+        return this.client.post(this.path, 'MailGetNewArrivingEmail', []).then(function (res) {
+            var mails = [];
+            if (res.account !== undefined) {
+                res.account.forEach(function (obj) {
+                    mails.push(MailConverter.NewArrivingEmail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    };
+    Mail.prototype.moveMailsToOtherFolder = function (operations) {
+        var parameters = [];
+        operations.forEach(function (operation) {
+            parameters.push({
+                operation: {
+                    _attr: {
+                        folder_id: operation.folderId,
+                        mail_id: operation.mailId
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'MailMoveMailsToOtherFolder', parameters).then(function (res) {
+            var mails = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(function (obj) {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    };
+    Mail.prototype.downloadFile = function (mailId, fileId) {
+        var parameters = [{
+                _attr: {
+                    mail_id: mailId,
+                    file_id: fileId
+                }
+            }];
+        return this.client.post(this.path, 'MailFileDownload', parameters).then(function (res) {
+            return BaseConverter.File.toBuffer(res.file[0]);
+        });
+    };
+    Mail.prototype.addFolders = function (operations) {
+        var parameters = [];
+        operations.forEach(function (operation) {
+            var attr = { account_id: operation.accountId };
+            if (operation.parentFolderId !== undefined) {
+                attr.parent_folder_id = operation.parentFolderId;
+            }
+            var folderAttr = {
+                key: 'dummy',
+                name: operation.name
+            };
+            if (operation.description !== undefined) {
+                folderAttr.description = operation.description;
+            }
+            parameters.push({
+                add_folder: [
+                    {
+                        _attr: attr
+                    },
+                    {
+                        folder: {
+                            _attr: folderAttr
+                        }
+                    }
+                ]
+            });
+        });
+        return this.client.post(this.path, 'MailAddFolders', parameters).then(function (res) {
+            var folders = [];
+            if (res.folder !== undefined) {
+                res.folder.forEach(function (obj) {
+                    folders.push(MailConverter.Folder.toObject(obj));
+                });
+            }
+            return folders;
+        });
+    };
+    Mail.prototype.modifyFolders = function (operations) {
+        var parameters = [];
+        operations.forEach(function (operation) {
+            var attr = { account_id: operation.accountId };
+            if (operation.parentFolderId !== undefined) {
+                attr.parent_folder_id = operation.parentFolderId;
+            }
+            var folderAttr = {
+                key: operation.folderId,
+                name: operation.name
+            };
+            if (operation.description !== undefined) {
+                folderAttr.description = operation.description;
+            }
+            parameters.push({
+                modify_folder: [
+                    {
+                        _attr: attr
+                    },
+                    {
+                        folder: {
+                            _attr: folderAttr
+                        }
+                    }
+                ]
+            });
+        });
+        return this.client.post(this.path, 'MailModifyFolders', parameters).then(function (res) {
+            var folders = [];
+            if (res.folder !== undefined) {
+                res.folder.forEach(function (obj) {
+                    folders.push(MailConverter.Folder.toObject(obj));
+                });
+            }
+            return folders;
+        });
+    };
+    Mail.prototype.removeFolders = function (folderIds) {
+        var parameters = [];
+        folderIds.forEach(function (folderId) {
+            parameters.push({ folder_id: folderId });
+        });
+        return this.client.post(this.path, 'MailRemoveFolders', parameters).then(function () {
+        });
+    };
+    Mail.prototype.getAccountVersions = function (accountItems) {
+        var parameters = [];
+        accountItems.forEach(function (accountItem) {
+            parameters.push({
+                account_item: {
+                    _attr: {
+                        id: accountItem.id,
+                        version: accountItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'MailGetAccountVersions', parameters).then(function (res) {
+            var accountVersions = [];
+            if (res.account_item !== undefined) {
+                res.account_item.forEach(function (obj) {
+                    accountVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return accountVersions;
+        });
+    };
+    Mail.prototype.getAccountsById = function (accountIds) {
+        var parameters = [];
+        accountIds.forEach(function (accountId) {
+            parameters.push({ account_id: accountId });
+        });
+        return this.client.post(this.path, 'MailGetAccountsById', parameters).then(function (res) {
+            var accounts = [];
+            if (res.account !== undefined) {
+                res.account.forEach(function (obj) {
+                    accounts.push(MailConverter.Account.toObject(obj));
+                });
+            }
+            return accounts;
+        });
+    };
+    Mail.prototype.createUserAccount = function (accounts) {
+        var parameters = [];
+        accounts.forEach(function (account) {
+            var accountAttr = {
+                account_id: 'dummy',
+                user_id: account.userId,
+                user_acount_code: account.userAccountCode
+            };
+            if (account.userAccountName !== undefined) {
+                accountAttr.user_account_name = account.userAccountName;
+            }
+            var mailSettingAttr = {
+                mail_server_id: account.mailServerId,
+                email: account.email,
+                acount_name: account.accountName
+            };
+            if (account.password !== undefined) {
+                mailSettingAttr.password = account.password;
+            }
+            if (account.leaveServerMail !== undefined) {
+                mailSettingAttr.leave_server_mail = account.leaveServerMail;
+            }
+            if (account.deactivateUserAccount !== undefined) {
+                mailSettingAttr.deactivate_user_account = account.deactivateUserAccount;
+            }
+            parameters.push({
+                mail_user_accounts: [
+                    {
+                        account_info: {
+                            _attr: accountAttr
+                        }
+                    },
+                    {
+                        mail_setting: {
+                            _attr: mailSettingAttr
+                        }
+                    }
+                ]
+            });
+        });
+        return this.client.post(this.path, 'MailCreateUserAccount', parameters).then(function (res) {
+            var accounts = [];
+            res.user_accounts.forEach(function (obj) {
+                accounts.push(MailConverter.UserAccount.toObject(obj));
+            });
+            return accounts;
+        });
+    };
+    Mail.prototype.editUserAccount = function (accounts) {
+        var parameters = [];
+        accounts.forEach(function (account) {
+            var accountAttr = {
+                account_id: account.accountId,
+                user_id: account.userId,
+                user_acount_code: account.userAccountCode
+            };
+            if (account.userAccountName !== undefined) {
+                accountAttr.user_account_name = account.userAccountName;
+            }
+            var mailSettingAttr = {
+                mail_server_id: account.mailServerId,
+                email: account.email,
+                acount_name: account.accountName
+            };
+            if (account.password !== undefined) {
+                mailSettingAttr.password = account.password;
+            }
+            if (account.leaveServerMail !== undefined) {
+                mailSettingAttr.leave_server_mail = account.leaveServerMail;
+            }
+            if (account.deactivateUserAccount !== undefined) {
+                mailSettingAttr.deactivate_user_account = account.deactivateUserAccount;
+            }
+            parameters.push({
+                mail_user_accounts: [
+                    {
+                        account_info: {
+                            _attr: accountAttr
+                        }
+                    },
+                    {
+                        mail_setting: {
+                            _attr: mailSettingAttr
+                        }
+                    }
+                ]
+            });
+        });
+        return this.client.post(this.path, 'MailEditUserAccount', parameters).then(function (res) {
+            var accounts = [];
+            res.user_accounts.forEach(function (obj) {
+                accounts.push(MailConverter.UserAccount.toObject(obj));
+            });
+            return accounts;
+        });
+    };
+    Mail.prototype.deleteUserAccount = function (accounts) {
+        var parameters = [];
+        accounts.forEach(function (account) {
+            var attr = {
+                account_id: account.accountId
+            };
+            if (account.deleteAllEmail !== undefined) {
+                attr.delete_all_email = account.deleteAllEmail;
+            }
+            parameters.push({
+                delete_user_accounts: {
+                    _attr: attr
+                }
+            });
+        });
+        return this.client.post(this.path, 'MailDeleteUserAccount', parameters).then(function () {
+        });
+    };
+    Mail.prototype.getSignatures = function (accountId) {
+        var parameters = [{
+                _attr: {
+                    account_id: accountId
+                }
+            }];
+        return this.client.post(this.path, 'MailGetSignatures', parameters).then(function (res) {
+            var signatures = [];
+            if (res.signature !== undefined) {
+                res.signature.forEach(function (obj) {
+                    signatures.push(MailConverter.Signature.toObject(obj));
+                });
+            }
+            return signatures;
+        });
+    };
+    Mail.prototype.getFilters = function (accountId) {
+        var parameters = [{
+                _attr: {
+                    account_id: accountId
+                }
+            }];
+        return this.client.post(this.path, 'MailGetFilters', parameters).then(function (res) {
+            var filters = [];
+            if (res.filter !== undefined) {
+                res.filter.forEach(function (obj) {
+                    filters.push(MailConverter.Filter.toObject(obj));
+                });
+            }
+            return filters;
+        });
+    };
+    Mail.prototype.getProfiles = function (includeSystemProfile) {
+        var parameters = [{
+                _attr: {
+                    include_system_profile: includeSystemProfile
+                }
+            }];
+        return this.client.post(this.path, 'MailGetProfiles', parameters).then(function (res) {
+            var profiles = {
+                personalProfile: MailConverter.PersonalProfile.toObject(res.personal_profile[0])
+            };
+            if (res.system_profile !== undefined) {
+                profiles.systemProfile = MailConverter.SystemProfile.toObject(res.system_profile[0]);
+            }
+            return profiles;
+        });
+    };
+    Mail.prototype.setProfiles = function (profile) {
+        var parameters = [];
+        var personalProfile = [];
+        var attr = {
+            show_preview: profile.showPreview,
+            send_charset: profile.sendCharset,
+            use_trash: profile.useTrash,
+            use_message_disposition_notification: profile.useMessageDispositionNotification,
+            reply_message_disposition_notification: profile.replyMessageDispositionNotification
+        };
+        if (profile.useStatus !== undefined) {
+            attr.use_status = profile.useStatus;
+        }
+        personalProfile.push({
+            _attr: attr
+        });
+        if (profile.fromNames.length > 0) {
+            profile.fromNames.forEach(function (fromName) {
+                personalProfile.push({
+                    from_name: {
+                        _attr: {
+                            account_id: fromName.accountId,
+                            name: fromName.name
+                        }
+                    }
+                });
+            });
+        }
+        parameters.push({
+            personal_profile: personalProfile
+        });
+        return this.client.post(this.path, 'MailSetProfiles', parameters).then(function (res) {
+            return MailConverter.PersonalProfile.toObject(res.personal_profile[0]);
+        });
+    };
+    Mail.prototype.sendMails = function (mails) {
+        var parameters = [];
+        mails.forEach(function (mail) {
+            var sendMail = [];
+            var attr = {
+                account_id: mail.accountId
+            };
+            if (mail.from !== undefined) {
+                attr.from_string = mail.from;
+            }
+            if (mail.sender !== undefined) {
+                attr.sender_string = mail.sender;
+            }
+            if (mail.to !== undefined) {
+                attr.to_string = mail.to;
+            }
+            if (mail.cc !== undefined) {
+                attr.cc_string = mail.cc;
+            }
+            if (mail.bcc !== undefined) {
+                attr.bcc_string = mail.bcc;
+            }
+            if (mail.replyTo !== undefined) {
+                attr.reply_to_string = mail.replyTo;
+            }
+            if (mail.draftId !== undefined) {
+                attr.draft_id = mail.draftId;
+            }
+            sendMail.push({
+                _attr: attr
+            });
+            var mailAttr = {
+                key: 'dummy',
+                version: 'dummy',
+                subject: mail.subject,
+                body: mail.body,
+                folder_key: 'dummy'
+            };
+            if (mail.htmlBody !== undefined) {
+                mailAttr.html_body = mail.htmlBody;
+            }
+            var mailObj = [];
+            mailObj.push({
+                _attr: mailAttr
+            });
+            if (mail.dispositionNotificationTo !== undefined) {
+                var attr_1 = {
+                    address: mail.dispositionNotificationTo.address
+                };
+                if (mail.dispositionNotificationTo.name !== undefined) {
+                    attr_1.name = mail.dispositionNotificationTo.name;
+                }
+                mailObj.push({
+                    disposition_notification_to: {
+                        _attr: attr_1
+                    }
+                });
+            }
+            if (mail.files !== undefined) {
+                mail.files.forEach(function (file, index) {
+                    var fileId = index;
+                    mailObj.push({
+                        file: {
+                            _attr: {
+                                id: fileId,
+                                name: file.name
+                            }
+                        }
+                    });
+                    sendMail.push({
+                        file: [
+                            {
+                                _attr: {
+                                    id: fileId
+                                }
+                            },
+                            {
+                                content: file.content.toString('base64')
+                            }
+                        ]
+                    });
+                });
+            }
+            sendMail.push({
+                mail: mailObj
+            });
+            if (mail.removeFileIds !== undefined) {
+                mail.removeFileIds.forEach(function (removeFileId) {
+                    sendMail.push({
+                        remove_file_id: removeFileId
+                    });
+                });
+            }
+            parameters.push({
+                send_mail: sendMail
+            });
+        });
+        return this.client.post(this.path, 'MailSendMails', parameters).then(function (res) {
+            var mails = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(function (obj) {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    };
+    Mail.prototype.replyMails = function (replyAll, mails) {
+        var parameters = [{
+                _attr: {
+                    reply_all: replyAll
+                }
+            }];
+        mails.forEach(function (mail) {
+            var replyMail = [];
+            var attr = {
+                account_id: mail.accountId
+            };
+            if (mail.from !== undefined) {
+                attr.from_string = mail.from;
+            }
+            if (mail.sender !== undefined) {
+                attr.sender_string = mail.sender;
+            }
+            if (mail.to !== undefined) {
+                attr.to_string = mail.to;
+            }
+            if (mail.cc !== undefined) {
+                attr.cc_string = mail.cc;
+            }
+            if (mail.bcc !== undefined) {
+                attr.bcc_string = mail.bcc;
+            }
+            if (mail.replyTo !== undefined) {
+                attr.reply_to_string = mail.replyTo;
+            }
+            if (mail.draftId !== undefined) {
+                attr.draft_id = mail.draftId;
+            }
+            replyMail.push({
+                _attr: attr
+            });
+            var mailAttr = {
+                key: mail.id,
+                version: 'dummy',
+                subject: mail.subject,
+                body: mail.body,
+                folder_key: 'dummy'
+            };
+            if (mail.htmlBody !== undefined) {
+                mailAttr.html_body = mail.htmlBody;
+            }
+            var mailObj = [];
+            mailObj.push({
+                _attr: mailAttr
+            });
+            if (mail.files !== undefined) {
+                mail.files.forEach(function (file, index) {
+                    var fileId = index;
+                    mailObj.push({
+                        file: {
+                            _attr: {
+                                id: fileId,
+                                name: file.name
+                            }
+                        }
+                    });
+                    replyMail.push({
+                        file: [
+                            {
+                                _attr: {
+                                    id: fileId
+                                }
+                            },
+                            {
+                                content: file.content.toString('base64')
+                            }
+                        ]
+                    });
+                });
+            }
+            replyMail.push({
+                mail: mailObj
+            });
+            if (mail.removeFileIds !== undefined) {
+                mail.removeFileIds.forEach(function (removeFileId) {
+                    replyMail.push({
+                        remove_file_id: removeFileId
+                    });
+                });
+            }
+            parameters.push({
+                reply_mail: replyMail
+            });
+        });
+        return this.client.post(this.path, 'MailReplyMails', parameters).then(function (res) {
+            var mails = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(function (obj) {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    };
+    Mail.prototype.forwardMails = function (mails) {
+        var parameters = [];
+        mails.forEach(function (mail) {
+            var forwardMail = [];
+            var attr = {
+                account_id: mail.accountId,
+                mail_id: mail.mailId
+            };
+            if (mail.from !== undefined) {
+                attr.from_string = mail.from;
+            }
+            if (mail.sender !== undefined) {
+                attr.sender_string = mail.sender;
+            }
+            if (mail.to !== undefined) {
+                attr.to_string = mail.to;
+            }
+            if (mail.cc !== undefined) {
+                attr.cc_string = mail.cc;
+            }
+            if (mail.bcc !== undefined) {
+                attr.bcc_string = mail.bcc;
+            }
+            if (mail.replyTo !== undefined) {
+                attr.reply_to_string = mail.replyTo;
+            }
+            if (mail.draftId !== undefined) {
+                attr.draft_id = mail.draftId;
+            }
+            forwardMail.push({
+                _attr: attr
+            });
+            var mailAttr = {
+                key: mail.mailId,
+                version: 'dummy',
+                subject: mail.subject,
+                body: mail.body,
+                folder_key: 'dummy'
+            };
+            if (mail.htmlBody !== undefined) {
+                mailAttr.html_body = mail.htmlBody;
+            }
+            var mailObj = [];
+            mailObj.push({
+                _attr: mailAttr
+            });
+            if (mail.files !== undefined) {
+                mail.files.forEach(function (file, index) {
+                    var fileId = index;
+                    mailObj.push({
+                        file: {
+                            _attr: {
+                                id: fileId,
+                                name: file.name
+                            }
+                        }
+                    });
+                    forwardMail.push({
+                        file: [
+                            {
+                                _attr: {
+                                    id: fileId
+                                }
+                            },
+                            {
+                                content: file.content.toString('base64')
+                            }
+                        ]
+                    });
+                });
+            }
+            forwardMail.push({
+                mail: mailObj
+            });
+            if (mail.removeFileIds !== undefined) {
+                mail.removeFileIds.forEach(function (removeFileId) {
+                    forwardMail.push({
+                        remove_file_id: removeFileId
+                    });
+                });
+            }
+            parameters.push({
+                forward_mail: forwardMail
+            });
+        });
+        return this.client.post(this.path, 'MailForwardMails', parameters).then(function (res) {
+            var mails = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(function (obj) {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    };
+    Mail.prototype.saveDraftMails = function (mails) {
+        var parameters = [];
+        mails.forEach(function (mail) {
+            var draftMail = [];
+            var attr = {
+                account_id: mail.accountId,
+                operation: mail.operation
+            };
+            if (mail.from !== undefined) {
+                attr.from_string = mail.from;
+            }
+            if (mail.sender !== undefined) {
+                attr.sender_string = mail.sender;
+            }
+            if (mail.to !== undefined) {
+                attr.to_string = mail.to;
+            }
+            if (mail.cc !== undefined) {
+                attr.cc_string = mail.cc;
+            }
+            if (mail.bcc !== undefined) {
+                attr.bcc_string = mail.bcc;
+            }
+            if (mail.replyTo !== undefined) {
+                attr.reply_to_string = mail.replyTo;
+            }
+            if (mail.draftId !== undefined) {
+                attr.draft_id = mail.draftId;
+            }
+            draftMail.push({
+                _attr: attr
+            });
+            var mailAttr = {
+                key: 'dummy',
+                version: 'dummy',
+                subject: mail.subject,
+                body: mail.body,
+                folder_key: 'dummy'
+            };
+            if (mail.htmlBody !== undefined) {
+                mailAttr.html_body = mail.htmlBody;
+            }
+            var mailObj = [];
+            mailObj.push({
+                _attr: mailAttr
+            });
+            if (mail.files !== undefined) {
+                mail.files.forEach(function (file, index) {
+                    var fileId = index;
+                    mailObj.push({
+                        file: {
+                            _attr: {
+                                id: fileId,
+                                name: file.name
+                            }
+                        }
+                    });
+                    draftMail.push({
+                        file: [
+                            {
+                                _attr: {
+                                    id: fileId
+                                }
+                            },
+                            {
+                                content: file.content.toString('base64')
+                            }
+                        ]
+                    });
+                });
+            }
+            draftMail.push({
+                mail: mailObj
+            });
+            if (mail.removeFileIds !== undefined) {
+                mail.removeFileIds.forEach(function (removeFileId) {
+                    draftMail.push({
+                        remove_file_id: removeFileId
+                    });
+                });
+            }
+            parameters.push({
+                save_mail: draftMail
+            });
+        });
+        return this.client.post(this.path, 'MailSaveDraftMails', parameters).then(function (res) {
+            var mails = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(function (obj) {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    };
+    Mail.prototype.openDispositionNotifications = function (operations) {
+        var parameters = [];
+        operations.forEach(function (operation) {
+            parameters.push({
+                operation: {
+                    _attr: {
+                        account_id: operation.accountId,
+                        mail_id: operation.mailId,
+                        type: operation.type
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'MailOpenDispositionNotifications', parameters).then(function (res) {
+            var mails = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(function (obj) {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    };
+    Mail.prototype.removeMails = function (mailIds) {
+        var parameters = [];
+        mailIds.forEach(function (mailId) {
+            parameters.push({ mail_id: mailId });
+        });
+        return this.client.post(this.path, 'MailRemoveMails', parameters).then(function () {
+        });
+    };
+    Mail.prototype.searchMails = function (option) {
+        var parameters = [];
+        var attr = {
+            text: option.text
+        };
+        if (option.start !== undefined) {
+            attr.start = datetime.toString(option.start);
+        }
+        if (option.end !== undefined) {
+            attr.end = datetime.toString(option.end);
+        }
+        if (option.searchAllAccounts !== undefined) {
+            attr.search_all_accounts = option.searchAllAccounts;
+        }
+        if (option.accountId !== undefined) {
+            attr.account_id = option.accountId;
+        }
+        if (option.folderId !== undefined) {
+            attr.folder_id = option.folderId;
+        }
+        if (option.searchSubFolders !== undefined) {
+            attr.search_sub_folders = option.searchSubFolders;
+        }
+        attr.title_search = true;
+        if (option.titleSearch !== undefined) {
+            attr.title_search = option.titleSearch;
+        }
+        attr.body_search = true;
+        if (option.bodySearch !== undefined) {
+            attr.body_search = option.bodySearch;
+        }
+        attr.from_search = true;
+        if (option.fromSearch !== undefined) {
+            attr.from_search = option.fromSearch;
+        }
+        attr.to_search = true;
+        if (option.toSearch !== undefined) {
+            attr.to_search = option.toSearch;
+        }
+        attr.cc_search = true;
+        if (option.ccSearch !== undefined) {
+            attr.cc_search = option.ccSearch;
+        }
+        attr.bcc_search = true;
+        if (option.bccSearch !== undefined) {
+            attr.bcc_search = option.bccSearch;
+        }
+        parameters.push({ _attr: attr });
+        return this.client.post(this.path, 'MailSearchMails', parameters).then(function (res) {
+            var mails = [];
+            if (res.mail !== undefined) {
+                res.mail.forEach(function (obj) {
+                    mails.push(MailConverter.Mail.toObject(obj));
+                });
+            }
+            return mails;
+        });
+    };
+    Mail.prototype.addMailServers = function (servers) {
+        var parameters = [];
+        servers.forEach(function (server) {
+            var serverObj = [];
+            serverObj.push({
+                _attr: {
+                    id: 'dummy',
+                    server_code: server.serverCode,
+                    server_name: server.serverName
+                }
+            });
+            var outgoingAttr = {
+                server_name: server.outgoing.serverName,
+                port_number: server.outgoing.portNumber
+            };
+            if (server.outgoing.useSsl !== undefined) {
+                outgoingAttr.use_ssl = server.outgoing.useSsl;
+            }
+            if (server.outgoing.encryptedConnection !== undefined) {
+                outgoingAttr.encrypted_connection = server.outgoing.encryptedConnection;
+            }
+            if (server.outgoing.smtpAuth !== undefined) {
+                outgoingAttr.smtp_auth = server.outgoing.smtpAuth;
+            }
+            if (server.outgoing.accountForSend !== undefined) {
+                outgoingAttr.account_for_send = server.outgoing.accountForSend;
+            }
+            if (server.outgoing.popBeforeSmtp !== undefined) {
+                outgoingAttr.pop_before_smtp = server.outgoing.popBeforeSmtp;
+            }
+            if (server.outgoing.popBeforeSmtpWaitTime !== undefined) {
+                outgoingAttr.pop_before_smtp_wait_time = server.outgoing.popBeforeSmtpWaitTime;
+            }
+            if (server.outgoing.timeout !== undefined) {
+                outgoingAttr.timeout = server.outgoing.timeout;
+            }
+            serverObj.push({
+                outgoing: {
+                    _attr: outgoingAttr
+                }
+            });
+            var incomingAttr = {
+                server_name: server.incoming.serverName,
+                receive_protocol: server.incoming.receiveProtocol,
+                port_number: server.incoming.portNumber
+            };
+            if (server.incoming.useSsl !== undefined) {
+                incomingAttr.use_ssl = server.incoming.useSsl;
+            }
+            if (server.incoming.apopAuthForPop3 !== undefined) {
+                incomingAttr.apop_auth_for_pop3 = server.incoming.apopAuthForPop3;
+            }
+            if (server.incoming.timeout !== undefined) {
+                incomingAttr.timeout = server.incoming.timeout;
+            }
+            serverObj.push({
+                incoming: {
+                    _attr: incomingAttr
+                }
+            });
+            parameters.push({
+                server: serverObj
+            });
+        });
+        return this.client.post(this.path, 'MailAddMailServers', parameters).then(function (res) {
+            var servers = [];
+            res.server.forEach(function (obj) {
+                servers.push(MailConverter.MailServerInfo.toObject(obj));
+            });
+            return servers;
+        });
+    };
+    Mail.prototype.modifyMailServers = function (servers) {
+        var parameters = [];
+        servers.forEach(function (server) {
+            var serverObj = [];
+            serverObj.push({
+                _attr: {
+                    id: server.id,
+                    server_code: server.serverCode,
+                    server_name: server.serverName
+                }
+            });
+            var outgoingAttr = {
+                server_name: server.outgoing.serverName,
+                port_number: server.outgoing.portNumber
+            };
+            if (server.outgoing.useSsl !== undefined) {
+                outgoingAttr.use_ssl = server.outgoing.useSsl;
+            }
+            if (server.outgoing.encryptedConnection !== undefined) {
+                outgoingAttr.encrypted_connection = server.outgoing.encryptedConnection;
+            }
+            if (server.outgoing.smtpAuth !== undefined) {
+                outgoingAttr.smtp_auth = server.outgoing.smtpAuth;
+            }
+            if (server.outgoing.accountForSend !== undefined) {
+                outgoingAttr.account_for_send = server.outgoing.accountForSend;
+            }
+            if (server.outgoing.popBeforeSmtp !== undefined) {
+                outgoingAttr.pop_before_smtp = server.outgoing.popBeforeSmtp;
+            }
+            if (server.outgoing.popBeforeSmtpWaitTime !== undefined) {
+                outgoingAttr.pop_before_smtp_wait_time = server.outgoing.popBeforeSmtpWaitTime;
+            }
+            if (server.outgoing.timeout !== undefined) {
+                outgoingAttr.timeout = server.outgoing.timeout;
+            }
+            serverObj.push({
+                outgoing: {
+                    _attr: outgoingAttr
+                }
+            });
+            var incomingAttr = {
+                server_name: server.incoming.serverName,
+                receive_protocol: server.incoming.receiveProtocol,
+                port_number: server.incoming.portNumber
+            };
+            if (server.incoming.useSsl !== undefined) {
+                incomingAttr.use_ssl = server.incoming.useSsl;
+            }
+            if (server.incoming.apopAuthForPop3 !== undefined) {
+                incomingAttr.apop_auth_for_pop3 = server.incoming.apopAuthForPop3;
+            }
+            if (server.incoming.timeout !== undefined) {
+                incomingAttr.timeout = server.incoming.timeout;
+            }
+            serverObj.push({
+                incoming: {
+                    _attr: incomingAttr
+                }
+            });
+            parameters.push({
+                server: serverObj
+            });
+        });
+        return this.client.post(this.path, 'MailModifyMailServers', parameters).then(function (res) {
+            var servers = [];
+            res.server.forEach(function (obj) {
+                servers.push(MailConverter.MailServerInfo.toObject(obj));
+            });
+            return servers;
+        });
+    };
+    Mail.prototype.removeMailServers = function (serverIds) {
+        var parameters = [];
+        serverIds.forEach(function (serverId) {
+            parameters.push({ server_id: serverId });
+        });
+        return this.client.post(this.path, 'MailRemoveMailServers', parameters).then(function () {
+        });
+    };
+    return Mail;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Mail;
+
+},{"../converter/base":271,"../converter/mail":274,"../util/datetime":287,"./client":258}],261:[function(require,module,exports){
+"use strict";
+var client_1 = require("./client");
+var BaseConverter = require("../converter/base");
+var MessageConverter = require("../converter/message");
+var Util = require("./../util");
+var datetime = require("../util/datetime");
+var Message = (function () {
+    function Message(setting) {
+        this.client = new client_1.default(setting);
+        this.path = setting.needCsp ? '/cbpapi/message/api.csp' : '/cbpapi/message/api';
+    }
+    Message.prototype.getThreadVersions = function (threadItems, folderIds, start, end) {
+        var parameters = [];
+        threadItems.forEach(function (threadItem) {
+            parameters.push({
+                'thread_item': {
+                    '_attr': {
+                        id: threadItem.id,
+                        version: threadItem.version
+                    }
+                }
+            });
+        });
+        folderIds.forEach(function (folderId) {
+            parameters.push({ 'folder_id': folderId });
+        });
+        var attr = { 'start': datetime.toString(start) };
+        if (end instanceof Date) {
+            attr['end'] = datetime.toString(end);
+        }
+        parameters.push({ '_attr': attr });
+        return this.client.post(this.path, 'MessageGetThreadVersions', parameters).then(function (res) {
+            var threadVersions = [];
+            if (Array.isArray(res['thread_item'])) {
+                res['thread_item'].forEach(function (obj) {
+                    threadVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return threadVersions;
+        });
+    };
+    Message.prototype.getThreadsById = function (threadIds) {
+        var parameters = [];
+        threadIds.forEach(function (threadId) {
+            parameters.push({ 'thread_id': threadId });
+        });
+        return this.client.post(this.path, 'MessageGetThreadsById', parameters).then(function (res) {
+            var threads = [];
+            if (Array.isArray(res.thread)) {
+                res.thread.forEach(function (obj) {
+                    threads.push(MessageConverter.Thread.toObject(obj));
+                });
+            }
+            return threads;
+        });
+    };
+    Message.prototype.searchThreads = function (option) {
+        var attr = {
+            text: option.text,
+            start: datetime.toString(option.start),
+            title_search: option.titleSearch.toString(),
+            body_search: option.bodySearch.toString(),
+            from_search: option.fromSearch.toString(),
+            addressee_search: option.addresseeSearch.toString(),
+            follow_search: option.followSearch.toString()
+        };
+        if (option.end instanceof Date) {
+            attr.end = datetime.toString(option.end);
+        }
+        if (option.hasOwnProperty('folderId')) {
+            attr.folder_id = option.folderId;
+        }
+        if (option.hasOwnProperty('searchSubFolders')) {
+            attr.search_sub_folders = option.searchSubFolders;
+        }
+        var parameters = [{ '_attr': attr }];
+        return this.client.post(this.path, 'MessageSearchThreads', parameters).then(function (res) {
+            var threads = [];
+            if (Array.isArray(res.thread)) {
+                res.thread.forEach(function (obj) {
+                    threads.push(MessageConverter.Thread.toObject(obj));
+                });
+            }
+            return threads;
+        });
+    };
+    Message.prototype.confirmThreads = function (threadIds) {
+        var parameters = [];
+        threadIds.forEach(function (threadId) {
+            parameters.push({ 'thread_id': threadId });
+        });
+        return this.client.post(this.path, 'MessageConfirmThreads', parameters).then(function (res) {
+            var threads = [];
+            if (Array.isArray(res.thread)) {
+                res.thread.forEach(function (obj) {
+                    threads.push(MessageConverter.Thread.toObject(obj));
+                });
+            }
+            return threads;
+        });
+    };
+    Message.prototype.downloadFile = function (fileId) {
+        var parameters = {
+            '_attr': {
+                file_id: fileId
+            }
+        };
+        return this.client.post(this.path, 'MessageFileDownload', parameters).then(function (res) {
+            return BaseConverter.File.toBuffer(res['file'][0]);
+        });
+    };
+    Message.prototype.createThreads = function (threads) {
+        var parameters = [];
+        threads.forEach(function (thread) {
+            var createThread = [];
+            var threadObj = [];
+            var attrObj = {
+                '_attr': {
+                    'id': 'dummy',
+                    'version': 'dummy',
+                    'subject': thread.subject,
+                    'confirm': thread.confirm.toString()
+                }
+            };
+            if (thread.hasOwnProperty('isDraft')) {
+                attrObj['is_draft'] = thread.isDraft.toString();
+            }
+            threadObj.push(attrObj);
+            thread.addressees.forEach(function (addressee) {
+                var addresseeAttrObj = {
+                    user_id: addressee,
+                    name: 'dummy',
+                    deleted: 'false'
+                };
+                threadObj.push({
+                    'addressee': [{
+                            '_attr': addresseeAttrObj
+                        }]
+                });
+            });
+            var contentAttrObj = {
+                'body': thread.content.body
+            };
+            if (thread.content.hasOwnProperty('htmlBody')) {
+                contentAttrObj['html_body'] = thread.content.htmlBody;
+            }
+            threadObj.push({
+                'content': [{
+                        '_attr': contentAttrObj
+                    }]
+            });
+            if (Array.isArray(thread.files)) {
+                thread.files.forEach(function (file) {
+                    var fileObj = [{ 'content': file.content.toString('base64') }];
+                    threadObj.push({ 'file': fileObj });
+                });
+            }
+            createThread.push({ 'thread': threadObj });
+            parameters.push({ 'create_thread': createThread });
+        });
+        return this.client.post(this.path, 'MessageCreateThreads', parameters).then(function (res) {
+            var threads = [];
+            if (Array.isArray(res.thread)) {
+                res.thread.forEach(function (obj) {
+                    threads.push(MessageConverter.Thread.toObject(obj));
+                });
+            }
+            return threads;
+        });
+    };
+    Message.prototype.modifyThreads = function (threads) {
+        var parameters = [];
+        threads.forEach(function (thread) {
+            var modifyThread = [];
+            var threadObj = [];
+            var attrObj = {
+                '_attr': {
+                    'id': thread.id,
+                    'version': 'dummy',
+                    'subject': thread.subject,
+                    'confirm': 'false'
+                }
+            };
+            if (thread.hasOwnProperty('isDraft')) {
+                attrObj['is_draft'] = thread.isDraft.toString();
+            }
+            threadObj.push(attrObj);
+            thread.addressees.forEach(function (addressee) {
+                var addresseeAttrObj = {
+                    user_id: addressee,
+                    name: 'dummy',
+                    deleted: 'false'
+                };
+                threadObj.push({
+                    'addressee': [{
+                            '_attr': addresseeAttrObj
+                        }]
+                });
+            });
+            var contentAttrObj = {
+                'body': thread.content.body
+            };
+            if (thread.content.hasOwnProperty('htmlBody')) {
+                contentAttrObj['html_body'] = thread.content.htmlBody;
+            }
+            threadObj.push({
+                'content': [{
+                        '_attr': contentAttrObj
+                    }]
+            });
+            if (Array.isArray(thread.files)) {
+                thread.files.forEach(function (file) {
+                    var fileObj = [
+                        { 'content': file.content.toString('base64') },
+                        { '_attr': { 'id': file.id } }
+                    ];
+                    threadObj.push({ 'file': fileObj });
+                });
+            }
+            modifyThread.push({ 'thread': threadObj });
+            parameters.push({ 'modify_thread': modifyThread });
+        });
+        return this.client.post(this.path, 'MessageModifyThreads', parameters).then(function (res) {
+            var threads = [];
+            if (Array.isArray(res.thread)) {
+                res.thread.forEach(function (obj) {
+                    threads.push(MessageConverter.Thread.toObject(obj));
+                });
+            }
+            return threads;
+        });
+    };
+    Message.prototype.saveDraftThreads = function (threads) {
+        var parameters = [];
+        threads.forEach(function (thread) {
+            var draftThread = [];
+            var threadObj = [];
+            var attrObj = {
+                '_attr': {
+                    'id': 'dummy',
+                    'version': 'dummy',
+                    'subject': thread.subject,
+                    'confirm': thread.confirm.toString()
+                }
+            };
+            threadObj.push(attrObj);
+            thread.addressees.forEach(function (addressee) {
+                var addresseeAttrObj = {
+                    user_id: addressee,
+                    name: 'dummy',
+                    deleted: 'false'
+                };
+                threadObj.push({
+                    'addressee': [{
+                            '_attr': addresseeAttrObj
+                        }]
+                });
+            });
+            var contentAttrObj = {
+                'body': thread.content.body
+            };
+            if (thread.content.hasOwnProperty('htmlBody')) {
+                contentAttrObj['html_body'] = thread.content.htmlBody;
+            }
+            threadObj.push({
+                'content': [{
+                        '_attr': contentAttrObj
+                    }]
+            });
+            if (Array.isArray(thread.files)) {
+                thread.files.forEach(function (file) {
+                    var fileObj = [{ 'content': file.content.toString('base64') }];
+                    threadObj.push({ 'file': fileObj });
+                });
+            }
+            draftThread.push({ 'thread': threadObj });
+            parameters.push({ 'save_draft_thread': draftThread });
+        });
+        return this.client.post(this.path, 'MessageSaveDraftThreads', parameters).then(function (res) {
+            var threads = [];
+            if (Array.isArray(res.thread)) {
+                res.thread.forEach(function (obj) {
+                    threads.push(MessageConverter.Thread.toObject(obj));
+                });
+            }
+            return threads;
+        });
+    };
+    Message.prototype.removeThreads = function (threads, deleteAllInbox) {
+        var parameters = [];
+        threads.forEach(function (thread) {
+            parameters.push({
+                'param': {
+                    '_attr': {
+                        'folder_id': thread.folderId,
+                        'thread_id': thread.threadId
+                    }
+                }
+            });
+        });
+        if (typeof (deleteAllInbox) === 'boolean') {
+            parameters.push({
+                '_attr': { 'delete_all_inbox': deleteAllInbox.toString() }
+            });
+        }
+        return this.client.post(this.path, 'MessageRemoveThreads', parameters).then(function () {
+        });
+    };
+    Message.prototype.getFollows = function (threadId, offset, limit) {
+        var parameters = [{
+                '_attr': {
+                    'thread_id': threadId,
+                    'offset': offset,
+                    'limit': limit
+                }
+            }];
+        return this.client.post(this.path, 'MessageGetFollows', parameters).then(function (res) {
+            var follows = [];
+            if (Array.isArray(res.follow)) {
+                res.follow.forEach(function (obj) {
+                    follows.push(MessageConverter.Follow.toObject(obj));
+                });
+            }
+            return follows;
+        });
+    };
+    Message.prototype.addFollows = function (follows) {
+        var parameters = [];
+        follows.forEach(function (follow) {
+            var addFollow = [{
+                    '_attr': {
+                        'thread_id': follow.threadId
+                    }
+                }];
+            var followAttr = {
+                'id': 'dummy',
+                'number': 'dummy',
+                'text': follow.text
+            };
+            if (follow.hasOwnProperty('htmlText')) {
+                followAttr['html_text'] = follow.htmlText;
+            }
+            var followObj = [{
+                    '_attr': followAttr
+                }];
+            if (Array.isArray(follow.files)) {
+                follow.files.forEach(function (file, i) {
+                    var id = i + 1;
+                    followObj.append({
+                        'file': {
+                            '_attr': {
+                                'id': id,
+                                'name': file.name
+                            }
+                        }
+                    });
+                    addFollow.append({
+                        'file': [
+                            {
+                                '_attr': {
+                                    'id': id
+                                }
+                            },
+                            {
+                                'content': file.content.toString('base64')
+                            }
+                        ]
+                    });
+                });
+            }
+            addFollow.push({ 'follow': followObj });
+            parameters.push({
+                'add_follow': addFollow
+            });
+        });
+        return this.client.post(this.path, 'MessageAddFollows', parameters).then(function (res) {
+            var threads = [];
+            if (Array.isArray(res.thread)) {
+                res.thread.forEach(function (obj) {
+                    threads.push(MessageConverter.Thread.toObject(obj));
+                });
+            }
+            return threads;
+        });
+    };
+    Message.prototype.removeFollows = function (followIds) {
+        var parameters = [];
+        followIds.forEach(function (followId) {
+            parameters.push({ 'follow_id': followId });
+        });
+        return this.client.post(this.path, 'MessageRemoveFollows', parameters).then(function () {
+        });
+    };
+    Message.prototype.getFolderVersions = function (folderItems) {
+        var parameters = [];
+        folderItems.forEach(function (folderItem) {
+            parameters.push({
+                'folder_item': {
+                    '_attr': {
+                        id: folderItem.id,
+                        version: folderItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'MessageGetFolderVersions', parameters).then(function (res) {
+            var folderVersions = [];
+            if (Array.isArray(res['folder_item'])) {
+                res['folder_item'].forEach(function (obj) {
+                    folderVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return folderVersions;
+        });
+    };
+    Message.prototype.getFoldersById = function (folderIds) {
+        var parameters = [];
+        folderIds.forEach(function (folderId) {
+            parameters.push({ 'folder_id': folderId });
+        });
+        return this.client.post(this.path, 'MessageGetFoldersById', parameters).then(function (res) {
+            var folders = [];
+            if (Array.isArray(res.folder)) {
+                res.folder.forEach(function (obj) {
+                    folders.push(MessageConverter.Folder.toObject(obj));
+                });
+            }
+            return folders;
+        });
+    };
+    Message.prototype.getProfiles = function (includeSystemProfile) {
+        var parameters = [];
+        if (typeof includeSystemProfile === 'boolean') {
+            parameters.push({ '_attr': { 'include_system_profile': includeSystemProfile } });
+        }
+        return this.client.post(this.path, 'MessageGetProfiles', parameters).then(function (res) {
+            var personalAttr = res.personal_profile[0]['$'];
+            var profile = {
+                useTrash: Util.toBoolean(personalAttr['use_trash']),
+                trashDuration: Number(personalAttr['trash_duration'])
+            };
+            if (res.hasOwnProperty('system_profile')) {
+                var systemAttr = res.system_profile[0]['$'];
+                profile.checkSendConfirm = Util.toBoolean(systemAttr['check_send_confirm']);
+                profile.confirmAction = systemAttr['confirm_action'];
+            }
+            return profile;
+        });
+    };
+    Message.prototype.setProfiles = function (useTrash, trashDuration) {
+        var parameters = [];
+        parameters.push({
+            'personal_profile': {
+                '_attr': {
+                    'use_trash': useTrash,
+                    'trash_duration': trashDuration
+                }
+            }
+        });
+        return this.client.post(this.path, 'MessageSetProfiles', parameters).then(function (res) {
+            var personalAttr = res.personal_profile[0]['$'];
+            var profile = {
+                useTrash: Util.toBoolean(personalAttr['use_trash']),
+                trashDuration: Number(personalAttr['trash_duration'])
+            };
+            return profile;
+        });
+    };
+    return Message;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Message;
+
+},{"../converter/base":271,"../converter/message":275,"../util/datetime":287,"./../util":285,"./client":258}],262:[function(require,module,exports){
+"use strict";
+var client_1 = require("./client");
+var NotificationConverter = require("../converter/notification");
+var datetime = require("../util/datetime");
+var Mail = (function () {
+    function Mail(setting) {
+        this.client = new client_1.default(setting);
+        this.path = setting.needCsp ? '/cbpapi/notification/api.csp' : '/cbpapi/notification/api';
+    }
+    Mail.prototype.getNotificationVersions = function (notificationItems, start, end, moduleId) {
+        var parameters = [];
+        notificationItems.forEach(function (notificationItem) {
+            parameters.push({
+                notification_item: [
+                    {
+                        notification_id: {
+                            _attr: {
+                                module_id: notificationItem.notificationId.moduleId,
+                                item: notificationItem.notificationId.item
+                            }
+                        }
+                    },
+                    {
+                        _attr: {
+                            version: notificationItem.version
+                        }
+                    }
+                ]
+            });
+        });
+        var attr = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        if (moduleId !== undefined) {
+            attr.module_id = moduleId;
+        }
+        parameters.push({ _attr: attr });
+        return this.client.post(this.path, 'NotificationGetNotificationVersions', parameters).then(function (res) {
+            var versions = [];
+            if (res.notification_item !== undefined) {
+                res.notification_item.forEach(function (obj) {
+                    versions.push(NotificationConverter.NotificationItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
+        });
+    };
+    Mail.prototype.getNotificationsById = function (notificationIds) {
+        var parameters = [];
+        notificationIds.forEach(function (notificationId) {
+            parameters.push({
+                notification_id: {
+                    _attr: {
+                        module_id: notificationId.moduleId,
+                        item: notificationId.item
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'NotificationGetNotificationsById', parameters).then(function (res) {
+            var notifications = [];
+            if (res.notification !== undefined) {
+                res.notification.forEach(function (obj) {
+                    notifications.push(NotificationConverter.Notification.toObject(obj));
+                });
+            }
+            return notifications;
+        });
+    };
+    Mail.prototype.getNotificationHistoryVersions = function (historyItems, start, end, moduleId) {
+        var parameters = [];
+        historyItems.forEach(function (historyItem) {
+            parameters.push({
+                notification_history_item: [
+                    {
+                        notification_id: {
+                            _attr: {
+                                module_id: historyItem.notificationId.moduleId,
+                                item: historyItem.notificationId.item
+                            }
+                        }
+                    },
+                    {
+                        _attr: {
+                            version: historyItem.version
+                        }
+                    }
+                ]
+            });
+        });
+        var attr = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        if (moduleId !== undefined) {
+            attr.module_id = moduleId;
+        }
+        parameters.push({ _attr: attr });
+        return this.client.post(this.path, 'NotificationGetNotificationHistoryVersions', parameters).then(function (res) {
+            var versions = [];
+            if (res.notification_history_item !== undefined) {
+                res.notification_history_item.forEach(function (obj) {
+                    versions.push(NotificationConverter.NotificationItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
+        });
+    };
+    Mail.prototype.getNotificationHistoriesById = function (historyIds) {
+        var parameters = [];
+        historyIds.forEach(function (historyId) {
+            parameters.push({
+                notification_history_id: {
+                    _attr: {
+                        module_id: historyId.moduleId,
+                        item: historyId.item
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'NotificationGetNotificationHistoriesById', parameters).then(function (res) {
+            var notifications = [];
+            if (res.notification_history !== undefined) {
+                res.notification_history.forEach(function (obj) {
+                    notifications.push(NotificationConverter.Notification.toObject(obj));
+                });
+            }
+            return notifications;
+        });
+    };
+    Mail.prototype.confirmNotifications = function (notificationIds) {
+        var parameters = [];
+        notificationIds.forEach(function (notificationId) {
+            parameters.push({
+                notification_id: {
+                    _attr: {
+                        module_id: notificationId.moduleId,
+                        item: notificationId.item
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'NotificationConfirmNotification', parameters).then(function (res) {
+            var notifications = [];
+            if (res.notification !== undefined) {
+                res.notification.forEach(function (obj) {
+                    notifications.push(NotificationConverter.Notification.toObject(obj));
+                });
+            }
+            return notifications;
+        });
+    };
+    Mail.prototype.getProfiles = function () {
+        return this.client.post(this.path, 'NotificationGetProfiles', []).then(function (res) {
+            return NotificationConverter.PersonalProfile.toObject(res.personal_profile[0]);
+        });
+    };
+    Mail.prototype.setProfiles = function (profile) {
+        var attr = {};
+        if (profile.saveNotificationDuration !== undefined) {
+            attr.save_notification_duration = profile.saveNotificationDuration;
+        }
+        if (profile.saveNotificationHistoryDuration !== undefined) {
+            attr.save_notification_history_duration = profile.saveNotificationHistoryDuration;
+        }
+        var parameters = [{
+                personal_profile: {
+                    _attr: attr
+                }
+            }];
+        return this.client.post(this.path, 'NotificationSetProfiles', parameters).then(function (res) {
+            return NotificationConverter.PersonalProfile.toObject(res.personal_profile[0]);
+        });
+    };
+    return Mail;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Mail;
+
+},{"../converter/notification":276,"../util/datetime":287,"./client":258}],263:[function(require,module,exports){
+"use strict";
+var client_1 = require("./client");
+var BaseConverter = require("../converter/base");
+var ReportConverter = require("../converter/report");
+var datetime = require("../util/datetime");
+var Report = (function () {
+    function Report(setting) {
+        this.client = new client_1.default(setting);
+        this.path = setting.needCsp ? '/cbpapi/report/api.csp' : '/cbpapi/report/api';
+    }
+    Report.prototype.getReportVersions = function (start, end, items, target) {
+        var parameters = [];
+        var attr = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        if (target !== undefined) {
+            attr.target = target;
+        }
+        parameters.push({
+            _attr: attr
+        });
+        if (items !== undefined) {
+            items.forEach(function (item) {
+                parameters.push({
+                    report_item: {
+                        id: item.id,
+                        version: item.version
+                    }
+                });
+            });
+        }
+        return this.client.post(this.path, 'ReportGetReportVersions', parameters).then(function (res) {
+            var items = [];
+            if (res.thread_item !== undefined) {
+                res.thread_item.forEach(function (obj) {
+                    items.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return items;
+        });
+    };
+    Report.prototype.getReportById = function (reportIds) {
+        var parameters = [];
+        reportIds.forEach(function (reportId) {
+            parameters.push({
+                report_id: reportId
+            });
+        });
+        return this.client.post(this.path, 'ReportGetReportById', parameters, true).then(function (res) {
+            var reports = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(function (obj) {
+                    reports.push(ReportConverter.Report.toObject(obj));
+                });
+            }
+            return reports;
+        });
+    };
+    Report.prototype.removeReports = function (reportIds) {
+        var parameters = [];
+        reportIds.forEach(function (reportId) {
+            parameters.push({
+                report_id: reportId
+            });
+        });
+        return this.client.post(this.path, 'ReportRemoveReports', parameters).then(function () {
+        });
+    };
+    Report.prototype.searchReports = function (target, keyword) {
+        var parameters = [{
+                _attr: {
+                    target: target,
+                    keyword: keyword
+                }
+            }];
+        return this.client.post(this.path, 'ReportSearchReports', parameters, true).then(function (res) {
+            var reports = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(function (obj) {
+                    reports.push(ReportConverter.Report.toObject(obj));
+                });
+            }
+            return reports;
+        });
+    };
+    Report.prototype.downloadFile = function (fileId) {
+        var parameters = [{
+                _attr: {
+                    file_id: fileId
+                }
+            }];
+        return this.client.post(this.path, 'ReportFileDownload', parameters).then(function (res) {
+            return BaseConverter.File.toBuffer(res.file[0]);
+        });
+    };
+    Report.prototype.getFollows = function (reportId, limit, offset) {
+        var parameters = [{
+                _attr: {
+                    report_id: reportId,
+                    limit: limit,
+                    offset: offset
+                }
+            }];
+        return this.client.post(this.path, 'ReportGetFollows', parameters).then(function (res) {
+            var follows = [];
+            if (res.follow !== undefined) {
+                res.follow.forEach(function (obj) {
+                    follows.push(ReportConverter.Follow.toObject(obj));
+                });
+            }
+            return follows;
+        });
+    };
+    Report.prototype.addFollows = function (follows) {
+        var parameters = [];
+        follows.forEach(function (follow) {
+            var followAttr = {
+                id: 'dummy',
+                number: 'dummy',
+                text: follow.text
+            };
+            if (follow.htmlText !== undefined) {
+                followAttr.html_text = follow.htmlText;
+            }
+            var followObj = [
+                {
+                    _attr: followAttr
+                }
+            ];
+            var addFollow = [{
+                    _attr: {
+                        report_id: follow.reportId
+                    }
+                }];
+            addFollow.push({
+                follow: followObj
+            });
+            if (follow.files !== undefined) {
+                follow.files.forEach(function (file, index) {
+                    var fileId = index + 1;
+                    followObj.push({
+                        file: [{
+                                _attr: {
+                                    name: file.name,
+                                    file_id: fileId
+                                }
+                            }]
+                    });
+                    addFollow.push({
+                        file: [
+                            {
+                                _attr: {
+                                    id: fileId
+                                },
+                            },
+                            file.content.toString('base64')
+                        ]
+                    });
+                });
+            }
+            parameters.push({
+                add_follow: addFollow
+            });
+        });
+        return this.client.post(this.path, 'ReportAddFollows', parameters, true).then(function (res) {
+            var reports = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(function (obj) {
+                    reports.push(ReportConverter.Report.toObject(obj));
+                });
+            }
+            return reports;
+        });
+    };
+    Report.prototype.removeFollows = function (followIds) {
+        var parameters = [];
+        followIds.forEach(function (followId) {
+            parameters.push({
+                follow_id: followId
+            });
+        });
+        return this.client.post(this.path, 'ReportRemoveFollows', parameters).then(function () {
+        });
+    };
+    return Report;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Report;
+
+},{"../converter/base":271,"../converter/report":277,"../util/datetime":287,"./client":258}],264:[function(require,module,exports){
+"use strict";
+var client_1 = require("./client");
+var BaseConverter = require("../converter/base");
+var ScheduleConverter = require("../converter/schedule");
+var datetime = require("../util/datetime");
+var date = require("../util/date");
+var time = require("../util/time");
+var Schedule = (function () {
+    function Schedule(setting) {
+        this.client = new client_1.default(setting);
+        this.path = setting.needCsp ? '/cbpapi/schedule/api.csp' : '/cbpapi/schedule/api';
+    }
+    Schedule.prototype.searchEvents = function (options) {
+        var parameters = [];
+        var attrs = {
+            'text': options.text,
+            'title_search': true,
+            'customer_search': true,
+            'memo_search': true,
+            'follow_search': true,
+            'all_repeat_events': false
+        };
+        if (options.start !== undefined) {
+            attrs['start'] = datetime.toString(options.start);
+        }
+        if (options.end !== undefined) {
+            attrs['end'] = datetime.toString(options.end);
+        }
+        if (options.startForDaily !== undefined) {
+            attrs['start_for_daily'] = date.toString(options.startForDaily);
+        }
+        if (options.endForDaily !== undefined) {
+            attrs['end_for_daily'] = date.toString(options.endForDaily);
+        }
+        if (options.titleSearch !== undefined) {
+            attrs['title_search'] = options.titleSearch;
+        }
+        if (options.customerSearch !== undefined) {
+            attrs['customer_search'] = options.customerSearch;
+        }
+        if (options.memoSearch !== undefined) {
+            attrs['memo_search'] = options.memoSearch;
+        }
+        if (options.followSearch !== undefined) {
+            attrs['follow_search'] = options.followSearch;
+        }
+        if (options.allRepeatEvents !== undefined) {
+            attrs['all_repeat_events'] = options.allRepeatEvents;
+        }
+        parameters.push({ '_attr': attrs });
+        return this.client.post(this.path, 'ScheduleSearchEvents', parameters).then(function (res) {
+            var events = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(function (obj) {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    };
+    Schedule.prototype.searchFreeTimes = function (candidates, userIds, orgIds, facilityIds, searchTimeMinutes, needAllFacilities) {
+        var parameters = [];
+        candidates.forEach(function (candidate) {
+            parameters.push({
+                'candidate': [{
+                        '_attr': {
+                            'start': datetime.toString(candidate.start),
+                            'end': datetime.toString(candidate.end)
+                        }
+                    }]
+            });
+        });
+        userIds.forEach(function (userId) {
+            parameters.push({
+                'member': [{
+                        'user': [{
+                                '_attr': { 'id': userId }
+                            }]
+                    }]
+            });
+        });
+        orgIds.forEach(function (orgId) {
+            parameters.push({
+                'member': [{
+                        'organization': [{
+                                '_attr': { 'id': orgId }
+                            }]
+                    }]
+            });
+        });
+        facilityIds.forEach(function (facilityId) {
+            parameters.push({
+                'member': [{
+                        'facility': [{
+                                '_attr': { 'id': facilityId }
+                            }]
+                    }]
+            });
+        });
+        var searchTime = new Date();
+        searchTime.setHours(0);
+        searchTime.setMinutes(searchTimeMinutes);
+        searchTime.setSeconds(0);
+        var searchCondition = needAllFacilities ? 'and' : 'or';
+        parameters.push({
+            '_attr': {
+                search_time: time.toString(new Date(searchTime)),
+                search_condition: searchCondition
+            }
+        });
+        return this.client.post(this.path, 'ScheduleSearchFreeTimes', parameters).then(function (res) {
+            var freeTimes = [];
+            if (res.candidate !== undefined) {
+                res.candidate.forEach(function (obj) {
+                    freeTimes.push(ScheduleConverter.FreeTime.toObject(obj));
+                });
+            }
+            return freeTimes;
+        });
+    };
+    Schedule.prototype.getFacilityVersions = function (facilityItems) {
+        var parameters = [];
+        facilityItems.forEach(function (facilityItem) {
+            parameters.push({
+                'facility_item': {
+                    '_attr': {
+                        id: facilityItem.id,
+                        version: facilityItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleGetFacilityVersions', parameters).then(function (res) {
+            var facilityVersions = [];
+            if (res.facility_item !== undefined) {
+                res.facility_item.forEach(function (obj) {
+                    facilityVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return facilityVersions;
+        });
+    };
+    Schedule.prototype.getFacilitiesById = function (facilityIds) {
+        var parameters = [];
+        facilityIds.forEach(function (facilityId) {
+            parameters.push({ 'facility_id': facilityId });
+        });
+        return this.client.post(this.path, 'ScheduleGetFacilitiesById', parameters).then(function (res) {
+            var facilities = [];
+            if (res.facility !== undefined) {
+                res.facility.forEach(function (obj) {
+                    facilities.push(ScheduleConverter.Facility.toObject(obj));
+                });
+            }
+            return facilities;
+        });
+    };
+    Schedule.prototype.getFacilityGroupsVersions = function (facilityGroupItems) {
+        var parameters = [];
+        facilityGroupItems.forEach(function (facilityGroupItem) {
+            parameters.push({
+                'facility_group_item': {
+                    '_attr': {
+                        id: facilityGroupItem.id,
+                        version: facilityGroupItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleGetFacilityGroupsVersions', parameters).then(function (res) {
+            var facilityGroupsVersions = [];
+            if (res.facility_group_item !== undefined) {
+                res.facility_group_item.forEach(function (obj) {
+                    facilityGroupsVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return facilityGroupsVersions;
+        });
+    };
+    Schedule.prototype.getFacilityGroupsById = function (facilityGroupIds) {
+        var parameters = [];
+        facilityGroupIds.forEach(function (facilityGroupId) {
+            parameters.push({ 'facility_group_id': facilityGroupId });
+        });
+        return this.client.post(this.path, 'ScheduleGetFacilityGroupsById', parameters).then(function (res) {
+            var facilityGroups = [];
+            if (res.facility_group !== undefined) {
+                res.facility_group.forEach(function (obj) {
+                    facilityGroups.push(ScheduleConverter.FacilityGroup.toObject(obj));
+                });
+            }
+            return facilityGroups;
+        });
+    };
+    Schedule.prototype.getFacilityProfileVersions = function (facilityProfileItems) {
+        var parameters = [];
+        facilityProfileItems.forEach(function (facilityProfileItem) {
+            parameters.push({
+                'facility_profile_item': {
+                    '_attr': {
+                        id: facilityProfileItem.id,
+                        version: facilityProfileItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleGetFacilityProfileVersions', parameters).then(function (res) {
+            var facilityProfileVersions = [];
+            if (res.facility_profile_item !== undefined) {
+                res.facility_profile_item.forEach(function (obj) {
+                    facilityProfileVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return facilityProfileVersions;
+        });
+    };
+    Schedule.prototype.getFacilityProfilesById = function (facilityIds) {
+        var parameters = [];
+        facilityIds.forEach(function (facilityId) {
+            parameters.push({
+                'facility_id': facilityId
+            });
+        });
+        return this.client.post(this.path, 'ScheduleGetFacilityProfilesById', parameters).then(function (res) {
+            var facilityProfiles = [];
+            if (res.facility_profile !== undefined) {
+                res.facility_profile.forEach(function (obj) {
+                    facilityProfiles.push(ScheduleConverter.FacilityProfile.toObject(obj));
+                });
+            }
+            return facilityProfiles;
+        });
+    };
+    Schedule.prototype.getProfiles = function (includeSystemProfile) {
+        var parameters = [];
+        if (includeSystemProfile !== undefined) {
+            parameters.push({
+                '_attr': {
+                    'include_system_profile': includeSystemProfile.toString()
+                }
+            });
+        }
+        return this.client.post(this.path, 'ScheduleGetProfiles', parameters).then(function (res) {
+            var profiles = {
+                personalProfileType: ScheduleConverter.PersonalProfile.toObject(res.personal_profile[0])
+            };
+            if (res.system_profile !== undefined) {
+                profiles.systemProfileType = ScheduleConverter.SystemProfile.toObject(res.system_profile[0]);
+            }
+            return profiles;
+        });
+    };
+    Schedule.prototype.setProfiles = function (profile) {
+        var attrs = {};
+        if (profile.startTimeInDayView !== undefined) {
+            attrs['start_time_in_dayview'] = profile.startTimeInDayView;
+        }
+        if (profile.endTimeInDayView !== undefined) {
+            attrs['end_time_in_dayview'] = profile.endTimeInDayView;
+        }
+        if (profile.showSunday !== undefined) {
+            attrs['show_sunday'] = profile.showSunday;
+        }
+        if (profile.showEndTime !== undefined) {
+            attrs['show_end_time'] = profile.showEndTime;
+        }
+        if (profile.planMenu !== undefined) {
+            attrs['plan_menu'] = profile.planMenu;
+        }
+        if (profile.notifyMail !== undefined) {
+            attrs['notify_mail'] = profile.notifyMail;
+        }
+        if (profile.isUserAddressMail !== undefined) {
+            attrs['is_user_address_mail'] = profile.isUserAddressMail;
+        }
+        if (profile.notifyMailAddress !== undefined) {
+            attrs['notify_mail_address'] = profile.notifyMailAddress;
+        }
+        var parameters = [{
+                'personal_profile': {
+                    '_attr': attrs
+                }
+            }];
+        return this.client.post(this.path, 'ScheduleSetProfiles', parameters).then(function (res) {
+            return ScheduleConverter.PersonalProfile.toObject(res.personal_profile[0]);
+        });
+    };
+    Schedule.prototype.getEventVersions = function (eventItems, start, end, startForDaily, endForDaily) {
+        var parameters = [];
+        eventItems.forEach(function (eventItem) {
+            parameters.push({
+                'event_item': {
+                    '_attr': {
+                        id: eventItem.id,
+                        version: eventItem.version
+                    }
+                }
+            });
+        });
+        var attrs = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attrs.end = datetime.toString(end);
+        }
+        if (startForDaily !== undefined) {
+            attrs.start_for_daily = date.toString(startForDaily);
+        }
+        if (endForDaily !== undefined) {
+            attrs.end_for_daily = date.toString(endForDaily);
+        }
+        parameters.push({ '_attr': attrs });
+        return this.client.post(this.path, 'ScheduleGetEventVersions', parameters).then(function (res) {
+            var versions = [];
+            if (res.event_item !== undefined) {
+                res.event_item.forEach(function (obj) {
+                    versions.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return versions;
+        });
+    };
+    Schedule.prototype.getEvents = function (start, end, startForDaily, endForDaily) {
+        var attrs = {
+            start: datetime.toString(start),
+            end: datetime.toString(end)
+        };
+        if (startForDaily !== undefined) {
+            attrs.start_for_daily = date.toString(startForDaily);
+        }
+        if (endForDaily !== undefined) {
+            attrs.end_for_daily = date.toString(endForDaily);
+        }
+        var parameters = [{ '_attr': attrs }];
+        return this.client.post(this.path, 'ScheduleGetEvents', parameters).then(function (res) {
+            var events = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(function (obj) {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    };
+    Schedule.prototype.getEventsById = function (eventIds) {
+        var parameters = [];
+        eventIds.forEach(function (eventId) {
+            parameters.push({ 'event_id': eventId });
+        });
+        return this.client.post(this.path, 'ScheduleGetEventsById', parameters).then(function (res) {
+            var events = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(function (obj) {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    };
+    Schedule.prototype.getEventsByTarget = function (start, end, startForDaily, endForDaily, userIds, groupIds, facilityIds) {
+        var attrs = {
+            start: datetime.toString(start),
+            end: datetime.toString(end)
+        };
+        if (startForDaily !== undefined) {
+            attrs.start_for_daily = date.toString(startForDaily);
+        }
+        if (endForDaily !== undefined) {
+            attrs.end_for_daily = date.toString(endForDaily);
+        }
+        var parameters = [{
+                '_attr': attrs
+            }];
+        if (userIds !== undefined) {
+            userIds.forEach(function (userId) {
+                parameters.push({
+                    'user': {
+                        '_attr': { 'id': userId }
+                    }
+                });
+            });
+        }
+        if (groupIds !== undefined) {
+            groupIds.forEach(function (groupId) {
+                parameters.push({
+                    'group': {
+                        '_attr': { 'id': groupId }
+                    }
+                });
+            });
+        }
+        if (facilityIds !== undefined) {
+            facilityIds.forEach(function (facilityId) {
+                parameters.push({
+                    'facility': {
+                        '_attr': { 'id': facilityId }
+                    }
+                });
+            });
+        }
+        return this.client.post(this.path, 'ScheduleGetEventsByTarget', parameters).then(function (res) {
+            var events = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(function (obj) {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    };
+    Schedule.prototype.addEvents = function (events) {
+        var parameters = [];
+        events.forEach(function (event) {
+            var attrs = {
+                id: 'dummy',
+                event_type: event.eventType,
+                version: 'dummy',
+            };
+            if (event.publicType !== undefined) {
+                attrs.public_type = event.publicType;
+            }
+            if (event.plan !== undefined) {
+                attrs.plan = event.plan;
+            }
+            if (event.detail !== undefined) {
+                attrs.detail = event.detail;
+            }
+            if (event.description !== undefined) {
+                attrs.description = event.description;
+            }
+            if (event.timezone !== undefined) {
+                attrs.timezone = event.timezone;
+            }
+            if (event.endTimezone !== undefined) {
+                attrs.end_timezone = event.endTimezone;
+            }
+            if (event.allDay !== undefined) {
+                attrs.allday = event.allDay;
+            }
+            if (event.startOnly !== undefined) {
+                attrs.start_only = event.startOnly;
+            }
+            if (event.hiddenPrivate !== undefined) {
+                attrs.hidden_private = event.hiddenPrivate;
+            }
+            if (event.facilityUsingPurpose !== undefined) {
+                attrs.facility_using_purpose = event.facilityUsingPurpose;
+            }
+            var scheduleEvent = [{
+                    _attr: attrs
+                }];
+            if (event.members !== undefined) {
+                var members_1 = [];
+                event.members.users.forEach(function (user) {
+                    var attrs = {
+                        id: user.id
+                    };
+                    if (user.order !== undefined) {
+                        attrs.order = user.order;
+                    }
+                    members_1.push({
+                        member: [{
+                                user: {
+                                    _attr: attrs
+                                }
+                            }]
+                    });
+                });
+                event.members.organizations.forEach(function (organization) {
+                    var attrs = {
+                        id: organization.id
+                    };
+                    if (organization.order !== undefined) {
+                        attrs.order = organization.order;
+                    }
+                    members_1.push({
+                        member: [{
+                                organization: {
+                                    _attr: attrs
+                                }
+                            }]
+                    });
+                });
+                event.members.facilities.forEach(function (facility) {
+                    var attrs = {
+                        id: facility.id
+                    };
+                    if (facility.order !== undefined) {
+                        attrs.order = facility.order;
+                    }
+                    members_1.push({
+                        member: [{
+                                facility: {
+                                    _attr: attrs
+                                }
+                            }]
+                    });
+                });
+                scheduleEvent.push({ members: members_1 });
+            }
+            if (event.observers !== undefined) {
+                var observers_1 = [];
+                event.observers.users.forEach(function (user) {
+                    var attrs = {
+                        id: user.id
+                    };
+                    if (user.order !== undefined) {
+                        attrs.order = user.order;
+                    }
+                    observers_1.push({
+                        observer: [{
+                                user: {
+                                    _attr: attrs
+                                }
+                            }]
+                    });
+                });
+                event.observers.organizations.forEach(function (organization) {
+                    var attrs = {
+                        id: organization.id
+                    };
+                    if (organization.order !== undefined) {
+                        attrs.order = organization.order;
+                    }
+                    observers_1.push({
+                        observer: [{
+                                organization: {
+                                    _attr: attrs
+                                }
+                            }]
+                    });
+                });
+                event.observers.roles.forEach(function (role) {
+                    var attrs = {
+                        id: role.id
+                    };
+                    if (role.order !== undefined) {
+                        attrs.order = role.order;
+                    }
+                    observers_1.push({
+                        observer: [{
+                                role: {
+                                    _attr: attrs
+                                }
+                            }]
+                    });
+                });
+                scheduleEvent.push({ observers: observers_1 });
+            }
+            if (event.customer !== undefined) {
+                var attrs_1 = {};
+                if (event.customer.name !== undefined) {
+                    attrs_1.name = event.customer.name;
+                }
+                if (event.customer.zipcode !== undefined) {
+                    attrs_1.zipcode = event.customer.zipcode;
+                }
+                if (event.customer.address !== undefined) {
+                    attrs_1.address = event.customer.address;
+                }
+                if (event.customer.map !== undefined) {
+                    attrs_1.map = event.customer.map;
+                }
+                if (event.customer.route !== undefined) {
+                    attrs_1.route = event.customer.route;
+                }
+                if (event.customer.routeTime !== undefined) {
+                    attrs_1.route_time = event.customer.routeTime;
+                }
+                if (event.customer.routeFare !== undefined) {
+                    attrs_1.route_faire = event.customer.routeFare;
+                }
+                if (event.customer.phone !== undefined) {
+                    attrs_1.phone = event.customer.phone;
+                }
+                scheduleEvent.push({ customer: { _attr: attrs_1 } });
+            }
+            if (event.repeatInfo !== undefined) {
+                var attrs_2 = {
+                    type: event.repeatInfo.condition.type,
+                    start_date: date.toString(event.repeatInfo.condition.startDate)
+                };
+                if (event.repeatInfo.condition.endDate !== undefined) {
+                    attrs_2.end_date = date.toString(event.repeatInfo.condition.endDate);
+                }
+                if (event.repeatInfo.condition.startTime !== undefined) {
+                    attrs_2.start_time = time.toString(event.repeatInfo.condition.startTime);
+                }
+                if (event.repeatInfo.condition.endTime !== undefined) {
+                    attrs_2.end_time = time.toString(event.repeatInfo.condition.endTime);
+                }
+                if (event.repeatInfo.condition.day !== undefined) {
+                    attrs_2.day = event.repeatInfo.condition.day;
+                }
+                if (event.repeatInfo.condition.week !== undefined) {
+                    attrs_2.week = event.repeatInfo.condition.week;
+                }
+                var condition = {
+                    _attr: attrs_2
+                };
+                var repeatInfo = [{
+                        condition: condition
+                    }];
+                if (event.repeatInfo.exclusiveDatetimes !== undefined) {
+                    var exclusiveDatetimes_1 = [];
+                    event.repeatInfo.exclusiveDatetimes.forEach(function (exclusiveDatetime) {
+                        exclusiveDatetimes_1.push({
+                            exclusive_datetime: {
+                                _attr: {
+                                    start: datetime.toString(exclusiveDatetime.start),
+                                    end: datetime.toString(exclusiveDatetime.end)
+                                }
+                            }
+                        });
+                    });
+                    repeatInfo.push({ exclusive_datetimes: exclusiveDatetimes_1 });
+                }
+                scheduleEvent.push({ repeat_info: repeatInfo });
+            }
+            if (event.when !== undefined) {
+                var when_1 = [];
+                event.when.datetimes.forEach(function (dt) {
+                    var attrs = {
+                        start: datetime.toString(dt.start)
+                    };
+                    if (dt.end !== undefined) {
+                        attrs.end = datetime.toString(dt.end);
+                    }
+                    if (dt.facilityCode !== undefined) {
+                        attrs.facility_code = dt.facilityCode;
+                    }
+                    when_1.push({
+                        datetime: {
+                            _attr: attrs
+                        }
+                    });
+                });
+                event.when.dates.forEach(function (d) {
+                    var attrs = {
+                        start: date.toString(d.start)
+                    };
+                    if (d.end !== undefined) {
+                        attrs.end = date.toString(d.end);
+                    }
+                    when_1.push({
+                        date: {
+                            _attr: attrs
+                        }
+                    });
+                });
+                scheduleEvent.push({ when: when_1 });
+            }
+            parameters.push({
+                schedule_event: scheduleEvent
+            });
+        });
+        return this.client.post(this.path, 'ScheduleAddEvents', parameters).then(function (res) {
+            var events = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(function (obj) {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    };
+    Schedule.prototype.modifyEvents = function (events) {
+        var parameters = [];
+        events.forEach(function (event) {
+            var scheduleEvent = ScheduleConverter.ModifyEventType.toParameterObject(event);
+            parameters.push({
+                schedule_event: scheduleEvent
+            });
+        });
+        return this.client.post(this.path, 'ScheduleAddEvents', parameters).then(function (res) {
+            var events = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(function (obj) {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    };
+    Schedule.prototype.modifyRepeatEvents = function (operations) {
+        var parameters = [];
+        operations.forEach(function (operation) {
+            var attrs = {
+                type: operation.type
+            };
+            if (operation.date !== undefined) {
+                attrs.date = date.toString(operation.date);
+            }
+            var scheduleEvent = ScheduleConverter.ModifyEventType.toParameterObject(operation.scheduleEvent);
+            parameters.push({
+                operation: [
+                    { _attr: attrs },
+                    { schedule_event: scheduleEvent }
+                ]
+            });
+        });
+        return this.client.post(this.path, 'ScheduleModifyRepeatEvents', parameters).then(function (res) {
+            var results = [];
+            res.result.forEach(function (obj) {
+                results.push(ScheduleConverter.ModifyRepeatEventsResult.toObject(obj));
+            });
+            return results;
+        });
+    };
+    Schedule.prototype.removeEvents = function (eventIds) {
+        var parameters = [];
+        eventIds.forEach(function (eventId) {
+            parameters.push({ 'event_id': eventId });
+        });
+        return this.client.post(this.path, 'ScheduleRemoveEvents', parameters).then(function (res) {
+        });
+    };
+    Schedule.prototype.removeEventsFromRepeatEvent = function (operations) {
+        var parameters = [];
+        operations.forEach(function (operation) {
+            var attrs = {
+                event_id: operation.eventId,
+                type: operation.type
+            };
+            if (operation.date !== undefined) {
+                attrs.date = date.toString(operation.date);
+            }
+            parameters.push({
+                operation: {
+                    _attr: attrs
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleRemoveEventsFromRepeatEvent', parameters).then(function (res) {
+        });
+    };
+    Schedule.prototype.participateEvents = function (eventIds) {
+        var parameters = [];
+        eventIds.forEach(function (eventId) {
+            parameters.push({ 'event_id': eventId });
+        });
+        return this.client.post(this.path, 'ScheduleParticipateEvents', parameters).then(function (res) {
+            var events = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(function (obj) {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    };
+    Schedule.prototype.leaveEvents = function (eventIds) {
+        var parameters = [];
+        eventIds.forEach(function (eventId) {
+            parameters.push({ 'event_id': eventId });
+        });
+        return this.client.post(this.path, 'ScheduleLeaveEvents', parameters).then(function (res) {
+            var events = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(function (obj) {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    };
+    Schedule.prototype.participateEventsToRepeatEvent = function (operations) {
+        var parameters = [];
+        operations.forEach(function (operation) {
+            var attrs = {
+                event_id: operation.eventId,
+                type: operation.type
+            };
+            if (operation.date !== undefined) {
+                attrs.date = date.toString(operation.date);
+            }
+            parameters.push({
+                operation: {
+                    _attr: attrs
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleParticipateEventsToRepeatEvent', parameters).then(function (res) {
+            var results = [];
+            res.result.forEach(function (obj) {
+                results.push(ScheduleConverter.ModifyRepeatEventsResult.toObject(obj));
+            });
+            return results;
+        });
+    };
+    Schedule.prototype.leaveEventsFromRepeatEvent = function (operations) {
+        var parameters = [];
+        operations.forEach(function (operation) {
+            var attrs = {
+                event_id: operation.eventId,
+                type: operation.type
+            };
+            if (operation.date !== undefined) {
+                attrs.date = date.toString(operation.date);
+            }
+            parameters.push({
+                operation: {
+                    _attr: attrs
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleLeaveEventsFromRepeatEvent', parameters).then(function (res) {
+        });
+    };
+    Schedule.prototype.determineTemporaryEvents = function (candidates) {
+        var parameters = [];
+        candidates.forEach(function (candidate) {
+            var attrs = {
+                event_id: candidate.eventId,
+                start: datetime.toString(candidate.start),
+                end: datetime.toString(candidate.end)
+            };
+            if (candidate.facilityId !== undefined) {
+                attrs.facility_id = candidate.facilityId;
+            }
+            parameters.push({ candidate: { _attr: attrs } });
+        });
+        return this.client.post(this.path, 'ScheduleDetermineTemporaryEvents', parameters).then(function (res) {
+            var events = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(function (obj) {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    };
+    Schedule.prototype.removeTemporaryEventCandidates = function (candidates) {
+        var parameters = [];
+        candidates.forEach(function (candidate) {
+            var attrs = {
+                event_id: candidate.eventId,
+                start: datetime.toString(candidate.start),
+                end: datetime.toString(candidate.end)
+            };
+            if (candidate.facilityId !== undefined) {
+                attrs.facility_id = candidate.facilityId;
+            }
+            parameters.push({ candidate: { _attr: attrs } });
+        });
+        return this.client.post(this.path, 'ScheduleRemoveTemporaryEventCandidates', parameters).then(function (res) {
+            var events = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(function (obj) {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    };
+    Schedule.prototype.addFollows = function (follows) {
+        var parameters = [];
+        follows.forEach(function (follow) {
+            parameters.push({
+                follow: {
+                    _attr: {
+                        event_id: follow.eventId,
+                        content: follow.content
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleAddFollows', parameters).then(function (res) {
+            var events = [];
+            if (res.schedule_event !== undefined) {
+                res.schedule_event.forEach(function (obj) {
+                    events.push(ScheduleConverter.Event.toObject(obj));
+                });
+            }
+            return events;
+        });
+    };
+    Schedule.prototype.addFollowsToRepeatEvent = function (follows) {
+        var parameters = [];
+        follows.forEach(function (follow) {
+            parameters.push({
+                follow: {
+                    _attr: {
+                        event_id: follow.eventId,
+                        date: date.toString(follow.date),
+                        content: follow.content
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'ScheduleAddFollowsToRepeatEvent', parameters).then(function (res) {
+            var results = [];
+            res.result.forEach(function (obj) {
+                results.push(ScheduleConverter.ModifyRepeatEventsResult.toObject(obj));
+            });
+            return results;
+        });
+    };
+    Schedule.prototype.removeFollows = function (followIds) {
+        var parameters = [];
+        followIds.forEach(function (followId) {
+            parameters.push({ follow_id: followId });
+        });
+        return this.client.post(this.path, 'ScheduleRemoveFollows', parameters).then(function () {
+        });
+    };
+    Schedule.prototype.getReadAllowUsers = function () {
+        return this.client.post(this.path, 'ScheduleGetReadAllowUsers', []).then(function (res) {
+            var userIds = [];
+            if (res.user_id !== undefined) {
+                res.user_id.forEach(function (userId) {
+                    userIds.push(userId);
+                });
+            }
+            return userIds;
+        });
+    };
+    Schedule.prototype.getReadAllowGroups = function () {
+        return this.client.post(this.path, 'ScheduleGetReadAllowGroups', []).then(function (res) {
+            var groupIds = [];
+            if (res.group_id !== undefined) {
+                res.group_id.forEach(function (groupId) {
+                    groupIds.push(groupId);
+                });
+            }
+            return groupIds;
+        });
+    };
+    Schedule.prototype.getReadAllowFacilities = function () {
+        return this.client.post(this.path, 'ScheduleGetReadAllowFacilities', []).then(function (res) {
+            var facilityIds = [];
+            if (res.facility_id !== undefined) {
+                res.facility_id.forEach(function (facilityId) {
+                    facilityIds.push(facilityId);
+                });
+            }
+            return facilityIds;
+        });
+    };
+    Schedule.prototype.getAddAllowUsers = function () {
+        return this.client.post(this.path, 'ScheduleGetReadAllowUsers', []).then(function (res) {
+            var userIds = [];
+            if (res.user_id !== undefined) {
+                res.user_id.forEach(function (userId) {
+                    userIds.push(userId);
+                });
+            }
+            return userIds;
+        });
+    };
+    Schedule.prototype.getAddAllowGroups = function () {
+        return this.client.post(this.path, 'ScheduleGetAddAllowGroups', []).then(function (res) {
+            var groupIds = [];
+            if (res.group_id !== undefined) {
+                res.group_id.forEach(function (groupId) {
+                    groupIds.push(groupId);
+                });
+            }
+            return groupIds;
+        });
+    };
+    Schedule.prototype.getAddAllowFacilities = function () {
+        return this.client.post(this.path, 'ScheduleGetAddAllowFacilities', []).then(function (res) {
+            var facilityIds = [];
+            if (res.facility_id !== undefined) {
+                res.facility_id.forEach(function (facilityId) {
+                    facilityIds.push(facilityId);
+                });
+            }
+            return facilityIds;
+        });
+    };
+    Schedule.prototype.getModifyAllowUsers = function () {
+        return this.client.post(this.path, 'ScheduleGetModifyAllowUsers', []).then(function (res) {
+            var userIds = [];
+            if (res.user_id !== undefined) {
+                res.user_id.forEach(function (userId) {
+                    userIds.push(userId);
+                });
+            }
+            return userIds;
+        });
+    };
+    Schedule.prototype.getModifyAllowGroups = function () {
+        return this.client.post(this.path, 'ScheduleGetModifyAllowGroups', []).then(function (res) {
+            var groupIds = [];
+            if (res.group_id !== undefined) {
+                res.group_id.forEach(function (groupId) {
+                    groupIds.push(groupId);
+                });
+            }
+            return groupIds;
+        });
+    };
+    Schedule.prototype.getModifyAllowFacilities = function () {
+        return this.client.post(this.path, 'ScheduleGetModifyAllowFacilities', []).then(function (res) {
+            var facilityIds = [];
+            if (res.facility_id !== undefined) {
+                res.facility_id.forEach(function (facilityId) {
+                    facilityIds.push(facilityId);
+                });
+            }
+            return facilityIds;
+        });
+    };
+    Schedule.prototype.getRemoveAllowUsers = function () {
+        return this.client.post(this.path, 'ScheduleGetRemoveAllowUsers', []).then(function (res) {
+            var userIds = [];
+            if (res.user_id !== undefined) {
+                res.user_id.forEach(function (userId) {
+                    userIds.push(userId);
+                });
+            }
+            return userIds;
+        });
+    };
+    Schedule.prototype.getRemoveAllowGroups = function () {
+        return this.client.post(this.path, 'ScheduleGetRemoveAllowGroups', []).then(function (res) {
+            var groupIds = [];
+            if (res.group_id !== undefined) {
+                res.group_id.forEach(function (groupId) {
+                    groupIds.push(groupId);
+                });
+            }
+            return groupIds;
+        });
+    };
+    Schedule.prototype.getRemoveAllowFacilities = function () {
+        return this.client.post(this.path, 'ScheduleGetRemoveAllowFacilities', []).then(function (res) {
+            var facilityIds = [];
+            if (res.facility_id !== undefined) {
+                res.facility_id.forEach(function (facilityId) {
+                    facilityIds.push(facilityId);
+                });
+            }
+            return facilityIds;
+        });
+    };
+    Schedule.prototype.downloadFile = function (fileId) {
+        var parameters = [{ _attr: { file_id: fileId } }];
+        return this.client.post(this.path, 'ScheduleFileDownload', parameters).then(function (res) {
+            return BaseConverter.File.toBuffer(res['file'][0]);
+        });
+    };
+    return Schedule;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Schedule;
+
+},{"../converter/base":271,"../converter/schedule":278,"../util/date":286,"../util/datetime":287,"../util/time":289,"./client":258}],265:[function(require,module,exports){
 "use strict";
 var Setting = (function () {
     function Setting(baseUrl, username, password, locale, needCsp) {
@@ -28142,16 +32966,797 @@ var Setting = (function () {
         this.username = username;
         this.password = password;
         this.locale = locale;
-        this.needCsp = needCsp;
+        this.needCsp = needCsp === undefined ? false : needCsp;
     }
     return Setting;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Setting;
 
-},{}],257:[function(require,module,exports){
+},{}],266:[function(require,module,exports){
+"use strict";
+var client_1 = require("./client");
+var BaseConverter = require("../converter/base");
+var StarConverter = require("../converter/star");
+var date = require("./../util/date");
+var Admin = (function () {
+    function Admin(setting) {
+        this.client = new client_1.default(setting);
+        this.path = setting.needCsp ? '/cbpapi/star/api.csp' : '/cbpapi/star/api';
+    }
+    Admin.prototype.getProfiles = function () {
+        return this.client.post(this.path, 'StarGetProfiles', []).then(function (res) {
+            return Number(res['$']['star_num_allow']);
+        });
+    };
+    Admin.prototype.getStarVersions = function (starItems) {
+        var parameters = [];
+        starItems.forEach(function (starItem) {
+            parameters.push({
+                'star_item': {
+                    '_attr': {
+                        id: starItem.id,
+                        version: starItem.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'StarGetStarVersions', parameters).then(function (res) {
+            var starVersions = [];
+            res['star_item'].forEach(function (obj) {
+                starVersions.push(BaseConverter.ItemVersionResult.toObject(obj));
+            });
+            return starVersions;
+        });
+    };
+    Admin.prototype.getStarsById = function (starIds) {
+        var parameters = [];
+        starIds.forEach(function (starId) {
+            parameters.push({ 'star_id': starId });
+        });
+        return this.client.post(this.path, 'StarGetStarsById', parameters).then(function (res) {
+            var starData = [];
+            if (Array.isArray(res.star_data)) {
+                res.star_data.forEach(function (obj) {
+                    starData.push(StarConverter.StarData.toObject(obj));
+                });
+            }
+            return starData;
+        });
+    };
+    Admin.prototype.addStars = function (starItems) {
+        var parameters = [];
+        starItems.forEach(function (starItem) {
+            var attr = {
+                module_id: starItem.moduleId,
+                item: starItem.item
+            };
+            if (starItem.date instanceof Date) {
+                attr.date = date.toString(starItem.date);
+            }
+            if (starItem.hasOwnProperty('isDraft')) {
+                attr.is_draft = String(starItem.isDraft);
+            }
+            parameters.push({
+                'star_item': {
+                    '_attr': attr
+                }
+            });
+        });
+        return this.client.post(this.path, 'StarAddStars', parameters).then(function (res) {
+            var starData = [];
+            if (Array.isArray(res.star_data)) {
+                res.star_data.forEach(function (obj) {
+                    starData.push(StarConverter.StarData.toObject(obj));
+                });
+            }
+            return starData;
+        });
+    };
+    Admin.prototype.removeStars = function (starItems) {
+        var parameters = [];
+        starItems.forEach(function (starItem) {
+            var attr = {
+                module_id: starItem.moduleId,
+                item: starItem.item
+            };
+            if (starItem.date instanceof Date) {
+                attr.date = date.toString(starItem.date);
+            }
+            if (starItem.hasOwnProperty('isDraft')) {
+                attr.is_draft = String(starItem.isDraft);
+            }
+            parameters.push({
+                'star_item': {
+                    '_attr': attr
+                }
+            });
+        });
+        return this.client.post(this.path, 'StarRemoveStars', parameters).then(function () { });
+    };
+    return Admin;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Admin;
+
+},{"../converter/base":271,"../converter/star":279,"./../util/date":286,"./client":258}],267:[function(require,module,exports){
+"use strict";
+var client_1 = require("./client");
+var Util = (function () {
+    function Util(setting) {
+        this.client = new client_1.default(setting);
+        this.path = setting.needCsp ? '/util_api/util/api.csp' : '/util_api/util/api';
+    }
+    Util.prototype.login = function (loginName, password) {
+        var parameters = [
+            { login_name: loginName },
+            { password: password }
+        ];
+        return this.client.post(this.path, 'UtilLogin', parameters).then(function (res) {
+            return res.cookie[0];
+        });
+    };
+    Util.prototype.logout = function () {
+        return this.client.post(this.path, 'UtilLogout', []).then(function (res) {
+            return res.login_name[0];
+        });
+    };
+    Util.prototype.getRequestToken = function () {
+        return this.client.post(this.path, 'UtilGetRequestToken', []).then(function (res) {
+            return res.request_token[0];
+        });
+    };
+    Util.prototype.getLoginUserId = function () {
+        return this.client.post(this.path, 'UtilGetLoginUserId', []).then(function (res) {
+            return res.user_id[0];
+        });
+    };
+    return Util;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Util;
+
+},{"./client":258}],268:[function(require,module,exports){
+"use strict";
+var client_1 = require("./client");
+var BaseConverter = require("../converter/base");
+var WorkflowConverter = require("../converter/workflow");
+var datetime = require("../util/datetime");
+var Workflow = (function () {
+    function Workflow(setting) {
+        this.client = new client_1.default(setting);
+        this.path = setting.needCsp ? '/cbpapi/workflow/api.csp' : '/cbpapi/workflow/api';
+    }
+    Workflow.prototype.getUnprocessedApplicationVersions = function (items) {
+        var parameters = [];
+        items.forEach(function (item) {
+            parameters.push({
+                application_item: {
+                    _attr: {
+                        id: item.id,
+                        version: item.version
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'WorkflowGetUnprocessedApplicationVersions', parameters).then(function (res) {
+            var items = [];
+            if (res.application_item !== undefined) {
+                res.application_item.forEach(function (obj) {
+                    items.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return items;
+        });
+    };
+    Workflow.prototype.getUnprocessedApplicationsById = function (applicationIds) {
+        var parameters = [];
+        applicationIds.forEach(function (applicationId) {
+            parameters.push({
+                application_id: applicationId
+            });
+        });
+        return this.client.post(this.path, 'WorkflowGetUnprocessedApplicationsById', parameters, true).then(function (res) {
+            var applications = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(function (obj) {
+                    applications.push(WorkflowConverter.Application.toObject(obj));
+                });
+            }
+            return applications;
+        });
+    };
+    Workflow.prototype.getSentApplicationVersions = function (start, end, items) {
+        var parameters = [];
+        var attr = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        parameters.push({ _attr: attr });
+        if (items !== undefined) {
+            items.forEach(function (item) {
+                parameters.push({
+                    application_item: {
+                        _attr: {
+                            id: item.id,
+                            version: item.version
+                        }
+                    }
+                });
+            });
+        }
+        return this.client.post(this.path, 'WorkflowGetSentApplicationVersions', parameters).then(function (res) {
+            var items = [];
+            if (res.application_item !== undefined) {
+                res.application_item.forEach(function (obj) {
+                    items.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return items;
+        });
+    };
+    Workflow.prototype.getSentApplicationsById = function (applicationIds) {
+        var parameters = [];
+        applicationIds.forEach(function (applicationId) {
+            parameters.push({
+                application_id: applicationId
+            });
+        });
+        return this.client.post(this.path, 'WorkflowGetSentApplicationsById', parameters, true).then(function (res) {
+            var applications = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(function (obj) {
+                    applications.push(WorkflowConverter.Application.toObject(obj));
+                });
+            }
+            return applications;
+        });
+    };
+    Workflow.prototype.getReceivedApplicationVersions = function (start, end, items) {
+        var parameters = [];
+        var attr = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        parameters.push({ _attr: attr });
+        if (items !== undefined) {
+            items.forEach(function (item) {
+                parameters.push({
+                    application_item: {
+                        _attr: {
+                            id: item.id,
+                            version: item.version
+                        }
+                    }
+                });
+            });
+        }
+        return this.client.post(this.path, 'WorkflowGetReceivedApplicationVersions', parameters).then(function (res) {
+            var items = [];
+            if (res.application_item !== undefined) {
+                res.application_item.forEach(function (obj) {
+                    items.push(BaseConverter.ItemVersionResult.toObject(obj));
+                });
+            }
+            return items;
+        });
+    };
+    Workflow.prototype.getReceivedApplicationsById = function (applicationIds) {
+        var parameters = [];
+        applicationIds.forEach(function (applicationId) {
+            parameters.push({
+                application_id: applicationId
+            });
+        });
+        return this.client.post(this.path, 'WorkflowGetReceivedApplicationsById', parameters, true).then(function (res) {
+            var applications = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(function (obj) {
+                    applications.push(WorkflowConverter.Application.toObject(obj));
+                });
+            }
+            return applications;
+        });
+    };
+    Workflow.prototype.getProxyApprovalsByDelegatorId = function (delegatorId, start, end) {
+        var parameters = [];
+        var attr = {
+            delegator_id: delegatorId,
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        parameters.push({ _attr: attr });
+        return this.client.post(this.path, 'WorkflowGetProxyApprovalsByDelegatorId', parameters, true).then(function (res) {
+            var applications = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(function (obj) {
+                    applications.push(WorkflowConverter.Application.toObject(obj));
+                });
+            }
+            return applications;
+        });
+    };
+    Workflow.prototype.getPendingApprovals = function (start, end) {
+        var attr = {
+            start: datetime.toString(start)
+        };
+        if (end !== undefined) {
+            attr.end = datetime.toString(end);
+        }
+        var parameters = [{ _attr: attr }];
+        return this.client.post(this.path, 'WorkflowGetPendingApprovals', parameters, true).then(function (res) {
+            var applications = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(function (obj) {
+                    applications.push(WorkflowConverter.Application.toObject(obj));
+                });
+            }
+            return applications;
+        });
+    };
+    Workflow.prototype.getRequests = function (manageRequestParameter) {
+        var parameters = [];
+        if (manageRequestParameter !== undefined) {
+            var attr = {
+                request_form_id: manageRequestParameter.requestFormId
+            };
+            if (manageRequestParameter.filter !== undefined) {
+                attr.filter = manageRequestParameter.filter;
+            }
+            if (manageRequestParameter.startRequestDate !== undefined) {
+                attr.start_request_date = datetime.toString(manageRequestParameter.startRequestDate);
+            }
+            if (manageRequestParameter.endRequestDate !== undefined) {
+                attr.end_request_date = datetime.toString(manageRequestParameter.endRequestDate);
+            }
+            if (manageRequestParameter.startApprovalDate !== undefined) {
+                attr.start_approval_date = datetime.toString(manageRequestParameter.startApprovalDate);
+            }
+            if (manageRequestParameter.endApprovalDate !== undefined) {
+                attr.end_approval_date = datetime.toString(manageRequestParameter.endApprovalDate);
+            }
+            if (manageRequestParameter.applicant !== undefined) {
+                attr.applicant = manageRequestParameter.applicant;
+            }
+            if (manageRequestParameter.lastApproval !== undefined) {
+                attr.last_approval = manageRequestParameter.lastApproval;
+            }
+            if (manageRequestParameter.startToGetInformationFrom !== undefined) {
+                attr.start_to_get_information_from = manageRequestParameter.startToGetInformationFrom;
+            }
+            if (manageRequestParameter.maximumRequestAmountToGet !== undefined) {
+                attr.maximum_request_amount_to_get = manageRequestParameter.maximumRequestAmountToGet;
+            }
+            parameters.push({
+                manage_request_parameter: {
+                    _attr: attr
+                }
+            });
+        }
+        return this.client.post(this.path, 'WorkflowGetRequests', parameters).then(function (res) {
+            var categories = [];
+            if (res.category !== undefined) {
+                res.category.forEach(function (obj) {
+                    categories.push(WorkflowConverter.RequestManageForm.toObject(obj));
+                });
+            }
+            return categories;
+        });
+    };
+    Workflow.prototype.getRequestById = function (requestIds) {
+        var parameters = [];
+        requestIds.forEach(function (requestId) {
+            parameters.push({ request_id: requestId });
+        });
+        return this.client.post(this.path, 'WorkflowGetRequestById', parameters, true).then(function (res) {
+            var applications = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(function (obj) {
+                    applications.push(WorkflowConverter.Application.toObject(obj));
+                });
+            }
+            return applications;
+        });
+    };
+    Workflow.prototype.handleApplications = function (handles) {
+        var parameters = [];
+        handles.forEach(function (handle) {
+            var attr = {
+                application_id: handle.applicationId
+            };
+            if (handle.delegatorId !== undefined) {
+                attr.delegator_id = handle.delegatorId;
+            }
+            if (handle.comment !== undefined) {
+                attr.comment = handle.comment;
+            }
+            parameters.push({
+                handle: [
+                    {
+                        _attr: attr
+                    },
+                    {
+                        operation: [
+                            handle.operation.getXMLObj()
+                        ]
+                    }
+                ]
+            });
+        });
+        return this.client.post(this.path, 'WorkflowHandleApplications', parameters, true).then(function (res) {
+            var applications = [];
+            if (res.$$ !== undefined) {
+                res.$$.forEach(function (obj) {
+                    applications.push(WorkflowConverter.Application.toObject(obj));
+                });
+            }
+            return applications;
+        });
+    };
+    Workflow.prototype.getCategories = function () {
+        return this.client.post(this.path, 'WorkflowGetCategories', []).then(function (res) {
+            return WorkflowConverter.Category.toObject(res.root[0]);
+        });
+    };
+    Workflow.prototype.getRequestFormByCategoryIds = function (categoryIds) {
+        var parameters = [];
+        categoryIds.forEach(function (categoryId) {
+            parameters.push({
+                category_id: categoryId
+            });
+        });
+        return this.client.post(this.path, 'WorkflowGetRequestFormByCategoryIds', parameters).then(function (res) {
+            var forms = [];
+            res.category.forEach(function (obj) {
+                var categoryId = obj.$.category_id;
+                obj.requestForm.forEach(function (obj) {
+                    forms.push(WorkflowConverter.RequestForm.toObject(categoryId, obj));
+                });
+            });
+            return forms;
+        });
+    };
+    Workflow.prototype.getApprovalDelegators = function () {
+        return this.client.post(this.path, 'WorkflowGetApprovalDelegators', []).then(function (res) {
+            var delegatorIds = [];
+            if (res.delegator_id !== undefined) {
+                res.delegator_id.forEach(function (delegatorId) {
+                    delegatorIds.push(delegatorId);
+                });
+            }
+            return delegatorIds;
+        });
+    };
+    Workflow.prototype.getProxies = function () {
+        return this.client.post(this.path, 'WorkflowGetProxies', []).then(function (res) {
+            var proxies = [];
+            var proxiesObj = res.proxies[0];
+            if (proxiesObj.user_proxy !== undefined) {
+                proxiesObj.user_proxy.forEach(function (obj) {
+                    proxies.push(WorkflowConverter.UserProxy.toObject(obj));
+                });
+            }
+            return proxies;
+        });
+    };
+    Workflow.prototype.setProxies = function (proxies) {
+        var parameters = [];
+        var proxiesParam = [];
+        proxies.forEach(function (proxy) {
+            var userProxy = [
+                {
+                    _attr: {
+                        user_id: proxy.userId
+                    }
+                }
+            ];
+            proxy.approverIds.forEach(function (approverId) {
+                userProxy.push({
+                    proxy_approver: [{
+                            _attr: {
+                                approver_id: approverId
+                            }
+                        }]
+                });
+            });
+            proxy.applicantIds.forEach(function (applicantId) {
+                userProxy.push({
+                    proxy_applicant: [{
+                            _attr: {
+                                applicant_id: applicantId
+                            }
+                        }]
+                });
+            });
+            proxiesParam.push({
+                user_proxy: userProxy
+            });
+        });
+        parameters.push({
+            proxies: proxiesParam
+        });
+        return this.client.post(this.path, 'WorkflowSetProxies', parameters).then(function (res) {
+            var proxies = [];
+            var proxiesObj = res.proxies[0];
+            if (proxiesObj.user_proxy !== undefined) {
+                proxiesObj.user_proxy.forEach(function (obj) {
+                    proxies.push(WorkflowConverter.UserProxy.toObject(obj));
+                });
+            }
+            return proxies;
+        });
+    };
+    Workflow.prototype.downloadFile = function (fileId) {
+        var parameters = [{ _attr: { file_id: fileId } }];
+        return this.client.post(this.path, 'WorkflowFileDownload', parameters).then(function (res) {
+            return BaseConverter.File.toBuffer(res['file'][0]);
+        });
+    };
+    Workflow.prototype.getAttachedFileBody = function (params) {
+        var parameters = [];
+        params.forEach(function (param) {
+            parameters.push({
+                parameter: {
+                    _attr: {
+                        request_form_id: param.requestFormId,
+                        file_id: param.fileId
+                    }
+                }
+            });
+        });
+        return this.client.post(this.path, 'WorkflowGetAttachedFileBody', parameters).then(function (res) {
+            var details = [];
+            res.attachment_details.forEach(function (obj) {
+                details.push(WorkflowConverter.FileAttachedDetail.toObject(obj));
+            });
+            return details;
+        });
+    };
+    Workflow.prototype.getAvailabilityUsers = function (userIds) {
+        var parameters = [];
+        userIds.forEach(function (userId) {
+            parameters.push({
+                user_id: userId
+            });
+        });
+        return this.client.post(this.path, 'WorkflowGetAvailabilityUsers', parameters).then(function (res) {
+            var users = [];
+            res.user.forEach(function (obj) {
+                users.push(WorkflowConverter.AvailabilityUser.toObject(obj));
+            });
+            return users;
+        });
+    };
+    Workflow.prototype.getProfiles = function () {
+        return this.client.post(this.path, 'WorkflowGetProfiles', []).then(function (res) {
+            return WorkflowConverter.Profiles.toObject(res);
+        });
+    };
+    return Workflow;
+}());
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Workflow;
+
+},{"../converter/base":271,"../converter/workflow":280,"../util/datetime":287,"./client":258}],269:[function(require,module,exports){
+"use strict";
+var BaseConverter = require("../converter/base");
+var Card = (function () {
+    function Card() {
+    }
+    Card.toObject = function (obj) {
+        var attr = obj.$;
+        var card = {
+            bookId: attr.book_id,
+            id: attr.id,
+            version: attr.version,
+            creator: BaseConverter.ChangeLog.toObject(obj.creator[0]),
+            subject: obj.subject[0],
+        };
+        if (obj.modifier !== undefined) {
+            card.modifier = BaseConverter.ChangeLog.toObject(obj.modifier[0]);
+        }
+        if (obj.personal_name !== undefined) {
+            card.personalName = NameFieldValue.toObject(obj.personal_name[0]);
+        }
+        if (obj.personal_reading !== undefined) {
+            card.personalReading = NameFieldValue.toObject(obj.personal_reading[0]);
+        }
+        if (obj.company_name !== undefined) {
+            card.companyName = obj.company_name[0];
+        }
+        if (obj.company_reading !== undefined) {
+            card.companyReading = obj.company_reading[0];
+        }
+        if (obj.section !== undefined) {
+            card.section = obj.section[0];
+        }
+        if (obj.zip_code !== undefined) {
+            card.zipCode = obj.zip_code[0];
+        }
+        if (obj.physical_address !== undefined) {
+            card.physicalAddress = obj.physical_address[0];
+        }
+        if (obj.map !== undefined) {
+            card.map = obj.map[0];
+        }
+        if (obj.route !== undefined) {
+            card.route = RouteFieldValue.toObject(obj.route[0]);
+        }
+        if (obj.company_tel !== undefined) {
+            card.companyTel = obj.company_tel[0];
+        }
+        if (obj.company_fax !== undefined) {
+            card.companyFax = obj.company_fax[0];
+        }
+        if (obj.url !== undefined) {
+            card.url = obj.url[0];
+        }
+        if (obj.post !== undefined) {
+            card.post = obj.post[0];
+        }
+        if (obj.personal_tel !== undefined) {
+            card.personalTel = obj.personal_tel[0];
+        }
+        if (obj.email !== undefined) {
+            card.email = obj.email[0];
+        }
+        if (obj.image !== undefined) {
+            card.image = FileFieldValue.toObject(obj.image[0]);
+        }
+        if (obj.description !== undefined) {
+            card.description = obj.description[0];
+        }
+        return card;
+    };
+    return Card;
+}());
+exports.Card = Card;
+var NameFieldValue = (function () {
+    function NameFieldValue() {
+    }
+    NameFieldValue.toObject = function (obj) {
+        return {
+            family: obj.part[0],
+            given: obj.part[1]
+        };
+    };
+    return NameFieldValue;
+}());
+exports.NameFieldValue = NameFieldValue;
+var RouteFieldValue = (function () {
+    function RouteFieldValue() {
+    }
+    RouteFieldValue.toObject = function (obj) {
+        var route = {};
+        if (obj.path !== undefined) {
+            route.path = obj.path[0];
+        }
+        if (obj.time !== undefined) {
+            route.time = obj.time[0];
+        }
+        if (obj.fare !== undefined) {
+            route.fare = obj.fare[0];
+        }
+        return route;
+    };
+    return RouteFieldValue;
+}());
+exports.RouteFieldValue = RouteFieldValue;
+var FileFieldValue = (function () {
+    function FileFieldValue() {
+    }
+    FileFieldValue.toObject = function (obj) {
+        var attr = obj.$;
+        return {
+            name: attr.name,
+            fileId: attr.file_id,
+            size: attr.size,
+            mimeType: attr.mime_type
+        };
+    };
+    return FileFieldValue;
+}());
+exports.FileFieldValue = FileFieldValue;
+var Book = (function () {
+    function Book() {
+    }
+    Book.toObject = function (obj) {
+        var cardIds = [];
+        var cards = obj.cards[0];
+        if (cards.card !== undefined) {
+            cards.card.forEach(function (obj) {
+                cardIds.push(obj.$.id);
+            });
+        }
+        var attr = obj.$;
+        return {
+            cardIds: cardIds,
+            key: attr.key,
+            bookId: attr.book_id,
+            name: attr.name,
+            type: attr.type,
+            version: attr.version
+        };
+    };
+    return Book;
+}());
+exports.Book = Book;
+var MyAddressGroup = (function () {
+    function MyAddressGroup() {
+    }
+    MyAddressGroup.toObject = function (obj) {
+        var userIds = [];
+        if (obj.user !== undefined) {
+            obj.user.forEach(function (obj) {
+                userIds.push(obj.$.key);
+            });
+        }
+        var cards = [];
+        if (obj.card !== undefined) {
+            obj.card.forEach(function (obj) {
+                cards.push({
+                    id: obj.$.key,
+                    type: obj.$.type
+                });
+            });
+        }
+        var attr = obj.$;
+        var group = {
+            id: attr.id,
+            version: attr.version,
+            name: attr.name,
+            userIds: userIds,
+            cards: cards
+        };
+        if (attr.description !== undefined) {
+            group.description = attr.description;
+        }
+        return group;
+    };
+    return MyAddressGroup;
+}());
+exports.MyAddressGroup = MyAddressGroup;
+
+},{"../converter/base":271}],270:[function(require,module,exports){
+"use strict";
+var UserDetail = (function () {
+    function UserDetail() {
+    }
+    UserDetail.toObject = function (xmlObj) {
+        return {
+            userId: xmlObj.userId[0],
+            loginName: xmlObj.login_name[0],
+            displayName: xmlObj.display_name[0]
+        };
+    };
+    return UserDetail;
+}());
+exports.UserDetail = UserDetail;
+var OrgDetail = (function () {
+    function OrgDetail() {
+    }
+    OrgDetail.toObject = function (xmlObj) {
+        return {
+            orgId: xmlObj.orgId[0],
+            code: xmlObj.org_code[0],
+            name: xmlObj.org_name[0]
+        };
+    };
+    return OrgDetail;
+}());
+exports.OrgDetail = OrgDetail;
+
+},{}],271:[function(require,module,exports){
+(function (Buffer){
 "use strict";
 var Util = require("../util");
+var datetime = require("../util/datetime");
 var ItemVersionResult = (function () {
     function ItemVersionResult() {
     }
@@ -28171,7 +33776,7 @@ var User = (function () {
         var user = {};
         var attrs = xmlObj['$'];
         Util.copyProps(attrs, user);
-        if (Array.isArray(xmlObj['organization']) && xmlObj['organization'].length > 0) {
+        if (Array.isArray(xmlObj['organization'])) {
             user['organization'] = [];
             xmlObj['organization'].forEach(function (orgObj) {
                 var org = {};
@@ -28180,7 +33785,7 @@ var User = (function () {
                 user['organization'].push(org);
             });
         }
-        if (Array.isArray(xmlObj['photo']) && xmlObj['photo'].length > 0) {
+        if (Array.isArray(xmlObj['photo'])) {
             user['photo'] = [];
             xmlObj['photo'].forEach(function (photoObj) {
                 var photo = {};
@@ -28194,27 +33799,2891 @@ var User = (function () {
     return User;
 }());
 exports.User = User;
+var BaseGetCalendarEvent = (function () {
+    function BaseGetCalendarEvent() {
+    }
+    BaseGetCalendarEvent.toObject = function (xmlObj) {
+        var calendarEvent = {};
+        var attrs = xmlObj['$'];
+        Util.copyProps(attrs, calendarEvent);
+        return calendarEvent;
+    };
+    return BaseGetCalendarEvent;
+}());
+exports.BaseGetCalendarEvent = BaseGetCalendarEvent;
+var Region = (function () {
+    function Region() {
+    }
+    Region.toObject = function (xmlObj) {
+        var region = {};
+        var attrs = xmlObj['$'];
+        Util.copyProps(attrs, region);
+        region['cities'] = [];
+        if (Array.isArray(xmlObj['city'])) {
+            xmlObj['city'].forEach(function (cityObj) {
+                var city = {};
+                var attrs = cityObj['$'];
+                Util.copyProps(attrs, city);
+                region['cities'].push(city);
+            });
+        }
+        return region;
+    };
+    return Region;
+}());
+exports.Region = Region;
+var Application = (function () {
+    function Application() {
+    }
+    Application.toObject = function (xmlObj) {
+        var application = {};
+        var attrs = xmlObj['$'];
+        Util.copyProps(attrs, application);
+        return application;
+    };
+    return Application;
+}());
+exports.Application = Application;
+var ApplicationInformation = (function () {
+    function ApplicationInformation() {
+    }
+    ApplicationInformation.toObject = function (xmlObj) {
+        var application = {};
+        var attrs = xmlObj['$'];
+        Util.copyProps(attrs, application);
+        application['available_client'] = [];
+        if (Array.isArray(xmlObj['available_client'])) {
+            xmlObj['available_client'].forEach(function (client) {
+                var attrs = client['$'];
+                var name = attrs['name'];
+                application['available_client'].push(attrs['name']);
+            });
+        }
+        return application;
+    };
+    return ApplicationInformation;
+}());
+exports.ApplicationInformation = ApplicationInformation;
+var Organization = (function () {
+    function Organization() {
+    }
+    Organization.toObject = function (xmlObj) {
+        var org = {};
+        var attrs = xmlObj['$'];
+        Util.copyProps(attrs, org);
+        org['organization'] = [];
+        if (Array.isArray(xmlObj['organization'])) {
+            xmlObj['organization'].forEach(function (childOrg) {
+                var attrs = childOrg['$'];
+                var childOrgId = attrs['key'];
+                org['organization'].push(childOrgId);
+            });
+        }
+        org['members'] = [];
+        if (Array.isArray(xmlObj['members'])) {
+            xmlObj['members'].forEach(function (member) {
+                if (Array.isArray(member['user'])) {
+                    member['user'].forEach(function (user) {
+                        var attrs = user['$'];
+                        var userId = attrs['id'];
+                        org['members'].push(userId);
+                    });
+                }
+            });
+        }
+        return org;
+    };
+    return Organization;
+}());
+exports.Organization = Organization;
+var MyGroup = (function () {
+    function MyGroup() {
+    }
+    MyGroup.toObject = function (xmlObj) {
+        var myGroup = {};
+        var attrs = xmlObj['$'];
+        Util.copyProps(attrs, myGroup);
+        myGroup['belong_member'] = [];
+        if (Array.isArray(xmlObj['belong_member'])) {
+            xmlObj['belong_member'].forEach(function (member) {
+                myGroup['belong_member'].push(member);
+            });
+        }
+        myGroup['belong_facility'] = [];
+        if (Array.isArray(xmlObj['belong_facility'])) {
+            xmlObj['belong_facility'].forEach(function (facility) {
+                myGroup['belong_facility'].push(facility);
+            });
+        }
+        return myGroup;
+    };
+    return MyGroup;
+}());
+exports.MyGroup = MyGroup;
+var File = (function () {
+    function File() {
+    }
+    File.toBuffer = function (xmlObj) {
+        var content = xmlObj['content'][0];
+        return Buffer.from(content, 'base64');
+    };
+    return File;
+}());
+exports.File = File;
+var ChangeLog = (function () {
+    function ChangeLog() {
+    }
+    ChangeLog.toObject = function (xmlObj) {
+        var attrs = xmlObj['$'];
+        return {
+            userId: attrs.user_id,
+            name: attrs.name,
+            date: datetime.toDate(attrs.date)
+        };
+    };
+    ChangeLog.toObjectFromXMLObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        return {
+            userId: attr.user_id,
+            name: attr.name,
+            date: datetime.toDate(attr.date)
+        };
+    };
+    return ChangeLog;
+}());
+exports.ChangeLog = ChangeLog;
 
-},{"../util":260}],258:[function(require,module,exports){
+}).call(this,require("buffer").Buffer)
+},{"../util":285,"../util/datetime":287,"buffer":16}],272:[function(require,module,exports){
+"use strict";
+var date = require("../util/date");
+var datetime = require("../util/datetime");
+var Util = require("../util");
+var BaseConverter = require("../converter/base");
+var Category = (function () {
+    function Category() {
+    }
+    Category.toObject = function (xmlObj) {
+        var categories = [];
+        if (xmlObj.categories !== undefined) {
+            xmlObj.categories.forEach(function (obj) {
+                if (obj.category !== undefined) {
+                    var attrs_1 = obj.$;
+                    obj.category.forEach(function (categoryObj) {
+                        var category = Category.toObject(categoryObj);
+                        category.parentId = attrs_1.parent_id;
+                        category.parentCode = attrs_1.parent_code;
+                        categories.push(category);
+                    });
+                }
+            });
+        }
+        var attrs = xmlObj.$;
+        return {
+            name: xmlObj.name[0],
+            description: xmlObj.description[0],
+            creatorId: xmlObj.creator_id[0],
+            creatorLoginName: xmlObj.creator_login_name[0],
+            creatorDisplayName: xmlObj.creator_display_name[0],
+            createTime: date.toDate(xmlObj.create_time[0]),
+            modifierId: xmlObj.modifier_id[0],
+            modifierLoginName: xmlObj.modifier_login_name[0],
+            modifierDisplayName: xmlObj.modifier_display_name[0],
+            modifyTime: date.toDate(xmlObj.modify_time[0]),
+            categories: categories,
+            id: attrs.id,
+            code: attrs.code,
+            listIndex: attrs.list_index
+        };
+    };
+    return Category;
+}());
+exports.Category = Category;
+var File = (function () {
+    function File() {
+    }
+    File.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        return {
+            id: attr.id,
+            name: attr.name,
+            size: attr.size,
+            mimeType: attr.mime_type
+        };
+    };
+    return File;
+}());
+exports.File = File;
+var Topic = (function () {
+    function Topic() {
+    }
+    Topic.toObject = function (xmlObj) {
+        var contentObj = xmlObj.content[0];
+        var files = [];
+        if (contentObj.file !== undefined) {
+            contentObj.file.forEach(function (obj) {
+                files.push(File.toObject(obj));
+            });
+        }
+        var attrs = xmlObj.$;
+        var topic = {
+            id: attrs.id,
+            version: attrs.version,
+            subject: attrs.subject,
+            isDraft: Util.toBoolean(attrs.is_draft),
+            canFollow: attrs.can_follow,
+            categoryId: attrs.category_id,
+            body: contentObj.$.body,
+            files: files,
+            creator: BaseConverter.ChangeLog.toObject(xmlObj.creator[0]),
+            modifier: BaseConverter.ChangeLog.toObject(xmlObj.modifier[0])
+        };
+        if (attrs.start_datetime !== undefined) {
+            topic.startDatetime = datetime.toDate(attrs.start_datetime);
+        }
+        if (attrs.end_datetime !== undefined) {
+            topic.endDatetime = datetime.toDate(attrs.end_datetime);
+        }
+        if (attrs.start_is_datetime !== undefined) {
+            topic.startIsDatetime = Util.toBoolean(attrs.start_is_datetime);
+        }
+        if (attrs.end_is_datetime !== undefined) {
+            topic.endIsDatetime = Util.toBoolean(attrs.end_is_datetime);
+        }
+        if (attrs.published !== undefined) {
+            topic.published = Util.toBoolean(attrs.published);
+        }
+        if (attrs.unread !== undefined) {
+            topic.unread = Util.toBoolean(attrs.unread);
+        }
+        if (attrs.expired !== undefined) {
+            topic.expired = Util.toBoolean(attrs.expired);
+        }
+        if (contentObj.$.html_body !== undefined) {
+            topic.htmlBody = contentObj.$.html_body;
+        }
+        if (xmlObj.follow !== undefined) {
+            var followObj = xmlObj.follow[0];
+            topic.followId = followObj.$.id;
+            topic.followNumber = followObj.$.number;
+        }
+        return topic;
+    };
+    return Topic;
+}());
+exports.Topic = Topic;
+var TopicList = (function () {
+    function TopicList() {
+    }
+    TopicList.toObject = function (xmlObj) {
+        var topicList = {};
+        if (xmlObj.category !== undefined) {
+            xmlObj.category.forEach(function (obj) {
+                var topicIds = [];
+                if (obj.topic !== undefined) {
+                    obj.topic.forEach(function (topicObj) {
+                        topicIds.push(topicObj.$.id);
+                    });
+                }
+                topicList[obj.$.category_id] = topicIds;
+            });
+        }
+        return topicList;
+    };
+    return TopicList;
+}());
+exports.TopicList = TopicList;
+var Follow = (function () {
+    function Follow() {
+    }
+    Follow.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        var files = [];
+        if (xmlObj.file !== undefined) {
+            xmlObj.file.forEach(function (obj) {
+                files.push(File.toObject(obj));
+            });
+        }
+        var follow = {
+            id: attr.id,
+            number: attr.number,
+            text: attr.text,
+            files: files
+        };
+        if (attr.html_text !== undefined) {
+            follow.htmlText = attr.html_text;
+        }
+        return follow;
+    };
+    return Follow;
+}());
+exports.Follow = Follow;
+
+},{"../converter/base":271,"../util":285,"../util/date":286,"../util/datetime":287}],273:[function(require,module,exports){
+"use strict";
+var datetime = require("../util/datetime");
+var FileInformation = (function () {
+    function FileInformation() {
+    }
+    FileInformation.toObject = function (obj) {
+        var filesObj = obj.files[0];
+        var files = [];
+        if (filesObj.file !== undefined) {
+            filesObj.file.forEach(function (obj) {
+                files.push(File.toObject(obj));
+            });
+        }
+        var attr = filesObj.$;
+        return {
+            parentId: attr.parent_id,
+            parentCode: attr.parent_code,
+            files: files
+        };
+    };
+    return FileInformation;
+}());
+exports.FileInformation = FileInformation;
+var File = (function () {
+    function File() {
+    }
+    File.toObject = function (obj) {
+        var histories = [];
+        obj.histories[0].history.forEach(function (obj) {
+            histories.push(History.toObject(obj));
+        });
+        var attr = obj.$;
+        var file = {
+            id: attr.id,
+            folderId: attr.folder_id,
+            title: obj.title[0],
+            maxVersion: Number(obj.max_version[0]),
+            name: obj.name[0],
+            size: obj.size[0],
+            mimeType: obj.mime_type[0],
+            creatorId: obj.creator_id[0],
+            creatorLoginName: obj.creator_login_name[0],
+            creatorDisplayName: obj.creator_display_name[0],
+            createTime: datetime.toDate(obj.create_time[0]),
+            histories: histories
+        };
+        if (obj.description !== undefined) {
+            file.description = obj.description[0];
+        }
+        if (obj.modifier_id !== undefined) {
+            file.modifierId = obj.modifier_id[0];
+        }
+        if (obj.modifier_login_name !== undefined) {
+            file.modifierLoginName = obj.modifier_login_name[0];
+        }
+        if (obj.modifier_display_name !== undefined) {
+            file.modifierDisplayName = obj.modifier_display_name[0];
+        }
+        if (obj.modify_time !== undefined) {
+            file.modifyTime = datetime.toDate(obj.modify_time[0]);
+        }
+        return file;
+    };
+    return File;
+}());
+exports.File = File;
+var History = (function () {
+    function History() {
+    }
+    History.toObject = function (obj) {
+        return {
+            version: obj.version[0],
+            active: obj.active[0] === '1',
+            name: obj.name[0],
+            action: Number(obj.action[0]),
+            comment: obj.comment[0],
+            modifierId: obj.modifier_id[0],
+            modifierLoginName: obj.modifier_login_name[0],
+            modifierDisplayName: obj.modifier_display_name[0],
+            modifyTime: datetime.toDate(obj.modify_time[0])
+        };
+    };
+    return History;
+}());
+exports.History = History;
+var SimpleFile = (function () {
+    function SimpleFile() {
+    }
+    SimpleFile.toObject = function (obj) {
+        var attr = obj.$;
+        var file = {
+            id: attr.id,
+            folderId: attr.folder_id,
+            title: obj.title[0],
+            maxVersion: Number(obj.max_version[0]),
+            name: obj.name[0],
+            size: obj.size[0],
+            mimeType: obj.mime_type[0],
+            creatorId: obj.creator_id[0],
+            creatorLoginName: obj.creator_login_name[0],
+            creatorDisplayName: obj.creator_display_name[0],
+            createTime: datetime.toDate(obj.create_time[0])
+        };
+        if (obj.description !== undefined) {
+            file.description = obj.description[0];
+        }
+        if (obj.modifier_id !== undefined) {
+            file.modifierId = obj.modifier_id[0];
+        }
+        if (obj.modifier_login_name !== undefined) {
+            file.modifierLoginName = obj.modifier_login_name[0];
+        }
+        if (obj.modifier_display_name !== undefined) {
+            file.modifierDisplayName = obj.modifier_display_name[0];
+        }
+        if (obj.modify_time !== undefined) {
+            file.modifyTime = datetime.toDate(obj.modify_time[0]);
+        }
+        return file;
+    };
+    return SimpleFile;
+}());
+exports.SimpleFile = SimpleFile;
+var FolderInformation = (function () {
+    function FolderInformation() {
+    }
+    FolderInformation.toObject = function (obj) {
+        return {
+            root: Folder.toObject(obj.root[0])
+        };
+    };
+    return FolderInformation;
+}());
+exports.FolderInformation = FolderInformation;
+var Folder = (function () {
+    function Folder() {
+    }
+    Folder.toObject = function (obj) {
+        var folders = obj.folders !== undefined ? Folder.toObjectsFromFoldersXMLObject(obj.folders[0]) : [];
+        var attr = obj.$;
+        return {
+            id: attr.id,
+            code: attr.code,
+            listIndex: attr.list_index,
+            title: attr.title,
+            description: obj.description[0],
+            creatorId: obj.creator_id[0],
+            creatorLoginName: obj.creator_login_name[0],
+            creatorDisplayName: obj.creator_display_name[0],
+            createTime: datetime.toDate(obj.create_time[0]),
+            modifierId: obj.modifier_id[0],
+            modifierLoginName: obj.modifier_login_name[0],
+            modifierDisplayName: obj.modifier_display_name[0],
+            modifyTime: datetime.toDate(obj.modify_time[0]),
+            folders: folders
+        };
+    };
+    Folder.toObjectsFromFoldersXMLObject = function (obj) {
+        var folders = [];
+        var attr = obj.$;
+        var parentId = attr.parent_id;
+        var parentCode = attr.parent_code;
+        if (obj.folder !== undefined) {
+            obj.folder.forEach(function (obj) {
+                var folder = Folder.toObject(obj);
+                folder.parentId = parentId;
+                folder.parentCode = parentCode;
+                folders.push(folder);
+            });
+        }
+        return folders;
+    };
+    return Folder;
+}());
+exports.Folder = Folder;
+
+},{"../util/datetime":287}],274:[function(require,module,exports){
+"use strict";
+var datetime = require("../util/datetime");
+var time = require("../util/time");
+var duration = require("../util/duration");
+var Util = require("../util");
+var Mail = (function () {
+    function Mail() {
+    }
+    Mail.toObject = function (xmlObj) {
+        var files = [];
+        if (xmlObj.file !== undefined) {
+            xmlObj.file.forEach(function (obj) {
+                files.push(File.toObject(obj));
+            });
+        }
+        var attrs = xmlObj.$;
+        var mail = {
+            id: attrs.key,
+            version: attrs.version,
+            subject: attrs.subject,
+            body: attrs.body,
+            folderId: attrs.folder_key,
+            files: files
+        };
+        if (attrs.html_body !== undefined) {
+            mail.htmlBody = attrs.html_body;
+        }
+        if (attrs.date !== undefined) {
+            mail.date = datetime.toDate(attrs.date);
+        }
+        if (attrs.read !== undefined) {
+            mail.read = datetime.toDate(attrs.read);
+        }
+        if (attrs.size !== undefined) {
+            mail.size = Number(attrs.size);
+        }
+        if (attrs.is_sent !== undefined) {
+            mail.isSent = Util.toBoolean(attrs.is_sent);
+        }
+        if (attrs.is_draft !== undefined) {
+            mail.isDraft = Util.toBoolean(attrs.is_draft);
+        }
+        if (xmlObj.from !== undefined) {
+            mail.from = MailAddress.toObject(xmlObj.from[0]);
+        }
+        if (xmlObj.sender !== undefined) {
+            mail.sender = MailAddress.toObject(xmlObj.sender[0]);
+        }
+        if (xmlObj.to !== undefined) {
+            var to_1 = [];
+            xmlObj.to.forEach(function (obj) {
+                to_1.push(MailAddress.toObject(obj));
+            });
+            mail.to = to_1;
+        }
+        if (xmlObj.cc !== undefined) {
+            var cc_1 = [];
+            xmlObj.cc.forEach(function (obj) {
+                cc_1.push(MailAddress.toObject(obj));
+            });
+            mail.cc = cc_1;
+        }
+        if (xmlObj.bcc !== undefined) {
+            var bcc_1 = [];
+            xmlObj.bcc.forEach(function (obj) {
+                bcc_1.push(MailAddress.toObject(obj));
+            });
+            mail.bcc = bcc_1;
+        }
+        if (xmlObj.reply_to !== undefined) {
+            mail.replyTo = MailAddress.toObject(xmlObj.reply_to[0]);
+        }
+        if (xmlObj.disposition_notification_to !== undefined) {
+            mail.dispositionNotificationTo = MailAddress.toObject(xmlObj.disposition_notification_to[0]);
+        }
+        if (xmlObj.source !== undefined) {
+            mail.source = MailSource.toObject(xmlObj.source[0]);
+        }
+        return mail;
+    };
+    return Mail;
+}());
+exports.Mail = Mail;
+var MailAddress = (function () {
+    function MailAddress() {
+    }
+    MailAddress.toObject = function (xmlObj) {
+        var attrs = xmlObj.$;
+        var address = {
+            address: attrs.address
+        };
+        if (attrs.name !== undefined) {
+            address.name = attrs.name;
+        }
+        return address;
+    };
+    return MailAddress;
+}());
+exports.MailAddress = MailAddress;
+var File = (function () {
+    function File() {
+    }
+    File.toObject = function (xmlObj) {
+        var attrs = xmlObj.$;
+        return {
+            id: attrs.id,
+            name: attrs.name,
+            size: attrs.size,
+            mimeType: attrs.mime_type
+        };
+    };
+    return File;
+}());
+exports.File = File;
+var MailSource = (function () {
+    function MailSource() {
+    }
+    MailSource.toObject = function (xmlObj) {
+        var attrs = xmlObj.$;
+        var source = {
+            id: attrs.id
+        };
+        if (attrs.size !== undefined) {
+            source.size = Number(attrs.size);
+        }
+        return source;
+    };
+    return MailSource;
+}());
+exports.MailSource = MailSource;
+var NewArrivingEmail = (function () {
+    function NewArrivingEmail() {
+    }
+    NewArrivingEmail.toObject = function (xmlObj) {
+        var attrs = xmlObj.$;
+        var disabled = attrs.disabled === 'Inactivate';
+        var deleted = attrs.deleted === 'Deleted';
+        return {
+            id: attrs.id,
+            name: attrs.name,
+            email: attrs.email,
+            newMails: Number(attrs.new_mails),
+            disabled: disabled,
+            deleted: deleted
+        };
+    };
+    return NewArrivingEmail;
+}());
+exports.NewArrivingEmail = NewArrivingEmail;
+var Folder = (function () {
+    function Folder() {
+    }
+    Folder.toObject = function (xmlObj) {
+        var mailIds = [];
+        if (xmlObj.mail !== undefined) {
+            xmlObj.mail.forEach(function (obj) {
+                mailIds.push(obj.$.id);
+            });
+        }
+        var attrs = xmlObj.$;
+        var description = attrs.description === undefined ? '' : attrs.description;
+        var subscribe = attrs.subscribe === undefined ? false : Util.toBoolean(attrs.subscribe);
+        return {
+            id: attrs.key,
+            description: description,
+            subscribe: subscribe,
+            name: attrs.name,
+            order: attrs.order,
+            mailIds: mailIds
+        };
+    };
+    return Folder;
+}());
+exports.Folder = Folder;
+var Account = (function () {
+    function Account() {
+    }
+    Account.toObject = function (xmlObj) {
+        var mailboxes = [];
+        if (xmlObj.mailbox !== undefined) {
+            xmlObj.mailbox.forEach(function (obj) {
+                mailboxes.push(Mailbox.toObject(obj));
+            });
+        }
+        var signatures = [];
+        if (xmlObj.signatures !== undefined) {
+            var signaturesObj = xmlObj.signatures[0];
+            if (signaturesObj.signature !== undefined) {
+                signaturesObj.signature.forEach(function (obj) {
+                    signatures.push({
+                        name: obj.$.name,
+                        signature: obj._
+                    });
+                });
+            }
+        }
+        var attr = xmlObj.$;
+        return {
+            id: attr.key,
+            version: attr.version,
+            userId: attr.user_id,
+            serverId: attr.server_id,
+            email: attr.email,
+            username: attr.usermame,
+            password: attr.password,
+            mailboxes: mailboxes,
+            signatures: signatures
+        };
+    };
+    return Account;
+}());
+exports.Account = Account;
+var Mailbox = (function () {
+    function Mailbox() {
+    }
+    Mailbox.toObject = function (xmlObj) {
+        var filters = [];
+        if (xmlObj.filters !== undefined) {
+            var filtersObj = xmlObj.filters[0];
+            if (filtersObj.filter !== undefined) {
+                filtersObj.filter.forEach(function (obj) {
+                    filters.push(Filter.toObject(obj));
+                });
+            }
+        }
+        var folders = [];
+        if (xmlObj.folder !== undefined) {
+            xmlObj.folder.forEach(function (obj) {
+                folders.push(Folder.toObject(obj));
+            });
+        }
+        var mailbox = {
+            filters: filters,
+            folders: folders
+        };
+        if (xmlObj.inbox !== undefined) {
+            mailbox.inbox = BuiltinFolder.toObject(xmlObj.inbox[0]);
+        }
+        if (xmlObj.sent !== undefined) {
+            mailbox.sent = BuiltinFolder.toObject(xmlObj.sent[0]);
+        }
+        if (xmlObj.draft !== undefined) {
+            mailbox.draft = BuiltinFolder.toObject(xmlObj.draft[0]);
+        }
+        if (xmlObj.trash !== undefined) {
+            mailbox.trash = BuiltinFolder.toObject(xmlObj.trash[0]);
+        }
+        return mailbox;
+    };
+    return Mailbox;
+}());
+exports.Mailbox = Mailbox;
+var Filter = (function () {
+    function Filter() {
+    }
+    Filter.toObject = function (xmlObj) {
+        var sizeConditions = [];
+        if (xmlObj.size !== undefined) {
+            xmlObj.size.forEach(function (obj) {
+                sizeConditions.push(SizeCondition.toObject(obj));
+            });
+        }
+        var exprConditions = [];
+        if (xmlObj.expr !== undefined) {
+            xmlObj.expr.forEach(function (obj) {
+                exprConditions.push(ExprCondition.toObject(obj));
+            });
+        }
+        var attr = xmlObj.$;
+        var filter = {
+            name: attr.name,
+            folder: attr.folder,
+            operation: attr.operation,
+            sizeConditions: sizeConditions,
+            exprConditions: exprConditions
+        };
+        if (attr.status !== undefined) {
+            filter.status = attr.status;
+        }
+        return filter;
+    };
+    return Filter;
+}());
+exports.Filter = Filter;
+var SizeCondition = (function () {
+    function SizeCondition() {
+    }
+    SizeCondition.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        return {
+            content: Number(attr.content),
+            method: attr.method
+        };
+    };
+    return SizeCondition;
+}());
+exports.SizeCondition = SizeCondition;
+var ExprCondition = (function () {
+    function ExprCondition() {
+    }
+    ExprCondition.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        var condition = {
+            target: attr.target,
+            method: attr.method
+        };
+        if (attr.content !== undefined) {
+            condition.content = attr.content;
+        }
+        return condition;
+    };
+    return ExprCondition;
+}());
+exports.ExprCondition = ExprCondition;
+var BuiltinFolder = (function () {
+    function BuiltinFolder() {
+    }
+    BuiltinFolder.toObject = function (xmlObj) {
+        var mailIds = [];
+        if (xmlObj.mail !== undefined) {
+            xmlObj.mail.forEach(function (obj) {
+                mailIds.push(obj.$.id);
+            });
+        }
+        var attr = xmlObj.$;
+        return {
+            id: attr.key,
+            description: attr.description,
+            subscribe: attr.subscribe,
+            mailIds: mailIds
+        };
+    };
+    return BuiltinFolder;
+}());
+exports.BuiltinFolder = BuiltinFolder;
+var UserAccount = (function () {
+    function UserAccount() {
+    }
+    UserAccount.toObject = function (xmlObj) {
+        var accountInfoAttr = xmlObj.account_info[0].$;
+        var mailSettingAttr = xmlObj.mail_setting[0].$;
+        return {
+            accountId: accountInfoAttr.account_id,
+            userId: accountInfoAttr.user_id,
+            userAccountCode: accountInfoAttr.user_account_code,
+            userAccountName: accountInfoAttr.user_account_name,
+            mailServerId: mailSettingAttr.mail_server_id,
+            email: mailSettingAttr.email,
+            accountName: mailSettingAttr.account_name,
+            leaveServerMail: mailSettingAttr.leave_server_mail,
+            deactivateUserAccount: mailSettingAttr.deactivate_user_account
+        };
+    };
+    return UserAccount;
+}());
+exports.UserAccount = UserAccount;
+var Signature = (function () {
+    function Signature() {
+    }
+    Signature.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        return {
+            accountId: attr.account_id,
+            name: attr.name,
+            content: attr.content
+        };
+    };
+    return Signature;
+}());
+exports.Signature = Signature;
+var PersonalProfile = (function () {
+    function PersonalProfile() {
+    }
+    PersonalProfile.toObject = function (xmlObj) {
+        var fromNames = [];
+        if (xmlObj.from_name !== undefined) {
+            xmlObj.from_name.forEach(function (obj) {
+                fromNames.push({
+                    accountId: obj.$.account_id,
+                    name: obj.$.name
+                });
+            });
+        }
+        var attr = xmlObj.$;
+        var profile = {
+            showPreview: attr.show_preview,
+            sendCharset: attr.send_charset,
+            useTrash: attr.use_trash,
+            useMessageDispositionNotification: attr.use_message_disposition_notification,
+            replyMessageDispositionNotification: attr.reply_message_disposition_notification,
+            fromNames: fromNames
+        };
+        if (attr.use_status !== undefined) {
+            profile.useStatus = attr.use_status;
+        }
+        return profile;
+    };
+    return PersonalProfile;
+}());
+exports.PersonalProfile = PersonalProfile;
+var SystemProfile = (function () {
+    function SystemProfile() {
+    }
+    SystemProfile.toObject = function (xmlObj) {
+        var limit = MailSizeLimits.toObject(xmlObj.limit[0]);
+        var attr = xmlObj.$;
+        var profile = {
+            disableClient: attr.disable_client,
+            checkNewMailAtLogin: attr.check_new_mail_at_login,
+            limit: limit,
+            authority: UserAuthorities.toObject(xmlObj.authority[0])
+        };
+        if (xmlObj.auto_receive !== undefined) {
+            var autoReceiveObj = xmlObj.auto_receive[0];
+            var receiveTimes_1 = [];
+            if (autoReceiveObj.receive_time !== undefined) {
+                autoReceiveObj.receive_time.forEach(function (obj) {
+                    receiveTimes_1.push(time.toDate(obj));
+                });
+            }
+            var autoReceive = {
+                receiveTimes: receiveTimes_1
+            };
+            if (autoReceiveObj.$.interval !== undefined) {
+                autoReceive.interval = duration.toDate(autoReceiveObj.$.interval);
+            }
+            profile.autoReceive = autoReceive;
+        }
+        return profile;
+    };
+    return SystemProfile;
+}());
+exports.SystemProfile = SystemProfile;
+var MailSizeLimits = (function () {
+    function MailSizeLimits() {
+    }
+    MailSizeLimits.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        var limits = {};
+        if (attr.total_kb !== undefined) {
+            limits.totalKb = attr.total_kb;
+        }
+        if (attr.receive_kb !== undefined) {
+            limits.receiveKb = attr.receive_kb;
+        }
+        if (attr.send_kb !== undefined) {
+            limits.sendKb = attr.send_kb;
+        }
+        return limits;
+    };
+    return MailSizeLimits;
+}());
+exports.MailSizeLimits = MailSizeLimits;
+var UserAuthorities = (function () {
+    function UserAuthorities() {
+    }
+    UserAuthorities.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        return {
+            allowAccountAllPermission: attr.allow_account_all_permission,
+            allowAccountModification: attr.allow_account_modification,
+            allowStoreOnServer: attr.allow_store_on_server,
+            allowNewMailCheck: attr.allow_new_mail_check,
+            allowCollectiveReception: attr.allow_collective_reception,
+            allowSendMarkupBody: attr.allow_send_markup_body,
+            allowDisplayMarkupImage: attr.allow_display_markup_image,
+            allowMessageDispositionNotification: attr.allow_message_disposition_notification,
+            allowStatus: attr.allow_status,
+            allowHistory: attr.allow_history
+        };
+    };
+    return UserAuthorities;
+}());
+exports.UserAuthorities = UserAuthorities;
+var MailServerInfo = (function () {
+    function MailServerInfo() {
+    }
+    MailServerInfo.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        return {
+            id: attr.id,
+            serverCode: attr.server_code,
+            serverName: attr.server_name,
+            outgoing: MailServerOutgoing.toObject(xmlObj.outgoing[0]),
+            incoming: MailServerIncoming.toObject(xmlObj.incoming[0])
+        };
+    };
+    return MailServerInfo;
+}());
+exports.MailServerInfo = MailServerInfo;
+var MailServerOutgoing = (function () {
+    function MailServerOutgoing() {
+    }
+    MailServerOutgoing.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        var outgoing = {
+            serverName: attr.server_name,
+            portNumber: Number(attr.port_number)
+        };
+        if (attr.use_ssl !== undefined) {
+            outgoing.useSsl = Util.toBoolean(attr.use_ssl);
+        }
+        if (attr.encrypted_connection !== undefined) {
+            outgoing.encryptedConnection = attr.encrypted_connection;
+        }
+        if (attr.smtp_auth !== undefined) {
+            outgoing.smtpAuth = attr.smtp_auth;
+        }
+        if (attr.account_for_send !== undefined) {
+            outgoing.accountForSend = Util.toBoolean(attr.account_for_send);
+        }
+        if (attr.pop_before_smtp !== undefined) {
+            outgoing.popBeforeSmtp = Util.toBoolean(attr.pop_before_smtp);
+        }
+        if (attr.pop_before_smtp_wait_time !== undefined) {
+            outgoing.popBeforeSmtpWaitTime = Number(attr.pop_before_smtp_wait_time);
+        }
+        if (attr.timeout !== undefined) {
+            outgoing.timeout = Number(attr.timeout);
+        }
+        return outgoing;
+    };
+    return MailServerOutgoing;
+}());
+exports.MailServerOutgoing = MailServerOutgoing;
+var MailServerIncoming = (function () {
+    function MailServerIncoming() {
+    }
+    MailServerIncoming.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        var incoming = {
+            serverName: attr.server_name,
+            receiveProtocol: attr.receive_protocol,
+            portNumber: Number(attr.port_number)
+        };
+        if (attr.use_ssl !== undefined) {
+            incoming.useSsl = Util.toBoolean(attr.use_ssl);
+        }
+        if (attr.apop_auth_for_pop3 !== undefined) {
+            incoming.apopAuthForPop3 = Util.toBoolean(attr.apop_auth_for_pop3);
+        }
+        if (attr.timeout !== undefined) {
+            incoming.timeout = Number(attr.timeout);
+        }
+        return incoming;
+    };
+    return MailServerIncoming;
+}());
+exports.MailServerIncoming = MailServerIncoming;
+
+},{"../util":285,"../util/datetime":287,"../util/duration":288,"../util/time":289}],275:[function(require,module,exports){
+"use strict";
+var Util = require("../util");
+var datetime = require("../util/datetime");
+var BaseConverter = require("./base");
+var File = (function () {
+    function File() {
+    }
+    File.toObject = function (xmlObj) {
+        var attrs = xmlObj['$'];
+        var file = {};
+        file.id = attrs.id;
+        file.name = attrs.name;
+        if (attrs.hasOwnProperty('size')) {
+            file.size = Number(attrs.size);
+        }
+        if (attrs.hasOwnProperty('mime_type')) {
+            file.mimeType = attrs.mime_type;
+        }
+        return file;
+    };
+    return File;
+}());
+var Thread = (function () {
+    function Thread() {
+    }
+    Thread.toObject = function (xmlObj) {
+        var thread = {};
+        var attrs = xmlObj['$'];
+        thread.id = attrs.id;
+        thread.version = attrs.version;
+        thread.subject = attrs.subject;
+        thread.confirm = Util.toBoolean(attrs.confirm);
+        if (attrs.hasOwnProperty('snapshot')) {
+            thread.snapshot = datetime.toDate(attrs.snapshot);
+        }
+        if (attrs.hasOwnProperty('is_draft')) {
+            thread.isDraft = Util.toBoolean(attrs.is_draft);
+        }
+        thread.addressees = [];
+        if (Array.isArray(xmlObj.addressee)) {
+            xmlObj.addressee.forEach(function (obj) {
+                var attrs = obj['$'];
+                var addressee = {};
+                if (attrs.hasOwnProperty('user_id')) {
+                    addressee.userId = attrs.user_id;
+                }
+                addressee.name = attrs.name;
+                addressee.deleted = Util.toBoolean(attrs.deleted);
+                if (attrs.hasOwnProperty('confirmed')) {
+                    addressee.confirmed = Util.toBoolean(attrs.confirmed);
+                }
+                thread.addressees.push(addressee);
+            });
+        }
+        thread.content = {};
+        var contentObj = xmlObj.content[0];
+        var contentAttrs = contentObj['$'];
+        thread.content.body = contentAttrs.body;
+        if (contentAttrs.hasOwnProperty('html_body')) {
+            thread.content.htmlBody = contentAttrs.html_body;
+        }
+        thread.content.files = [];
+        if (Array.isArray(contentObj.file)) {
+            contentObj.file.forEach(function (obj) {
+                thread.content.files.push(File.toObject(obj));
+            });
+        }
+        thread.follows = [];
+        if (Array.isArray(xmlObj.follow)) {
+            xmlObj.follow.forEach(function (obj) {
+                var attrs = obj['$'];
+                thread.follows.push({
+                    id: attrs.id,
+                    number: attrs.number
+                });
+            });
+        }
+        thread.folders = [];
+        xmlObj.folder.forEach(function (obj) {
+            var attrs = obj['$'];
+            thread.folders.push(attrs.id);
+        });
+        if (Array.isArray(xmlObj.creator)) {
+            thread.creator = BaseConverter.ChangeLog.toObject(xmlObj.creator[0]);
+        }
+        if (Array.isArray(xmlObj.modifier)) {
+            thread.modifier = BaseConverter.ChangeLog.toObject(xmlObj.modifier[0]);
+        }
+        return thread;
+    };
+    return Thread;
+}());
+exports.Thread = Thread;
+var Follow = (function () {
+    function Follow() {
+    }
+    Follow.toObject = function (xmlObj) {
+        var follow = {};
+        var attrs = xmlObj['$'];
+        follow.id = attrs.id;
+        follow.number = attrs.number;
+        follow.text = attrs.text;
+        if (attrs.hasOwnProperty('html_text')) {
+            follow.htmlText = attrs.html_text;
+        }
+        if (Array.isArray(xmlObj.creator)) {
+            follow.creator = BaseConverter.ChangeLog.toObject(xmlObj.creator[0]);
+        }
+        follow.files = [];
+        if (Array.isArray(xmlObj.file)) {
+            xmlObj.file.forEach(function (obj) {
+                follow.files.push(File.toObject(obj));
+            });
+        }
+        return follow;
+    };
+    return Follow;
+}());
+exports.Follow = Follow;
+var Folder = (function () {
+    function Folder() {
+    }
+    Folder.toObject = function (xmlObj) {
+        var folder = {};
+        var attrs = xmlObj['$'];
+        folder.id = attrs.id;
+        folder.version = attrs.version;
+        folder.name = attrs.name;
+        folder.description = attrs.description;
+        folder.order = attrs.order;
+        folder.parent = attrs.parent_folder_id;
+        folder.folderType = attrs.folder_type;
+        folder.children = [];
+        if (Array.isArray(xmlObj.folder)) {
+            xmlObj.folder.forEach(function (obj) {
+                folder.children.push(obj['$'].id);
+            });
+        }
+        folder.threads = [];
+        if (Array.isArray(xmlObj.thread)) {
+            xmlObj.thread.forEach(function (obj) {
+                folder.threads.push(obj['$'].id);
+            });
+        }
+        return folder;
+    };
+    return Folder;
+}());
+exports.Folder = Folder;
+
+},{"../util":285,"../util/datetime":287,"./base":271}],276:[function(require,module,exports){
+"use strict";
+var util = require("../util");
+var datetime = require("../util/datetime");
+var NotificationItemVersionResult = (function () {
+    function NotificationItemVersionResult() {
+    }
+    NotificationItemVersionResult.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        return {
+            notificationId: NotificationId.toObject(xmlObj.notification_id[0]),
+            version: attr.version,
+            operation: attr.operation
+        };
+    };
+    return NotificationItemVersionResult;
+}());
+exports.NotificationItemVersionResult = NotificationItemVersionResult;
+var NotificationId = (function () {
+    function NotificationId() {
+    }
+    NotificationId.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        return {
+            moduleId: attr.module_id,
+            item: attr.item
+        };
+    };
+    return NotificationId;
+}());
+exports.NotificationId = NotificationId;
+var Notification = (function () {
+    function Notification() {
+    }
+    Notification.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        var notification = {
+            moduleId: attr.module_id,
+            item: attr.item,
+            status: attr.status,
+            isHistory: util.toBoolean(attr.is_history)
+        };
+        if (attr.read_datetime !== undefined) {
+            notification.readDatetime = datetime.toDate(attr.read_datetime);
+        }
+        if (attr.receive_datetime !== undefined) {
+            notification.receiveDatetime = datetime.toDate(attr.receive_datetime);
+        }
+        if (attr.subject !== undefined) {
+            notification.subject = attr.subject;
+        }
+        if (attr.subject_url !== undefined) {
+            notification.subjectUrl = attr.subject_url;
+        }
+        if (attr.subject_icon !== undefined) {
+            notification.subjectIcon = attr.subject_icon;
+        }
+        if (attr.abstract !== undefined) {
+            notification.abstract = attr.abstract;
+        }
+        if (attr.abstract_url !== undefined) {
+            notification.abstractUrl = attr.abstract_url;
+        }
+        if (attr.abstract_icon !== undefined) {
+            notification.abstractIcon = attr.abstract_icon;
+        }
+        if (attr.sender_name !== undefined) {
+            notification.senderName = attr.sender_name;
+        }
+        if (attr.sender_id !== undefined) {
+            notification.senderId = attr.senderId;
+        }
+        if (attr.sender_url !== undefined) {
+            notification.senderUrl = attr.sender_url;
+        }
+        if (attr.attached !== undefined) {
+            notification.attached = util.toBoolean(attr.attached);
+        }
+        if (attr.version !== undefined) {
+            notification.version = attr.version;
+        }
+        return notification;
+    };
+    return Notification;
+}());
+exports.Notification = Notification;
+var PersonalProfile = (function () {
+    function PersonalProfile() {
+    }
+    PersonalProfile.toObject = function (xmlObj) {
+        var attr = xmlObj.$;
+        var profile = {};
+        if (attr.save_notification_duration !== undefined) {
+            profile.saveNotificationDuration = Number(attr.save_notification_duration);
+        }
+        if (attr.save_notification_history_duration !== undefined) {
+            profile.saveNotificationHistoryDuration = Number(attr.save_notification_history_duration);
+        }
+        return profile;
+    };
+    return PersonalProfile;
+}());
+exports.PersonalProfile = PersonalProfile;
+
+},{"../util":285,"../util/datetime":287}],277:[function(require,module,exports){
+"use strict";
+var report = require("../type/report");
+var Util = require("../util");
+var BaseConverter = require("./base");
+var Report = (function () {
+    function Report() {
+    }
+    Report.toObject = function (obj) {
+        var children = obj.$$;
+        var items = [];
+        var itemsObj = children.filter(function (obj) {
+            return obj['#name'] === 'items';
+        })[0];
+        if (itemsObj.$$ !== undefined) {
+            itemsObj.$$.forEach(function (obj) {
+                items.push(Item.toObject(obj));
+            });
+        }
+        var members = [];
+        var membersObj = children.filter(function (obj) {
+            return obj['#name'] === 'members';
+        })[0];
+        if (membersObj.$$ !== undefined) {
+            membersObj.$$.forEach(function (obj) {
+                members.push(User.toObject(obj));
+            });
+        }
+        var notifyUsers = [];
+        var notifyUsersObj = children.filter(function (obj) {
+            return obj['#name'] === 'notifyusers';
+        })[0];
+        if (notifyUsersObj.$$ !== undefined) {
+            notifyUsersObj.$$.forEach(function (obj) {
+                notifyUsers.push(User.toObject(obj));
+            });
+        }
+        var maintainers = [];
+        var maintainersObj = children.filter(function (obj) {
+            return obj['#name'] === 'maintainers';
+        })[0];
+        if (maintainersObj.$$ !== undefined) {
+            maintainersObj.$$.forEach(function (obj) {
+                maintainers.push(User.toObject(obj));
+            });
+        }
+        var creatorObj = children.filter(function (obj) {
+            return obj['#name'] === 'creator';
+        })[0];
+        var creator = BaseConverter.ChangeLog.toObjectFromXMLObject(creatorObj);
+        var modifierObj = children.filter(function (obj) {
+            return obj['#name'] === 'modifier';
+        })[0];
+        var modifier = BaseConverter.ChangeLog.toObjectFromXMLObject(modifierObj);
+        var attr = obj.$;
+        return {
+            id: attr.id,
+            subject: attr.subject,
+            isDraft: attr.is_draft === undefined ? false : Util.toBoolean(attr.is_draft),
+            items: items,
+            members: members,
+            notifyUsers: notifyUsers,
+            maintainers: maintainers,
+            creator: creator,
+            modifier: modifier
+        };
+    };
+    return Report;
+}());
+exports.Report = Report;
+var Item = (function () {
+    function Item() {
+    }
+    Item.toObject = function (obj) {
+        var tagName = obj['#name'];
+        if (tagName === 'item') {
+            return ValueItem.toObject(obj);
+        }
+        else if (tagName === 'files_item') {
+            return FilesItem.toObject(obj);
+        }
+        else if (tagName === 'blank_item') {
+            return new report.BlankItemType();
+        }
+        throw new Error("Unknown item: " + tagName);
+    };
+    return Item;
+}());
+exports.Item = Item;
+var ValueItem = (function () {
+    function ValueItem() {
+    }
+    ValueItem.toObject = function (obj) {
+        var attr = obj.$;
+        return new report.ValueItemType(attr.name, attr.value, attr.front, attr.back);
+    };
+    return ValueItem;
+}());
+exports.ValueItem = ValueItem;
+var FilesItem = (function () {
+    function FilesItem() {
+    }
+    FilesItem.toObject = function (obj) {
+        var attr = obj.$;
+        var files = [];
+        if (obj.$$ !== undefined) {
+            obj.$$.forEach(function (obj) {
+                var attr = obj.$;
+                var file = {
+                    name: attr.name,
+                    fileId: attr.file_id
+                };
+                if (attr.size !== undefined) {
+                    file.size = attr.size;
+                }
+                if (attr.mime_type !== undefined) {
+                    file.mimeType = attr.mime_type;
+                }
+                files.push(file);
+            });
+        }
+        return new report.FilesItemType(attr.name, Util.toBoolean(attr.inline), files);
+    };
+    return FilesItem;
+}());
+exports.FilesItem = FilesItem;
+var User = (function () {
+    function User() {
+    }
+    User.toObject = function (obj) {
+        var attr = obj.$;
+        return {
+            id: attr.id,
+            name: attr.name
+        };
+    };
+    return User;
+}());
+exports.User = User;
+var Follow = (function () {
+    function Follow() {
+    }
+    Follow.toObject = function (obj) {
+        var files = [];
+        if (obj.file !== undefined) {
+            obj.file.forEach(function (obj) {
+                files.push(File.toObject(obj));
+            });
+        }
+        var attr = obj.$;
+        var follow = {
+            id: attr.id,
+            number: attr.number,
+            text: attr.text,
+            creator: BaseConverter.ChangeLog.toObject(obj.creator[0]),
+            files: files
+        };
+        if (attr.html_text !== undefined) {
+            follow.htmlText = attr.html_text;
+        }
+        return follow;
+    };
+    return Follow;
+}());
+exports.Follow = Follow;
+var File = (function () {
+    function File() {
+    }
+    File.toObject = function (obj) {
+        var attr = obj.$;
+        var file = {
+            name: attr.name,
+            fileId: attr.file_id
+        };
+        if (attr.size !== undefined) {
+            file.size = attr.size;
+        }
+        if (attr.mime_type !== undefined) {
+            file.mimeType = attr.mime_type;
+        }
+        return file;
+    };
+    return File;
+}());
+exports.File = File;
+
+},{"../type/report":283,"../util":285,"./base":271}],278:[function(require,module,exports){
+"use strict";
+var Util = require("../util");
+var date = require("../util/date");
+var time = require("../util/time");
+var datetime = require("../util/datetime");
+var BaseConverter = require("./base");
+var Event = (function () {
+    function Event() {
+    }
+    Event.toObject = function (xmlObj) {
+        var attrs = xmlObj.$;
+        var event = {
+            id: attrs.id,
+            eventType: attrs.event_type,
+            version: attrs.version,
+            publicType: attrs.public_type,
+            plan: attrs.plan,
+            detail: attrs.detail,
+            description: attrs.description,
+            timezone: attrs.timezone,
+            endTimezone: attrs.end_timezone,
+        };
+        if (attrs.allday !== undefined) {
+            event.allday = Util.toBoolean(attrs.allday);
+        }
+        if (attrs.start_only !== undefined) {
+            event.startOnly = Util.toBoolean(attrs.start_only);
+        }
+        if (attrs.hidden_private !== undefined) {
+            event.hiddenPrivate = Util.toBoolean(attrs.hidden_private);
+        }
+        if (attrs.facility_using_purpose !== undefined) {
+            event.facilityUsingPurpose = Util.toBoolean(attrs.facility_using_purpose);
+        }
+        event.members = {
+            users: [],
+            organizations: [],
+            facilities: []
+        };
+        if (xmlObj.members !== undefined) {
+            var members = xmlObj.members[0];
+            if (members.member !== undefined) {
+                members.member.forEach(function (obj) {
+                    if (obj.user !== undefined) {
+                        var user = obj.user[0];
+                        event.members.users.push({
+                            id: user.$.id,
+                            order: user.$.order
+                        });
+                    }
+                    if (obj.organization !== undefined) {
+                        var organization = obj.organization[0];
+                        event.members.organizations.push({
+                            id: organization.$.id,
+                            order: organization.$.order
+                        });
+                    }
+                    if (obj.facility !== undefined) {
+                        var facility = obj.facility[0];
+                        event.members.facilities.push({
+                            id: facility.$.id,
+                            order: facility.$.order
+                        });
+                    }
+                });
+            }
+        }
+        event.observers = {
+            users: [],
+            organizations: [],
+            roles: []
+        };
+        if (xmlObj.observers !== undefined) {
+            var observers = xmlObj.observers[0];
+            if (observers.observer !== undefined) {
+                observers.observer.forEach(function (obj) {
+                    if (obj.user !== undefined) {
+                        var user = obj.user[0];
+                        event.observers.users.push({
+                            id: user.$.id,
+                            order: user.$.order
+                        });
+                    }
+                    if (obj.organization !== undefined) {
+                        var organization = obj.organization[0];
+                        event.observers.organizations.push({
+                            id: organization.$.id,
+                            order: organization.$.order
+                        });
+                    }
+                    if (obj.role !== undefined) {
+                        var role = obj.role[0];
+                        event.observers.roles.push({
+                            id: role.$.id,
+                            order: role.$.order
+                        });
+                    }
+                });
+            }
+        }
+        if (xmlObj.customer !== undefined) {
+            var customerAttrs = xmlObj.customer[0].$;
+            event.customer = {
+                name: customerAttrs.name,
+                zipcode: customerAttrs.zipcode,
+                address: customerAttrs.address,
+                map: customerAttrs.map,
+                route: customerAttrs.route,
+                routeTime: customerAttrs.route_time,
+                routeFare: customerAttrs.route_fare,
+                phone: customerAttrs.phone
+            };
+        }
+        if (xmlObj.repeat_info !== undefined) {
+            var repeatInfoObj = xmlObj.repeat_info[0];
+            var conditionObj = repeatInfoObj.condition[0];
+            var condition = {
+                type: conditionObj.$.type,
+                startDate: date.toDate(conditionObj.$.start_date)
+            };
+            if (conditionObj.$.end_date !== undefined) {
+                condition.endDate = date.toDate(conditionObj.$.end_date);
+            }
+            if (conditionObj.$.start_time !== undefined) {
+                condition.startTime = time.toDate(conditionObj.$.start_time);
+            }
+            if (conditionObj.$.end_time !== undefined) {
+                condition.endTime = time.toDate(conditionObj.$.end_time);
+            }
+            if (conditionObj.$.day !== undefined) {
+                condition.day = Number(conditionObj.$.day);
+            }
+            if (conditionObj.$.week !== undefined) {
+                condition.week = Number(conditionObj.$.week);
+            }
+            var exclusiveDatetimes_1 = [];
+            if (repeatInfoObj.exclusive_datetimes !== undefined) {
+                var exclusiveDatetimesObj = repeatInfoObj.exclusive_datetimes[0];
+                if (exclusiveDatetimesObj.exclusive_datetime !== undefined) {
+                    exclusiveDatetimesObj.exclusive_datetime.forEach(function (obj) {
+                        exclusiveDatetimes_1.push({
+                            start: datetime.toDate(obj.$.start),
+                            end: datetime.toDate(obj.$.end)
+                        });
+                    });
+                }
+            }
+            event.repeatInfo = {
+                condition: condition,
+                exclusiveDatetimes: exclusiveDatetimes_1
+            };
+        }
+        if (xmlObj.when !== undefined) {
+            var whenObj = xmlObj.when[0];
+            var datetimes_1 = [];
+            if (whenObj.datetime !== undefined) {
+                whenObj.datetime.forEach(function (obj) {
+                    var eventDateTime = {
+                        start: datetime.toDate(obj.$.start),
+                        facilityCode: obj.$.facility_code
+                    };
+                    if (obj.$.end !== undefined) {
+                        eventDateTime.end = datetime.toDate(obj.$.end);
+                    }
+                    datetimes_1.push(eventDateTime);
+                });
+            }
+            var dates_1 = [];
+            if (whenObj.date !== undefined) {
+                whenObj.date.forEach(function (obj) {
+                    var eventDate = {
+                        start: datetime.toDate(obj.$.start)
+                    };
+                    if (obj.$.end !== undefined) {
+                        eventDate.end = datetime.toDate(obj.$.end);
+                    }
+                    dates_1.push(eventDate);
+                });
+            }
+            event.when = {
+                datetimes: datetimes_1,
+                dates: dates_1
+            };
+        }
+        event.follows = [];
+        if (xmlObj.follows !== undefined) {
+            var followsObj = xmlObj.follows[0];
+            followsObj.follow.forEach(function (obj) {
+                var creator = BaseConverter.ChangeLog.toObject(obj.creator[0]);
+                event.follows.push({
+                    id: obj.$.id,
+                    version: obj.$.version,
+                    text: obj.$.text,
+                    creator: creator
+                });
+            });
+        }
+        event.files = [];
+        if (xmlObj.file !== undefined) {
+            xmlObj.file.forEach(function (obj) {
+                event.files.push({
+                    id: obj.$.id,
+                    name: obj.$.name,
+                    size: obj.$.size,
+                    mimeType: obj.$.mime_type
+                });
+            });
+        }
+        event.removeFileIds = [];
+        if (xmlObj.remove_file_id !== undefined) {
+            xmlObj.remove_file_id.forEach(function (id) {
+                event.removeFileIds.push(id);
+            });
+        }
+        return event;
+    };
+    return Event;
+}());
+exports.Event = Event;
+var FreeTime = (function () {
+    function FreeTime() {
+    }
+    FreeTime.toObject = function (xmlObj) {
+        var attrs = xmlObj.$;
+        var freeTime = {
+            start: datetime.toDate(attrs.start),
+            end: datetime.toDate(attrs.end)
+        };
+        if (attrs.facility_id !== undefined) {
+            freeTime.facilityId = attrs.facility_id;
+        }
+        return freeTime;
+    };
+    return FreeTime;
+}());
+exports.FreeTime = FreeTime;
+var Facility = (function () {
+    function Facility() {
+    }
+    Facility.toObject = function (xmlObj) {
+        var attrs = xmlObj.$;
+        var facility = {
+            key: attrs.key,
+            name: attrs.name,
+            facilityCode: attrs.facility_code,
+            version: attrs.version
+        };
+        if (attrs.order !== undefined) {
+            facility.order = Number(attrs.order);
+        }
+        if (attrs.description !== undefined) {
+            facility.description = attrs.description;
+        }
+        if (attrs.belong_facility_group !== undefined) {
+            facility.belongFacilityGroup = attrs.belong_facility_group;
+        }
+        return facility;
+    };
+    return Facility;
+}());
+exports.Facility = Facility;
+var FacilityGroup = (function () {
+    function FacilityGroup() {
+    }
+    FacilityGroup.toObject = function (xmlObj) {
+        var attrs = xmlObj.$;
+        var facilityGroup = {
+            id: attrs.id,
+            name: attrs.name,
+            version: attrs.version,
+        };
+        if (attrs.order !== undefined) {
+            facilityGroup.order = Number(attrs.order);
+        }
+        if (attrs.parent_facility_group !== undefined) {
+            facilityGroup.parentFacilityGroup = attrs.parent_facility_group;
+        }
+        facilityGroup.children = [];
+        if (xmlObj.facility_group !== undefined) {
+            xmlObj.facility_group.forEach(function (obj) {
+                facilityGroup.children.push(obj.$.id);
+            });
+        }
+        facilityGroup.facilities = [];
+        if (xmlObj.facility !== undefined) {
+            xmlObj.facility.forEach(function (obj) {
+                facilityGroup.facilities.push(obj.$.id);
+            });
+        }
+        return facilityGroup;
+    };
+    return FacilityGroup;
+}());
+exports.FacilityGroup = FacilityGroup;
+var FacilityProfile = (function () {
+    function FacilityProfile() {
+    }
+    FacilityProfile.toObject = function (xmlObj) {
+        var attrs = xmlObj.$;
+        return {
+            key: attrs.key,
+            approvalRequired: Util.toBoolean(attrs.approval_required)
+        };
+    };
+    return FacilityProfile;
+}());
+exports.FacilityProfile = FacilityProfile;
+var PersonalProfile = (function () {
+    function PersonalProfile() {
+    }
+    PersonalProfile.toObject = function (xmlObj) {
+        var attrs = xmlObj.$;
+        var profile = {};
+        if (attrs.start_time_in_dayview !== undefined) {
+            profile.startTimeInDayView = Number(attrs.start_time_in_dayview);
+        }
+        if (attrs.end_time_in_dayview !== undefined) {
+            profile.endTimeInDayView = Number(attrs.end_time_in_dayview);
+        }
+        if (attrs.show_sunday !== undefined) {
+            profile.showSunday = Util.toBoolean(attrs.show_sunday);
+        }
+        if (attrs.show_end_time !== undefined) {
+            profile.showEndTime = Util.toBoolean(attrs.show_end_time);
+        }
+        if (attrs.plan_menu !== undefined) {
+            profile.planMenu = attrs.plan_menu;
+        }
+        if (attrs.notify_mail !== undefined) {
+            profile.notifyMail = Util.toBoolean(attrs.notify_mail);
+        }
+        if (attrs.is_user_address_mail !== undefined) {
+            profile.isUserAddressMail = Util.toBoolean(attrs.is_user_address_mail);
+        }
+        if (attrs.notify_mail_address !== undefined) {
+            profile.notifyMailAddress = attrs.notify_mail_address;
+        }
+        return profile;
+    };
+    return PersonalProfile;
+}());
+exports.PersonalProfile = PersonalProfile;
+var SystemProfile = (function () {
+    function SystemProfile() {
+    }
+    SystemProfile.toObject = function (xmlObj) {
+        var attrs = xmlObj.$;
+        var profile = {};
+        if (attrs.plan_menu !== undefined) {
+            profile.planMenu = attrs.plan_menu;
+        }
+        if (attrs.event_reserve_unit !== undefined) {
+            profile.eventReserveUnit = Number(attrs.event_reserve_unit);
+        }
+        if (attrs.event_repeat_max_time !== undefined) {
+            profile.eventRepeatMaxTime = Number(attrs.event_repeat_max_time);
+        }
+        if (attrs.register_private_event !== undefined) {
+            profile.registerPrivateEvent = Util.toBoolean(attrs.register_private_event);
+        }
+        if (attrs.show_memo !== undefined) {
+            profile.showMemo = Util.toBoolean(attrs.show_memo);
+        }
+        if (attrs.show_private_event !== undefined) {
+            profile.showPrivateEvent = Util.toBoolean(attrs.show_private_event);
+        }
+        if (attrs.managed_notify !== undefined) {
+            profile.managedNotify = Util.toBoolean(attrs.managed_notify);
+        }
+        if (attrs.show_group_event !== undefined) {
+            profile.showGroupEvent = Util.toBoolean(attrs.show_group_event);
+        }
+        if (attrs.show_holiday !== undefined) {
+            profile.showHoliday = Util.toBoolean(attrs.show_holiday);
+        }
+        if (attrs.allow_file_attachment !== undefined) {
+            profile.allowFileAttachment = Util.toBoolean(attrs.allow_file_attachment);
+        }
+        if (attrs.allow_attendance_check !== undefined) {
+            profile.allowAttendanceCheck = Util.toBoolean(attrs.allow_attendance_check);
+        }
+        if (attrs.visibility_default !== undefined) {
+            profile.visibilityDefault = Number(attrs.visibility_default);
+        }
+        return profile;
+    };
+    return SystemProfile;
+}());
+exports.SystemProfile = SystemProfile;
+var ModifyEventType = (function () {
+    function ModifyEventType() {
+    }
+    ModifyEventType.toParameterObject = function (event) {
+        var attrs = {
+            id: event.id,
+            event_type: event.eventType,
+            version: 'dummy',
+        };
+        if (event.publicType !== undefined) {
+            attrs.public_type = event.publicType;
+        }
+        if (event.plan !== undefined) {
+            attrs.plan = event.plan;
+        }
+        if (event.detail !== undefined) {
+            attrs.detail = event.detail;
+        }
+        if (event.description !== undefined) {
+            attrs.description = event.description;
+        }
+        if (event.timezone !== undefined) {
+            attrs.timezone = event.timezone;
+        }
+        if (event.endTimezone !== undefined) {
+            attrs.end_timezone = event.endTimezone;
+        }
+        if (event.allDay !== undefined) {
+            attrs.allday = event.allDay;
+        }
+        if (event.startOnly !== undefined) {
+            attrs.start_only = event.startOnly;
+        }
+        if (event.hiddenPrivate !== undefined) {
+            attrs.hidden_private = event.hiddenPrivate;
+        }
+        if (event.facilityUsingPurpose !== undefined) {
+            attrs.facility_using_purpose = event.facilityUsingPurpose;
+        }
+        var scheduleEvent = [{
+                _attr: attrs
+            }];
+        if (event.members !== undefined) {
+            var members_1 = [];
+            event.members.users.forEach(function (user) {
+                var attrs = {
+                    id: user.id
+                };
+                if (user.order !== undefined) {
+                    attrs.order = user.order;
+                }
+                members_1.push({
+                    member: [{
+                            user: {
+                                _attr: attrs
+                            }
+                        }]
+                });
+            });
+            event.members.organizations.forEach(function (organization) {
+                var attrs = {
+                    id: organization.id
+                };
+                if (organization.order !== undefined) {
+                    attrs.order = organization.order;
+                }
+                members_1.push({
+                    member: [{
+                            organization: {
+                                _attr: attrs
+                            }
+                        }]
+                });
+            });
+            event.members.facilities.forEach(function (facility) {
+                var attrs = {
+                    id: facility.id
+                };
+                if (facility.order !== undefined) {
+                    attrs.order = facility.order;
+                }
+                members_1.push({
+                    member: [{
+                            facility: {
+                                _attr: attrs
+                            }
+                        }]
+                });
+            });
+            scheduleEvent.push({ members: members_1 });
+        }
+        if (event.observers !== undefined) {
+            var observers_1 = [];
+            event.observers.users.forEach(function (user) {
+                var attrs = {
+                    id: user.id
+                };
+                if (user.order !== undefined) {
+                    attrs.order = user.order;
+                }
+                observers_1.push({
+                    observer: [{
+                            user: {
+                                _attr: attrs
+                            }
+                        }]
+                });
+            });
+            event.observers.organizations.forEach(function (organization) {
+                var attrs = {
+                    id: organization.id
+                };
+                if (organization.order !== undefined) {
+                    attrs.order = organization.order;
+                }
+                observers_1.push({
+                    observer: [{
+                            organization: {
+                                _attr: attrs
+                            }
+                        }]
+                });
+            });
+            event.observers.roles.forEach(function (role) {
+                var attrs = {
+                    id: role.id
+                };
+                if (role.order !== undefined) {
+                    attrs.order = role.order;
+                }
+                observers_1.push({
+                    observer: [{
+                            role: {
+                                _attr: attrs
+                            }
+                        }]
+                });
+            });
+            scheduleEvent.push({ observers: observers_1 });
+        }
+        if (event.customer !== undefined) {
+            var attrs_1 = {};
+            if (event.customer.name !== undefined) {
+                attrs_1.name = event.customer.name;
+            }
+            if (event.customer.zipcode !== undefined) {
+                attrs_1.zipcode = event.customer.zipcode;
+            }
+            if (event.customer.address !== undefined) {
+                attrs_1.address = event.customer.address;
+            }
+            if (event.customer.map !== undefined) {
+                attrs_1.map = event.customer.map;
+            }
+            if (event.customer.route !== undefined) {
+                attrs_1.route = event.customer.route;
+            }
+            if (event.customer.routeTime !== undefined) {
+                attrs_1.route_time = event.customer.routeTime;
+            }
+            if (event.customer.routeFare !== undefined) {
+                attrs_1.route_faire = event.customer.routeFare;
+            }
+            if (event.customer.phone !== undefined) {
+                attrs_1.phone = event.customer.phone;
+            }
+            scheduleEvent.push({ customer: { _attr: attrs_1 } });
+        }
+        if (event.repeatInfo !== undefined) {
+            var attrs_2 = {
+                type: event.repeatInfo.condition.type,
+                start_date: date.toString(event.repeatInfo.condition.startDate)
+            };
+            if (event.repeatInfo.condition.endDate !== undefined) {
+                attrs_2.end_date = date.toString(event.repeatInfo.condition.endDate);
+            }
+            if (event.repeatInfo.condition.startTime !== undefined) {
+                attrs_2.start_time = time.toString(event.repeatInfo.condition.startTime);
+            }
+            if (event.repeatInfo.condition.endTime !== undefined) {
+                attrs_2.end_time = time.toString(event.repeatInfo.condition.endTime);
+            }
+            if (event.repeatInfo.condition.day !== undefined) {
+                attrs_2.day = event.repeatInfo.condition.day;
+            }
+            if (event.repeatInfo.condition.week !== undefined) {
+                attrs_2.week = event.repeatInfo.condition.week;
+            }
+            var condition = {
+                _attr: attrs_2
+            };
+            var repeatInfo = [{
+                    condition: condition
+                }];
+            if (event.repeatInfo.exclusiveDatetimes !== undefined) {
+                var exclusiveDatetimes_2 = [];
+                event.repeatInfo.exclusiveDatetimes.forEach(function (exclusiveDatetime) {
+                    exclusiveDatetimes_2.push({
+                        exclusive_datetime: {
+                            _attr: {
+                                start: datetime.toString(exclusiveDatetime.start),
+                                end: datetime.toString(exclusiveDatetime.end)
+                            }
+                        }
+                    });
+                });
+                repeatInfo.push({ exclusive_datetimes: exclusiveDatetimes_2 });
+            }
+            scheduleEvent.push({ repeat_info: repeatInfo });
+        }
+        if (event.when !== undefined) {
+            var when_1 = [];
+            event.when.datetimes.forEach(function (dt) {
+                var attrs = {
+                    start: datetime.toString(dt.start)
+                };
+                if (dt.end !== undefined) {
+                    attrs.end = datetime.toString(dt.end);
+                }
+                if (dt.facilityCode !== undefined) {
+                    attrs.facility_code = dt.facilityCode;
+                }
+                when_1.push({
+                    datetime: {
+                        _attr: attrs
+                    }
+                });
+            });
+            event.when.dates.forEach(function (d) {
+                var attrs = {
+                    start: date.toString(d.start)
+                };
+                if (d.end !== undefined) {
+                    attrs.end = date.toString(d.end);
+                }
+                when_1.push({
+                    date: {
+                        _attr: attrs
+                    }
+                });
+            });
+            scheduleEvent.push({ when: when_1 });
+        }
+        return scheduleEvent;
+    };
+    return ModifyEventType;
+}());
+exports.ModifyEventType = ModifyEventType;
+var ModifyRepeatEventsResult = (function () {
+    function ModifyRepeatEventsResult() {
+    }
+    ModifyRepeatEventsResult.toObject = function (xmlObj) {
+        var original = Event.toObject(xmlObj.original[0]);
+        var modified = Event.toObject(xmlObj.modified[0]);
+        return {
+            original: original,
+            modified: modified
+        };
+    };
+    return ModifyRepeatEventsResult;
+}());
+exports.ModifyRepeatEventsResult = ModifyRepeatEventsResult;
+
+},{"../util":285,"../util/date":286,"../util/datetime":287,"../util/time":289,"./base":271}],279:[function(require,module,exports){
+"use strict";
+var StarData = (function () {
+    function StarData() {
+    }
+    StarData.toObject = function (xmlObj) {
+        var attrs = xmlObj['$'];
+        return {
+            id: attrs['id'],
+            moduleId: attrs['module_id'],
+            item: attrs['item'],
+            subject: attrs['subject'],
+            version: attrs['version']
+        };
+    };
+    return StarData;
+}());
+exports.StarData = StarData;
+
+},{}],280:[function(require,module,exports){
+"use strict";
+var workflow = require("../type/workflow");
+var datetime = require("../util/datetime");
+var Util = require("../util");
+var Application = (function () {
+    function Application() {
+    }
+    Application.toObject = function (obj) {
+        var children = obj.$$;
+        var applicantObj = children.filter(function (obj) {
+            return obj['#name'] === 'applicant';
+        })[0];
+        var applicant = Applicant.toObject(applicantObj);
+        var items = [];
+        var itemsObj = children.filter(function (obj) {
+            return obj['#name'] === 'items';
+        })[0];
+        if (itemsObj.$$ !== undefined) {
+            itemsObj.$$.forEach(function (obj) {
+                items.push(Item.toObject(obj));
+            });
+        }
+        var steps = [];
+        var stepsObj = children.filter(function (obj) {
+            return obj['#name'] === 'steps';
+        })[0];
+        stepsObj.$$.forEach(function (obj) {
+            steps.push(Step.toObject(obj));
+        });
+        var operations = [];
+        var operationObjList = children.filter(function (obj) {
+            return obj['#name'] === 'operation';
+        });
+        operationObjList.forEach(function (obj) {
+            operations.push(Operation.toObject(obj));
+        });
+        var folders = [];
+        var folderObjList = children.filter(function (obj) {
+            return obj['#name'] === 'folder';
+        });
+        var folderTypeObjList = children.filter(function (obj) {
+            return obj['#name'] === 'folder_type';
+        });
+        folderObjList.forEach(function (obj, index) {
+            var type = folderTypeObjList[index]._;
+            folders.push(Folder.toObject(obj, type));
+        });
+        var attr = obj.$;
+        var application = {
+            id: attr.id,
+            version: attr.version,
+            status: attr.status,
+            date: datetime.toDate(attr.date),
+            processingStep: attr.processing_step,
+            applicant: applicant,
+            items: items,
+            steps: steps,
+            operations: operations,
+            folders: folders
+        };
+        if (attr.name !== undefined) {
+            application.name = attr.name;
+        }
+        if (attr.number !== undefined) {
+            application.number = attr.number;
+        }
+        if (attr.urgent !== undefined) {
+            application.urgent = Util.toBoolean(attr.urgent);
+        }
+        if (attr.status_type !== undefined) {
+            application.statusType = attr.status_type;
+        }
+        return application;
+    };
+    return Application;
+}());
+exports.Application = Application;
+var Applicant = (function () {
+    function Applicant() {
+    }
+    Applicant.toObject = function (obj) {
+        var attr = obj.$;
+        var applicant = {
+            name: attr.name
+        };
+        if (attr.id !== undefined) {
+            applicant.id = attr.id;
+        }
+        var proxies = [];
+        if (obj.$$ !== undefined) {
+            proxies = obj.$$.filter(function (obj) {
+                return obj['#name'] === 'proxy';
+            });
+        }
+        if (proxies.length > 0) {
+            var proxyObj = proxies[0];
+            applicant.proxy = Proxy.fromApplicantToObject(proxyObj);
+        }
+        return applicant;
+    };
+    return Applicant;
+}());
+exports.Applicant = Applicant;
+var Proxy = (function () {
+    function Proxy() {
+    }
+    Proxy.fromApplicantToObject = function (obj) {
+        var attr = obj.$;
+        var proxy = {
+            name: attr.name
+        };
+        if (attr.id !== undefined) {
+            proxy.id = attr.id;
+        }
+        return proxy;
+    };
+    Proxy.fromProcessorToObject = function (obj) {
+        var attr = obj.$;
+        var proxy = {
+            name: attr.processor_name
+        };
+        if (attr.id !== undefined) {
+            proxy.id = attr.id;
+        }
+        return proxy;
+    };
+    return Proxy;
+}());
+exports.Proxy = Proxy;
+var Item = (function () {
+    function Item() {
+    }
+    Item.toObject = function (obj) {
+        var tagName = obj['#name'];
+        if (tagName === 'item') {
+            return ValueItem.toObject(obj);
+        }
+        else if (tagName === 'files_item') {
+            return FilesItem.toObject(obj);
+        }
+        else if (tagName === 'blank_item') {
+            return new workflow.BlankItemType();
+        }
+        throw new Error("Unknown item: " + tagName);
+    };
+    return Item;
+}());
+exports.Item = Item;
+var ValueItem = (function () {
+    function ValueItem() {
+    }
+    ValueItem.toObject = function (obj) {
+        var attr = obj.$;
+        var rightAlign = attr.right_align === undefined ? false : Util.toBoolean(attr.right_align);
+        return new workflow.ValueItemType(attr.name, attr.value, rightAlign);
+    };
+    return ValueItem;
+}());
+exports.ValueItem = ValueItem;
+var FilesItem = (function () {
+    function FilesItem() {
+    }
+    FilesItem.toObject = function (obj) {
+        var attr = obj.$;
+        var files = [];
+        if (obj.$$ !== undefined) {
+            obj.$$.forEach(function (obj) {
+                var attr = obj.$;
+                var file = {
+                    name: attr.name,
+                    fileId: attr.file_id
+                };
+                if (attr.size !== undefined) {
+                    file.size = attr.size;
+                }
+                if (attr.mime_type !== undefined) {
+                    file.mimeType = attr.mime_type;
+                }
+                files.push(file);
+            });
+        }
+        return new workflow.FilesItemType(attr.name, Util.toBoolean(attr.inline), files);
+    };
+    return FilesItem;
+}());
+exports.FilesItem = FilesItem;
+var Step = (function () {
+    function Step() {
+    }
+    Step.toObject = function (obj) {
+        var processors = [];
+        obj.$$.forEach(function (obj) {
+            processors.push(Processor.toObject(obj));
+        });
+        var attr = obj.$;
+        return {
+            id: attr.id,
+            name: attr.name,
+            type: attr.type,
+            isApprovalStep: attr.is_approval_step === '-1',
+            processors: processors
+        };
+    };
+    return Step;
+}());
+exports.Step = Step;
+var Processor = (function () {
+    function Processor() {
+    }
+    Processor.toObject = function (obj) {
+        var attr = obj.$;
+        var processor = {};
+        if (attr.id !== undefined) {
+            processor.id = attr.id;
+        }
+        if (attr.processor_name !== undefined) {
+            processor.name = attr.processor_name;
+        }
+        if (attr.date !== undefined) {
+            processor.date = datetime.toDate(attr.processor_name);
+        }
+        if (attr.comment !== undefined) {
+            processor.comment = attr.comment;
+        }
+        if (attr.result !== undefined) {
+            processor.result = attr.result;
+        }
+        if (obj.$$ !== undefined) {
+            var proxyObj = obj.$$[0];
+            processor.proxy = Proxy.fromProcessorToObject(proxyObj);
+        }
+        return processor;
+    };
+    return Processor;
+}());
+exports.Processor = Processor;
+var Operation = (function () {
+    function Operation() {
+    }
+    Operation.toObject = function (obj) {
+        var operationObj = obj.$$[0];
+        var tagName = operationObj['#name'];
+        if (tagName === 'sent_back') {
+            return new workflow.SentBackType();
+        }
+        else if (tagName === 'approve') {
+            return new workflow.ApproveType();
+        }
+        else if (tagName === 'reject') {
+            return new workflow.RejectType();
+        }
+        else if (tagName === 'withdraw') {
+            return new workflow.WithdrawType();
+        }
+        else if (tagName === 'cancel') {
+            return new workflow.CancelType();
+        }
+        else if (tagName === 'confirm') {
+            return new workflow.ConfirmType();
+        }
+        else if (tagName === 'acknowledge') {
+            return new workflow.AcknowledgeType();
+        }
+        throw new Error("Unknown operation: " + tagName);
+    };
+    return Operation;
+}());
+exports.Operation = Operation;
+var Folder = (function () {
+    function Folder() {
+    }
+    Folder.toObject = function (obj, type) {
+        var attr = obj.$;
+        return {
+            id: attr.id,
+            type: type
+        };
+    };
+    return Folder;
+}());
+exports.Folder = Folder;
+var RequestManageForm = (function () {
+    function RequestManageForm() {
+    }
+    RequestManageForm.toObject = function (obj) {
+        var form = {};
+        if (obj.manage_request_form !== undefined) {
+            form.manageRequestForm = ManageForm.toObject(obj.manage_request_form[0]);
+        }
+        var attr = obj.$;
+        if (attr.id_category !== undefined) {
+            form.idCategory = attr.id_category;
+        }
+        if (attr.name_request_form !== undefined) {
+            form.nameCategory = attr.name_category;
+        }
+        return form;
+    };
+    return RequestManageForm;
+}());
+exports.RequestManageForm = RequestManageForm;
+var ManageForm = (function () {
+    function ManageForm() {
+    }
+    ManageForm.toObject = function (obj) {
+        var form = {};
+        if (obj.manage_item_detail !== undefined) {
+            form.manageItemDetail = ManageItemDetail.toObject(obj.manage_item_detail[0]);
+        }
+        var attr = obj.$;
+        if (attr.id_request_form !== undefined) {
+            form.idRequestForm = attr.id_request_form;
+        }
+        if (attr.name_request_form !== undefined) {
+            form.nameRequestForm = attr.name_request_form;
+        }
+        return form;
+    };
+    return ManageForm;
+}());
+exports.ManageForm = ManageForm;
+var ManageItemDetail = (function () {
+    function ManageItemDetail() {
+    }
+    ManageItemDetail.toObject = function (obj) {
+        var attr = obj.$;
+        return {
+            pid: attr.pid,
+            number: attr.number,
+            priority: attr.priority,
+            subject: attr.subject,
+            status: attr.status,
+            applicant: attr.applicant,
+            lastApprover: attr.last_approver,
+            requestDate: datetime.toDate(attr.request_date)
+        };
+    };
+    return ManageItemDetail;
+}());
+exports.ManageItemDetail = ManageItemDetail;
+var Category = (function () {
+    function Category() {
+    }
+    Category.toObject = function (obj) {
+        var children = [];
+        if (obj.child_category !== undefined) {
+            obj.child_category.forEach(function (obj) {
+                children.push(Category.toObject(obj));
+            });
+        }
+        var attr = obj.$;
+        var category = {
+            id: attr.id,
+            code: attr.code,
+            name: attr.name,
+            children: children
+        };
+        if (attr.parent_category !== undefined) {
+            category.parentCategory = attr.parent_category;
+        }
+        if (attr.memo !== undefined) {
+            category.memo = attr.memo;
+        }
+        if (attr.created !== undefined) {
+            category.created = datetime.fromTimestamp(attr.created);
+        }
+        if (attr.last_update !== undefined) {
+            category.lastUpdate = datetime.fromTimestamp(attr.last_update);
+        }
+        return category;
+    };
+    return Category;
+}());
+exports.Category = Category;
+var RequestForm = (function () {
+    function RequestForm() {
+    }
+    RequestForm.toObject = function (categoryId, obj) {
+        var attr = obj.$;
+        var form = {
+            fid: attr.fid,
+            type: attr.type,
+            name: attr.name,
+            active: attr.active === '1',
+            iconType: attr.icon_type,
+            categoryId: categoryId
+        };
+        if (attr.icon_id !== undefined) {
+            form.iconId = attr.icon_id;
+        }
+        if (attr.icon_url !== undefined) {
+            form.iconUrl = attr.icon_url;
+        }
+        return form;
+    };
+    return RequestForm;
+}());
+exports.RequestForm = RequestForm;
+var UserProxy = (function () {
+    function UserProxy() {
+    }
+    UserProxy.toObject = function (obj) {
+        var approverIds = [];
+        if (obj.proxy_approver !== undefined) {
+            obj.proxy_approver.forEach(function (obj) {
+                approverIds.push(obj.$.approver_id);
+            });
+        }
+        var applicantIds = [];
+        if (obj.proxy_applicant !== undefined) {
+            obj.proxy_applicant.forEach(function (obj) {
+                applicantIds.push(obj.$.applicant_id);
+            });
+        }
+        var attr = obj.$;
+        return {
+            userId: attr.user_id,
+            approverIds: approverIds,
+            applicantIds: applicantIds
+        };
+    };
+    return UserProxy;
+}());
+exports.UserProxy = UserProxy;
+var FileAttachedDetail = (function () {
+    function FileAttachedDetail() {
+    }
+    FileAttachedDetail.toObject = function (obj) {
+        return {
+            fileHeader: FileHeader.toObject(obj.file_header[0]),
+            fileInformation: FileInformation.toObject(obj.file_information[0])
+        };
+    };
+    return FileAttachedDetail;
+}());
+exports.FileAttachedDetail = FileAttachedDetail;
+var FileHeader = (function () {
+    function FileHeader() {
+    }
+    FileHeader.toObject = function (obj) {
+        var attr = obj.$;
+        return {
+            fileId: attr.file_id,
+            requestFormId: attr.request_form_id,
+            name: attr.name,
+            size: attr.size
+        };
+    };
+    return FileHeader;
+}());
+exports.FileHeader = FileHeader;
+var FileInformation = (function () {
+    function FileInformation() {
+    }
+    FileInformation.toObject = function (obj) {
+        var attr = obj.$;
+        var information = {
+            subject: attr.subject,
+            versioning: attr.versioning,
+            createTime: datetime.fromTimestamp(attr.create_time),
+            modifyTime: datetime.fromTimestamp(attr.modify_time)
+        };
+        if (attr.description !== undefined) {
+            information.description = attr.description;
+        }
+        return information;
+    };
+    return FileInformation;
+}());
+exports.FileInformation = FileInformation;
+var AvailabilityUser = (function () {
+    function AvailabilityUser() {
+    }
+    AvailabilityUser.toObject = function (obj) {
+        var attr = obj.$;
+        return {
+            id: attr.id,
+            workflow: Util.toBoolean(attr.workflow),
+            keitai: Util.toBoolean(attr.keitai)
+        };
+    };
+    return AvailabilityUser;
+}());
+exports.AvailabilityUser = AvailabilityUser;
+var Profiles = (function () {
+    function Profiles() {
+    }
+    Profiles.toObject = function (obj) {
+        var attr = obj.$;
+        return {
+            usePendingApprovals: Util.toBoolean(attr.use_pending_approvals),
+            useProxyApprovals: Util.toBoolean(attr.use_proxy_approvals),
+            modifyProxies: Util.toBoolean(attr.modify_proxies)
+        };
+    };
+    return Profiles;
+}());
+exports.Profiles = Profiles;
+
+},{"../type/workflow":284,"../util":285,"../util/datetime":287}],281:[function(require,module,exports){
 "use strict";
 var setting_1 = require("./client/setting");
 var base_1 = require("./client/base");
+var admin_1 = require("./client/admin");
+var star_1 = require("./client/star");
+var message_1 = require("./client/message");
+var schedule_1 = require("./client/schedule");
+var bulletin_1 = require("./client/bulletin");
+var mail_1 = require("./client/mail");
+var notification_1 = require("./client/notification");
+var workflow_1 = require("./client/workflow");
+var address_1 = require("./client/address");
+var cabinet_1 = require("./client/cabinet");
+var report_1 = require("./client/report");
+var util_1 = require("./client/util");
 var GaroonSoap = (function () {
     function GaroonSoap(baseUri, username, password, locale, needCsp) {
-        var setting = new setting_1.default(baseUri, username, password, locale, needCsp);
-        this.base = new base_1.default(setting);
+        this.setting = new setting_1.default(baseUri, username, password, locale, needCsp);
+        this.base = new base_1.default(this.setting);
+        this.admin = new admin_1.default(this.setting);
+        this.star = new star_1.default(this.setting);
+        this.message = new message_1.default(this.setting);
+        this.schedule = new schedule_1.default(this.setting);
+        this.bulletin = new bulletin_1.default(this.setting);
+        this.mail = new mail_1.default(this.setting);
+        this.notification = new notification_1.default(this.setting);
+        this.workflow = new workflow_1.default(this.setting);
+        this.address = new address_1.default(this.setting);
+        this.cabinet = new cabinet_1.default(this.setting);
+        this.report = new report_1.default(this.setting);
+        this.util = new util_1.default(this.setting);
     }
+    GaroonSoap.prototype.setCookie = function (cookie) {
+        this.setting.cookie = cookie;
+    };
+    GaroonSoap.prototype.setRequestToken = function (token) {
+        this.setting.requestToken = token;
+    };
     return GaroonSoap;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = GaroonSoap;
 
-},{"./client/base":253,"./client/setting":256}],259:[function(require,module,exports){
+},{"./client/address":253,"./client/admin":254,"./client/base":255,"./client/bulletin":256,"./client/cabinet":257,"./client/mail":260,"./client/message":261,"./client/notification":262,"./client/report":263,"./client/schedule":264,"./client/setting":265,"./client/star":266,"./client/util":267,"./client/workflow":268}],282:[function(require,module,exports){
 "use strict";
 var garoon_soap_1 = require("./garoon-soap");
 module.exports = garoon_soap_1.default;
 
-},{"./garoon-soap":258}],260:[function(require,module,exports){
+},{"./garoon-soap":281}],283:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var ItemType = (function () {
+    function ItemType() {
+    }
+    return ItemType;
+}());
+exports.ItemType = ItemType;
+var ValueItemType = (function (_super) {
+    __extends(ValueItemType, _super);
+    function ValueItemType(name, value, front, back) {
+        var _this = _super.call(this) || this;
+        _this.name = name;
+        _this.value = value;
+        _this.front = front;
+        _this.back = back;
+        return _this;
+    }
+    return ValueItemType;
+}(ItemType));
+exports.ValueItemType = ValueItemType;
+var FilesItemType = (function (_super) {
+    __extends(FilesItemType, _super);
+    function FilesItemType(name, inline, files) {
+        var _this = _super.call(this) || this;
+        _this.name = name;
+        _this.inline = inline;
+        _this.files = files;
+        return _this;
+    }
+    return FilesItemType;
+}(ItemType));
+exports.FilesItemType = FilesItemType;
+var BlankItemType = (function (_super) {
+    __extends(BlankItemType, _super);
+    function BlankItemType() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return BlankItemType;
+}(ItemType));
+exports.BlankItemType = BlankItemType;
+
+},{}],284:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var ItemType = (function () {
+    function ItemType() {
+    }
+    return ItemType;
+}());
+exports.ItemType = ItemType;
+var ValueItemType = (function (_super) {
+    __extends(ValueItemType, _super);
+    function ValueItemType(name, value, rightAlign) {
+        var _this = _super.call(this) || this;
+        _this.name = name;
+        _this.value = value;
+        _this.rightAlign = rightAlign;
+        return _this;
+    }
+    return ValueItemType;
+}(ItemType));
+exports.ValueItemType = ValueItemType;
+var FilesItemType = (function (_super) {
+    __extends(FilesItemType, _super);
+    function FilesItemType(name, inline, files) {
+        var _this = _super.call(this) || this;
+        _this.name = name;
+        _this.inline = inline;
+        _this.files = files;
+        return _this;
+    }
+    return FilesItemType;
+}(ItemType));
+exports.FilesItemType = FilesItemType;
+var BlankItemType = (function (_super) {
+    __extends(BlankItemType, _super);
+    function BlankItemType() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return BlankItemType;
+}(ItemType));
+exports.BlankItemType = BlankItemType;
+var OperationType = (function () {
+    function OperationType() {
+    }
+    OperationType.prototype.getXMLObj = function () {
+        var obj = {};
+        obj[this.tag] = '';
+        return obj;
+    };
+    return OperationType;
+}());
+exports.OperationType = OperationType;
+var SentBackType = (function (_super) {
+    __extends(SentBackType, _super);
+    function SentBackType() {
+        var _this = _super.call(this) || this;
+        _this.tag = 'send_back';
+        return _this;
+    }
+    return SentBackType;
+}(OperationType));
+exports.SentBackType = SentBackType;
+var ApproveType = (function (_super) {
+    __extends(ApproveType, _super);
+    function ApproveType() {
+        var _this = _super.call(this) || this;
+        _this.tag = 'approve';
+        return _this;
+    }
+    return ApproveType;
+}(OperationType));
+exports.ApproveType = ApproveType;
+var RejectType = (function (_super) {
+    __extends(RejectType, _super);
+    function RejectType() {
+        var _this = _super.call(this) || this;
+        _this.tag = 'reject';
+        return _this;
+    }
+    return RejectType;
+}(OperationType));
+exports.RejectType = RejectType;
+var WithdrawType = (function (_super) {
+    __extends(WithdrawType, _super);
+    function WithdrawType() {
+        var _this = _super.call(this) || this;
+        _this.tag = 'withdraw';
+        return _this;
+    }
+    return WithdrawType;
+}(OperationType));
+exports.WithdrawType = WithdrawType;
+var CancelType = (function (_super) {
+    __extends(CancelType, _super);
+    function CancelType() {
+        var _this = _super.call(this) || this;
+        _this.tag = 'cancel';
+        return _this;
+    }
+    return CancelType;
+}(OperationType));
+exports.CancelType = CancelType;
+var ConfirmType = (function (_super) {
+    __extends(ConfirmType, _super);
+    function ConfirmType() {
+        var _this = _super.call(this) || this;
+        _this.tag = 'confirm';
+        return _this;
+    }
+    return ConfirmType;
+}(OperationType));
+exports.ConfirmType = ConfirmType;
+var AcknowledgeType = (function (_super) {
+    __extends(AcknowledgeType, _super);
+    function AcknowledgeType() {
+        var _this = _super.call(this) || this;
+        _this.tag = 'acknowledge';
+        return _this;
+    }
+    return AcknowledgeType;
+}(OperationType));
+exports.AcknowledgeType = AcknowledgeType;
+
+},{}],285:[function(require,module,exports){
 "use strict";
 var excludes = ['xmlns'];
 function copyProps(src, dst) {
@@ -28225,6 +36694,92 @@ function copyProps(src, dst) {
     }
 }
 exports.copyProps = copyProps;
+function toBoolean(str) {
+    return str === 'true';
+}
+exports.toBoolean = toBoolean;
 
-},{}]},{},[259])(259)
+},{}],286:[function(require,module,exports){
+"use strict";
+function toDate(date) {
+    return new Date(date);
+}
+exports.toDate = toDate;
+function toString(date) {
+    var yy = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var mm = month < 10 ? '0' + month : '' + month;
+    var day = date.getDate();
+    var dd = day < 10 ? '0' + day : '' + day;
+    return yy + "-" + mm + "-" + dd;
+}
+exports.toString = toString;
+
+},{}],287:[function(require,module,exports){
+"use strict";
+function toDate(datetime) {
+    return new Date(datetime);
+}
+exports.toDate = toDate;
+function toString(datetime) {
+    var YY = datetime.getUTCFullYear();
+    var month = datetime.getUTCMonth() + 1;
+    var MM = month < 10 ? '0' + month : '' + month;
+    var day = datetime.getUTCDate();
+    var DD = day < 10 ? '0' + day : '' + day;
+    var hour = datetime.getUTCHours();
+    var hh = hour < 10 ? '0' + hour : '' + hour;
+    var minute = datetime.getUTCMinutes();
+    var mm = minute < 10 ? '0' + minute : '' + minute;
+    var second = datetime.getUTCSeconds();
+    var ss = second < 10 ? '0' + second : '' + second;
+    return YY + "-" + MM + "-" + DD + "T" + hh + ":" + mm + ":" + ss + "Z";
+}
+exports.toString = toString;
+function fromTimestamp(timestamp) {
+    return new Date(Number(timestamp) * 1000);
+}
+exports.fromTimestamp = fromTimestamp;
+
+},{}],288:[function(require,module,exports){
+"use strict";
+function toDate(duration) {
+    var found = duration.match(/^P(\d+)Y(\d+)M(\d+)DT(\d+)H(\d+)M(\d+)S$/);
+    if (found === null) {
+        throw Error(duration + " is not xsd:duration type");
+    }
+    var date = new Date();
+    date.setUTCFullYear(Number(found[1]));
+    date.setUTCMonth(Number(found[2]));
+    date.setUTCDate(Number(found[3]));
+    date.setUTCHours(Number(found[4]));
+    date.setUTCMinutes(Number(found[5]));
+    date.setUTCSeconds(Number(found[6]));
+    return date;
+}
+exports.toDate = toDate;
+
+},{}],289:[function(require,module,exports){
+"use strict";
+function toDate(time) {
+    var splits = time.split(':');
+    var date = new Date();
+    date.setHours(Number(splits[0]));
+    date.setMinutes(Number(splits[1]));
+    date.setSeconds(Number(splits[2]));
+    return date;
+}
+exports.toDate = toDate;
+function toString(time) {
+    var hours = time.getHours();
+    var hh = hours < 10 ? '0' + hours : '' + hours;
+    var minutes = time.getMinutes();
+    var mm = minutes < 10 ? '0' + minutes : '' + minutes;
+    var seconds = time.getSeconds();
+    var ss = seconds < 10 ? '0' + seconds : '' + seconds;
+    return hh + ":" + mm + ":" + ss;
+}
+exports.toString = toString;
+
+},{}]},{},[282])(282)
 });

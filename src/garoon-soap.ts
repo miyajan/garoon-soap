@@ -49,4 +49,8 @@ export default class GaroonSoap {
     public setCookie(cookie?: string): void {
         this.setting.cookie = cookie;
     }
+
+    public setRequestToken(token?: string): void {
+        this.setting.requestToken = token;
+    }
 }
