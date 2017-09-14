@@ -1,8 +1,9 @@
 {
   "name": "garoon-soap",
-  "version": "0.1.1",
+  "version": "0.1.5",
   "description": "Garoon soap api client for Node and Browser",
-  "main": "./src/main.js",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
   "engines": {
     "node": ">=6"
   },
@@ -36,7 +37,6 @@
     "mocha": "^3.2.0",
     "power-assert": "^1.4.2",
     "ts-loader": "^2.3.7",
-    "tsify": "^3.0.0",
     "typescript": "^2.1.5"
   },
   "dependencies": {

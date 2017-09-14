@@ -3,6 +3,12 @@
     "target": "es5",
     "strictNullChecks": true,
     "module": "commonjs",
-    "noImplicitAny": true
-  }
+    "moduleResolution": "node",
+    "declaration": true,
+    "noImplicitAny": true,
+    "outDir": "./dist"
+  },
+  "include": [
+    "src"
+  ]
 }
