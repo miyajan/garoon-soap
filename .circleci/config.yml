@@ -10,7 +10,7 @@ jobs:
       - run:
           command: npm run compile
       - run:
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
       - run:
           command: npm publish
   github-release:
