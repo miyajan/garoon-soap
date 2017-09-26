@@ -8,6 +8,7 @@
     "node": ">=6"
   },
   "scripts": {
+    "compile": "tsc",
     "build": "webpack && webpack --optimize-minimize",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
