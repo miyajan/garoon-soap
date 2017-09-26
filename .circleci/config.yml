@@ -4,6 +4,7 @@ jobs:
     docker:
       - image: circleci/node:4.8.3
     steps:
+      - checkout
       - run:
           command: npm install
       - run:
@@ -16,6 +17,7 @@ jobs:
     docker:
       - image: miyajan/node-github-release:0.1.1
     steps:
+      - checkout
       - run:
           command: npm install
       - run:
