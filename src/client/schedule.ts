@@ -694,7 +694,7 @@ export default class Schedule {
                 schedule_event: scheduleEvent
             });
         });
-        return this.client.post(this.path, 'ScheduleAddEvents', parameters).then((res: schedule.EventsResponse) => {
+        return this.client.post(this.path, 'ScheduleModifyEvents', parameters).then((res: schedule.EventsResponse) => {
             const events: schedule.EventType[] = [];
             if (res.schedule_event !== undefined) {
                 res.schedule_event.forEach(obj => {
