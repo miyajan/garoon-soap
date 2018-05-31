@@ -112,7 +112,7 @@ export default class Schedule {
         const searchCondition = needAllFacilities ? 'and' : 'or';
         parameters.push({
             '_attr': {
-                search_time: time.toString(new Date(searchTime)),
+                search_time: time.toString(new Date(searchTime.getTime())),
                 search_condition: searchCondition
             }
         });
