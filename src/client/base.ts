@@ -177,7 +177,13 @@ export default class Base {
         });
         return this.client.post(this.path, 'BaseGetMyGroupVersions', parameters).then((res: base.MyGroupItemsResponse) => {
             const myGroupVersions: base.ItemVersionResultType[] = [];
-            res['my_group_item'].forEach(obj => {
+
+            const myGroupItem = res['my_group_item'];
+            if (myGroupItem == null) {
+                return myGroupVersions;
+            }
+
+            myGroupItem.forEach(obj => {
                 myGroupVersions.push(Converter.ItemVersionResult.toObject(obj));
             });
             return myGroupVersions;
