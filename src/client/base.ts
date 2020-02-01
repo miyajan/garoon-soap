@@ -179,7 +179,7 @@ export default class Base {
             const myGroupVersions: base.ItemVersionResultType[] = [];
 
             const myGroupItem = res['my_group_item'];
-            if (myGroupItem == null) {
+            if (myGroupItem === undefined) {
                 return myGroupVersions;
             }
 
