@@ -61,7 +61,7 @@ export class Notification {
             notification.senderName = attr.sender_name;
         }
         if (attr.sender_id !== undefined) {
-            notification.senderId = attr.senderId;
+            notification.senderId = attr.sender_id;
         }
         if (attr.sender_url !== undefined) {
             notification.senderUrl = attr.sender_url;
