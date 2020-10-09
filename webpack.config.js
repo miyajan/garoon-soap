@@ -1,20 +1,23 @@
+const path = require('path');
+
 const doMinimize = process.argv.indexOf('--optimize-minimize') !== -1;
-const outputFilename = doMinimize ? 'build/garoon-soap.min.js' : 'build/garoon-soap.js';
+const outputFilename = doMinimize ? 'garoon-soap.min.js' : 'garoon-soap.js';
 
 module.exports = {
     entry: './src/main.ts',
     output: {
         filename: outputFilename,
+        path: path.resolve(__dirname, 'build'),
         library: 'GaroonSoap'
     },
     resolve: {
         extensions: [".webpack.js", ".web.js", ".ts", ".js"]
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.tsx?$/,
-                loader: 'ts-loader'
+                use: 'ts-loader'
             }
         ]
     }
